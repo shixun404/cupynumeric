@@ -182,6 +182,40 @@ def sort_complex(a: ndarray) -> ndarray:
         return result.astype(np.complex128, copy=True)
 
 
+@add_boilerplate("a")
+def shuffle(a: ndarray) -> None:
+    """
+
+    Modify a sequence in-place by shuffling its contents.
+
+    This function only shuffles the array along the first axis of a 
+    multi-dimensional array. The order of sub-arrays is changed but 
+    their contents remains the same.
+
+    Parameters
+    ----------
+    a : array_like
+        The array to shuffle. The array is modified in-place.
+
+    Returns
+    -------
+    None
+
+    See Also
+    --------
+    numpy.random.shuffle
+
+    Notes
+    -----
+    This function is equivalent to calling `a.shuffle()` on the array.
+
+    Availability
+    --------
+    Multiple GPUs, Multiple CPUs
+    """
+    a.shuffle()
+
+
 # partition
 
 

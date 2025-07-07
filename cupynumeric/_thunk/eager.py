@@ -2128,3 +2128,33 @@ class EagerArray(NumPyThunk):
     ) -> None:
         if self.deferred is not None:
             self.deferred.stencil_hint(low_offsets, high_offsets)
+
+    def shuffle(
+        self,
+    ) -> None:
+        """
+        Modify a sequence in-place by shuffling its contents.
+        
+        This function only shuffles the array along the first axis of a 
+        multi-dimensional array. The order of sub-arrays is changed but 
+        their contents remains the same.
+        """
+        if self.deferred is not None:
+            self.deferred.shuffle()
+        else:
+            # Handle edge cases
+            if self.array.size == 0:
+                # Empty array, nothing to shuffle
+                return
+            
+            if self.array.ndim == 0:
+                # Scalar, nothing to shuffle
+                return
+            
+            if self.array.shape[0] <= 1:
+                # Only one element along first axis, nothing to shuffle
+                return
+                
+            # Use numpy.random.shuffle for in-place shuffling
+            # This shuffles along the first axis only
+            np.random.shuffle(self.array)

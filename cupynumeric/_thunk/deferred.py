@@ -76,6 +76,7 @@ from ..linalg._qr import qr_deferred
 from ..linalg._solve import solve_deferred
 from ..linalg._svd import svd_deferred
 from ..runtime import runtime
+from ._shuffle import shuffle_deferred
 from ._sort import sort_deferred
 from .thunk import NumPyThunk
 
@@ -3797,6 +3798,18 @@ class DeferredArray(NumPyThunk):
 
         # fallback to sort for now
         sort_deferred(self, rhs, argpartition, axis, False)
+
+    def shuffle(
+        self,
+    ) -> None:
+        """
+        Modify a sequence in-place by shuffling its contents.
+        
+        This function only shuffles the array along the first axis of a 
+        multi-dimensional array. The order of sub-arrays is changed but 
+        their contents remains the same.
+        """
+        shuffle_deferred(self)
 
     def create_window(self, op_code: WindowOpCode, M: int, *args: Any) -> None:
         task = legate_runtime.create_auto_task(

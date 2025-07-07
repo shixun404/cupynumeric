@@ -1651,3 +1651,9 @@ class NumPyThunk(ABC):
         high_offsets: tuple[int, ...],
     ) -> None:
         ...
+
+    @abstractmethod
+    def shuffle(
+        self,
+    ) -> None:
+        ...

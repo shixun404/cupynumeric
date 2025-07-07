@@ -3576,6 +3576,23 @@ class ndarray:
         )
         return result
 
+    def shuffle(self) -> None:
+        """a.shuffle()
+
+        Modify a sequence in-place by shuffling its contents.
+        
+        This function only shuffles the array along the first axis of a 
+        multi-dimensional array. The order of sub-arrays is changed but 
+        their contents remains the same.
+
+        Availability
+        --------
+        Multiple GPUs, Multiple CPUs
+
+        """
+        check_writeable(self)
+        self._thunk.shuffle()
+
     def squeeze(self, axis: Any = None) -> ndarray:
         """a.squeeze(axis=None)
 

@@ -1,0 +1,296 @@
+[0 - 7f4961f87740]    0.000000 {5}{module_config}: Module numa can not detect resources.
+[0 - 7f4961f87740]    0.014996 {1}{legate}: Library legate.core is created
+[0 - 7f4961f87740]    0.015070 {1}{legate}: [legate.core] task 1 (global id: 1073741825), core::extract_scalar {CPU_VARIANT:[0, (has_allocations,)],GPU_VARIANT:[0, (has_allocations,elide_device_ctx_sync,)],}
+[0 - 7f4961f87740]    0.015103 {1}{legate}: [legate.core] task 15 (global id: 1073741839), legate::detail::(anonymous namespace)::PrefetchBloatedInstances {CPU_VARIANT:[0, ()],GPU_VARIANT:[0, ()],}
+[0 - 7f4961f87740]    0.015120 {1}{legate}: [legate.core] task 10 (global id: 1073741834), legate::detail::FixupRanges {CPU_VARIANT:[7f490e4505f0, ()],GPU_VARIANT:[7f490eb4ca50, (elide_device_ctx_sync,)],}
+[0 - 7f4961f87740]    0.015137 {1}{legate}: [legate.core] task 13 (global id: 1073741837), legate::detail::FindBoundingBox {CPU_VARIANT:[7f490e585ee0, ()],GPU_VARIANT:[7f490eb8e3c0, (has_allocations,elide_device_ctx_sync,)],}
+[0 - 7f4961f87740]    0.015148 {1}{legate}: [legate.core] task 14 (global id: 1073741838), legate::detail::FindBoundingBoxSorted {CPU_VARIANT:[7f490e5898e0, ()],GPU_VARIANT:[7f490eb91c60, (has_allocations,elide_device_ctx_sync,)],}
+[0 - 7f4961f87740]    0.015158 {1}{legate}: [legate.core] task 2 (global id: 1073741826), legate::detail::comm::nccl::InitId {GPU_VARIANT:[0, ()],}
+[0 - 7f4961f87740]    0.015166 {1}{legate}: [legate.core] task 3 (global id: 1073741827), legate::detail::comm::nccl::Init {GPU_VARIANT:[0, (concurrent,)],}
+[0 - 7f4961f87740]    0.015174 {1}{legate}: [legate.core] task 4 (global id: 1073741828), legate::detail::comm::nccl::Finalize {GPU_VARIANT:[0, (concurrent,)],}
+[0 - 7f4961f87740]    0.015183 {1}{legate}: [legate.core] task 7 (global id: 1073741831), legate::detail::comm::local::InitMapping {CPU_VARIANT:[0, ()],GPU_VARIANT:[0, ()],}
+[0 - 7f4961f87740]    0.015193 {1}{legate}: [legate.core] task 8 (global id: 1073741832), legate::detail::comm::local::Init {CPU_VARIANT:[0, (concurrent,)],GPU_VARIANT:[0, (concurrent,)],}
+[0 - 7f4961f87740]    0.015203 {1}{legate}: [legate.core] task 9 (global id: 1073741833), legate::detail::comm::local::Finalize {CPU_VARIANT:[0, (concurrent,)],GPU_VARIANT:[0, (concurrent,)],}
+[0 - 7f4961f87740]    0.015217 {1}{legate}: Library legate.io is created
+[0 - 7f4961f87740]    0.015230 {1}{legate}: [legate.io] task 16 (global id: 1073742864), legate::experimental::io::kvikio::detail::BasicRead {CPU_VARIANT:[7f490e7f7660, (has_side_effect,)],GPU_VARIANT:[7f490e7f7dd0, (has_side_effect,)],OMP_VARIANT:[7f490e7f7dc0, (has_side_effect,)],}
+[0 - 7f4961f87740]    0.015244 {1}{legate}: [legate.io] task 17 (global id: 1073742865), legate::experimental::io::kvikio::detail::BasicWrite {CPU_VARIANT:[7f490e7f7de0, (has_side_effect,)],GPU_VARIANT:[7f490e7f8550, (has_side_effect,)],OMP_VARIANT:[7f490e7f8540, (has_side_effect,)],}
+[0 - 7f4961f87740]    0.015257 {1}{legate}: [legate.io] task 18 (global id: 1073742866), legate::experimental::io::kvikio::detail::TileRead {CPU_VARIANT:[7f490e88f0d0, ()],GPU_VARIANT:[7f490e88f630, ()],OMP_VARIANT:[7f490e88f620, ()],}
+[0 - 7f4961f87740]    0.015270 {1}{legate}: [legate.io] task 19 (global id: 1073742867), legate::experimental::io::kvikio::detail::TileWrite {CPU_VARIANT:[7f490e88eb60, ()],GPU_VARIANT:[7f490e88f0c0, ()],OMP_VARIANT:[7f490e88f0b0, ()],}
+[0 - 7f4961f87740]    0.015283 {1}{legate}: [legate.io] task 20 (global id: 1073742868), legate::experimental::io::kvikio::detail::TileByOffsetsRead {CPU_VARIANT:[7f490eaa57f0, ()],GPU_VARIANT:[7f490eaa7fc0, ()],OMP_VARIANT:[7f490eaa7fb0, ()],}
+[0 - 7f4961f87740]    0.015296 {1}{legate}: [legate.io] task 21 (global id: 1073742869), legate::io::hdf5::detail::HDF5Read {CPU_VARIANT:[7f490eb28240, (has_side_effect,)],GPU_VARIANT:[7f490eb28270, (has_allocations,elide_device_ctx_sync,has_side_effect,)],OMP_VARIANT:[7f490eb28260, (has_side_effect,)],}
+[0 - 7f4961f87740]    0.015308 {1}{legate}: [legate.core] task 22 (global id: 1073741846), legate::detail::(anonymous namespace)::OffloadTo {CPU_VARIANT:[7f490e717000, ()],GPU_VARIANT:[7f490e718210, ()],OMP_VARIANT:[7f490e717b50, ()],}
+[0 - 7f4961f87740]    0.015318 {1}{legate}: Record reduction op (type_uid: 0, op_kind: 0, legion_op_id: 1048577)
+[0 - 7f4961f87740]    0.015320 {1}{legate}: Record reduction op (type_uid: 1, op_kind: 0, legion_op_id: 1048578)
+[0 - 7f4961f87740]    0.015321 {1}{legate}: Record reduction op (type_uid: 2, op_kind: 0, legion_op_id: 1048579)
+[0 - 7f4961f87740]    0.015322 {1}{legate}: Record reduction op (type_uid: 3, op_kind: 0, legion_op_id: 1048580)
+[0 - 7f4961f87740]    0.015322 {1}{legate}: Record reduction op (type_uid: 4, op_kind: 0, legion_op_id: 1048581)
+[0 - 7f4961f87740]    0.015323 {1}{legate}: Record reduction op (type_uid: 5, op_kind: 0, legion_op_id: 1048582)
+[0 - 7f4961f87740]    0.015324 {1}{legate}: Record reduction op (type_uid: 6, op_kind: 0, legion_op_id: 1048583)
+[0 - 7f4961f87740]    0.015325 {1}{legate}: Record reduction op (type_uid: 7, op_kind: 0, legion_op_id: 1048584)
+[0 - 7f4961f87740]    0.015326 {1}{legate}: Record reduction op (type_uid: 8, op_kind: 0, legion_op_id: 1048585)
+[0 - 7f4961f87740]    0.015326 {1}{legate}: Record reduction op (type_uid: 9, op_kind: 0, legion_op_id: 1048586)
+[0 - 7f4961f87740]    0.015327 {1}{legate}: Record reduction op (type_uid: 10, op_kind: 0, legion_op_id: 1048587)
+[0 - 7f4961f87740]    0.015328 {1}{legate}: Record reduction op (type_uid: 11, op_kind: 0, legion_op_id: 1048588)
+[0 - 7f4961f87740]    0.015329 {1}{legate}: Record reduction op (type_uid: 13, op_kind: 0, legion_op_id: 1048590)
+[0 - 7f4961f87740]    0.015329 {1}{legate}: Record reduction op (type_uid: 14, op_kind: 0, legion_op_id: 1048591)
+[0 - 7f4961f87740]    0.015331 {1}{legate}: Record reduction op (type_uid: 0, op_kind: 2, legion_op_id: 1048607)
+[0 - 7f4961f87740]    0.015332 {1}{legate}: Record reduction op (type_uid: 1, op_kind: 2, legion_op_id: 1048608)
+[0 - 7f4961f87740]    0.015332 {1}{legate}: Record reduction op (type_uid: 2, op_kind: 2, legion_op_id: 1048609)
+[0 - 7f4961f87740]    0.015333 {1}{legate}: Record reduction op (type_uid: 3, op_kind: 2, legion_op_id: 1048610)
+[0 - 7f4961f87740]    0.015334 {1}{legate}: Record reduction op (type_uid: 4, op_kind: 2, legion_op_id: 1048611)
+[0 - 7f4961f87740]    0.015335 {1}{legate}: Record reduction op (type_uid: 5, op_kind: 2, legion_op_id: 1048612)
+[0 - 7f4961f87740]    0.015335 {1}{legate}: Record reduction op (type_uid: 6, op_kind: 2, legion_op_id: 1048613)
+[0 - 7f4961f87740]    0.015336 {1}{legate}: Record reduction op (type_uid: 7, op_kind: 2, legion_op_id: 1048614)
+[0 - 7f4961f87740]    0.015337 {1}{legate}: Record reduction op (type_uid: 8, op_kind: 2, legion_op_id: 1048615)
+[0 - 7f4961f87740]    0.015338 {1}{legate}: Record reduction op (type_uid: 9, op_kind: 2, legion_op_id: 1048616)
+[0 - 7f4961f87740]    0.015338 {1}{legate}: Record reduction op (type_uid: 10, op_kind: 2, legion_op_id: 1048617)
+[0 - 7f4961f87740]    0.015339 {1}{legate}: Record reduction op (type_uid: 11, op_kind: 2, legion_op_id: 1048618)
+[0 - 7f4961f87740]    0.015340 {1}{legate}: Record reduction op (type_uid: 13, op_kind: 2, legion_op_id: 1048620)
+[0 - 7f4961f87740]    0.015341 {1}{legate}: Record reduction op (type_uid: 0, op_kind: 4, legion_op_id: 1048637)
+[0 - 7f4961f87740]    0.015341 {1}{legate}: Record reduction op (type_uid: 1, op_kind: 4, legion_op_id: 1048638)
+[0 - 7f4961f87740]    0.015342 {1}{legate}: Record reduction op (type_uid: 2, op_kind: 4, legion_op_id: 1048639)
+[0 - 7f4961f87740]    0.015343 {1}{legate}: Record reduction op (type_uid: 3, op_kind: 4, legion_op_id: 1048640)
+[0 - 7f4961f87740]    0.015344 {1}{legate}: Record reduction op (type_uid: 4, op_kind: 4, legion_op_id: 1048641)
+[0 - 7f4961f87740]    0.015345 {1}{legate}: Record reduction op (type_uid: 5, op_kind: 4, legion_op_id: 1048642)
+[0 - 7f4961f87740]    0.015346 {1}{legate}: Record reduction op (type_uid: 6, op_kind: 4, legion_op_id: 1048643)
+[0 - 7f4961f87740]    0.015347 {1}{legate}: Record reduction op (type_uid: 7, op_kind: 4, legion_op_id: 1048644)
+[0 - 7f4961f87740]    0.015347 {1}{legate}: Record reduction op (type_uid: 8, op_kind: 4, legion_op_id: 1048645)
+[0 - 7f4961f87740]    0.015367 {1}{legate}: Record reduction op (type_uid: 9, op_kind: 4, legion_op_id: 1048646)
+[0 - 7f4961f87740]    0.015369 {1}{legate}: Record reduction op (type_uid: 10, op_kind: 4, legion_op_id: 1048647)
+[0 - 7f4961f87740]    0.015369 {1}{legate}: Record reduction op (type_uid: 11, op_kind: 4, legion_op_id: 1048648)
+[0 - 7f4961f87740]    0.015370 {1}{legate}: Record reduction op (type_uid: 0, op_kind: 5, legion_op_id: 1048652)
+[0 - 7f4961f87740]    0.015371 {1}{legate}: Record reduction op (type_uid: 1, op_kind: 5, legion_op_id: 1048653)
+[0 - 7f4961f87740]    0.015372 {1}{legate}: Record reduction op (type_uid: 2, op_kind: 5, legion_op_id: 1048654)
+[0 - 7f4961f87740]    0.015372 {1}{legate}: Record reduction op (type_uid: 3, op_kind: 5, legion_op_id: 1048655)
+[0 - 7f4961f87740]    0.015373 {1}{legate}: Record reduction op (type_uid: 4, op_kind: 5, legion_op_id: 1048656)
+[0 - 7f4961f87740]    0.015374 {1}{legate}: Record reduction op (type_uid: 5, op_kind: 5, legion_op_id: 1048657)
+[0 - 7f4961f87740]    0.015375 {1}{legate}: Record reduction op (type_uid: 6, op_kind: 5, legion_op_id: 1048658)
+[0 - 7f4961f87740]    0.015375 {1}{legate}: Record reduction op (type_uid: 7, op_kind: 5, legion_op_id: 1048659)
+[0 - 7f4961f87740]    0.015376 {1}{legate}: Record reduction op (type_uid: 8, op_kind: 5, legion_op_id: 1048660)
+[0 - 7f4961f87740]    0.015377 {1}{legate}: Record reduction op (type_uid: 9, op_kind: 5, legion_op_id: 1048661)
+[0 - 7f4961f87740]    0.015378 {1}{legate}: Record reduction op (type_uid: 10, op_kind: 5, legion_op_id: 1048662)
+[0 - 7f4961f87740]    0.015378 {1}{legate}: Record reduction op (type_uid: 11, op_kind: 5, legion_op_id: 1048663)
+[0 - 7f4961f87740]    0.015379 {1}{legate}: Record reduction op (type_uid: 0, op_kind: 6, legion_op_id: 1048667)
+[0 - 7f4961f87740]    0.015380 {1}{legate}: Record reduction op (type_uid: 1, op_kind: 6, legion_op_id: 1048668)
+[0 - 7f4961f87740]    0.015381 {1}{legate}: Record reduction op (type_uid: 2, op_kind: 6, legion_op_id: 1048669)
+[0 - 7f4961f87740]    0.015381 {1}{legate}: Record reduction op (type_uid: 3, op_kind: 6, legion_op_id: 1048670)
+[0 - 7f4961f87740]    0.015382 {1}{legate}: Record reduction op (type_uid: 4, op_kind: 6, legion_op_id: 1048671)
+[0 - 7f4961f87740]    0.015384 {1}{legate}: Record reduction op (type_uid: 5, op_kind: 6, legion_op_id: 1048672)
+[0 - 7f4961f87740]    0.015385 {1}{legate}: Record reduction op (type_uid: 6, op_kind: 6, legion_op_id: 1048673)
+[0 - 7f4961f87740]    0.015385 {1}{legate}: Record reduction op (type_uid: 7, op_kind: 6, legion_op_id: 1048674)
+[0 - 7f4961f87740]    0.015386 {1}{legate}: Record reduction op (type_uid: 8, op_kind: 6, legion_op_id: 1048675)
+[0 - 7f4961f87740]    0.015388 {1}{legate}: Record reduction op (type_uid: 0, op_kind: 7, legion_op_id: 1048607)
+[0 - 7f4961f87740]    0.015389 {1}{legate}: Record reduction op (type_uid: 1, op_kind: 7, legion_op_id: 1048683)
+[0 - 7f4961f87740]    0.015389 {1}{legate}: Record reduction op (type_uid: 2, op_kind: 7, legion_op_id: 1048684)
+[0 - 7f4961f87740]    0.015390 {1}{legate}: Record reduction op (type_uid: 3, op_kind: 7, legion_op_id: 1048685)
+[0 - 7f4961f87740]    0.015391 {1}{legate}: Record reduction op (type_uid: 4, op_kind: 7, legion_op_id: 1048686)
+[0 - 7f4961f87740]    0.015392 {1}{legate}: Record reduction op (type_uid: 5, op_kind: 7, legion_op_id: 1048687)
+[0 - 7f4961f87740]    0.015392 {1}{legate}: Record reduction op (type_uid: 6, op_kind: 7, legion_op_id: 1048688)
+[0 - 7f4961f87740]    0.015393 {1}{legate}: Record reduction op (type_uid: 7, op_kind: 7, legion_op_id: 1048689)
+[0 - 7f4961f87740]    0.015394 {1}{legate}: Record reduction op (type_uid: 8, op_kind: 7, legion_op_id: 1048690)
+[0 - 7f4961f87740]    0.015395 {1}{legate}: Record reduction op (type_uid: 0, op_kind: 8, legion_op_id: 1048697)
+[0 - 7f4961f87740]    0.015395 {1}{legate}: Record reduction op (type_uid: 1, op_kind: 8, legion_op_id: 1048698)
+[0 - 7f4961f87740]    0.015396 {1}{legate}: Record reduction op (type_uid: 2, op_kind: 8, legion_op_id: 1048699)
+[0 - 7f4961f87740]    0.015397 {1}{legate}: Record reduction op (type_uid: 3, op_kind: 8, legion_op_id: 1048700)
+[0 - 7f4961f87740]    0.015398 {1}{legate}: Record reduction op (type_uid: 4, op_kind: 8, legion_op_id: 1048701)
+[0 - 7f4961f87740]    0.015398 {1}{legate}: Record reduction op (type_uid: 5, op_kind: 8, legion_op_id: 1048702)
+[0 - 7f4961f87740]    0.015399 {1}{legate}: Record reduction op (type_uid: 6, op_kind: 8, legion_op_id: 1048703)
+[0 - 7f4961f87740]    0.015400 {1}{legate}: Record reduction op (type_uid: 7, op_kind: 8, legion_op_id: 1048704)
+[0 - 7f4961f87740]    0.015401 {1}{legate}: Record reduction op (type_uid: 8, op_kind: 8, legion_op_id: 1048705)
+Legate Initialize!
+[0 - 7f4961f87740]    0.401753 {1}{legate}: Library cupynumeric is created
+[0 - 7f4961f87740]    0.401825 {1}{legate}: [cupynumeric] task 55 (global id: 1073743927), cupynumeric::WhereTask {CPU_VARIANT:[7f13f62636b0, ()],GPU_VARIANT:[7f13f75648c0, ()],}
+[0 - 7f4961f87740]    0.401885 {1}{legate}: [cupynumeric] task 13 (global id: 1073743885), cupynumeric::ScanGlobalTask {CPU_VARIANT:[7f13f63d0b10, ()],GPU_VARIANT:[7f13f75c37a0, ()],}
+[0 - 7f4961f87740]    0.401907 {1}{legate}: [cupynumeric] task 14 (global id: 1073743886), cupynumeric::ScanLocalTask {CPU_VARIANT:[7f13f644b970, (has_allocations,)],GPU_VARIANT:[7f13f77481d0, (has_allocations,)],}
+[0 - 7f4961f87740]    0.401927 {1}{legate}: [cupynumeric] task 5 (global id: 1073743877), cupynumeric::BinaryOpTask {CPU_VARIANT:[7f13f6487400, ()],GPU_VARIANT:[7f13f77ffd50, ()],}
+[0 - 7f4961f87740]    0.401944 {1}{legate}: [cupynumeric] task 6 (global id: 1073743878), cupynumeric::BinaryRedTask {CPU_VARIANT:[7f13f671c650, ()],GPU_VARIANT:[7f13f7c2b700, (has_allocations,)],}
+[0 - 7f4961f87740]    0.401960 {1}{legate}: [cupynumeric] task 30 (global id: 1073743902), cupynumeric::PackbitsTask {CPU_VARIANT:[7f13f6742b60, ()],GPU_VARIANT:[7f13f7c74750, ()],}
+[0 - 7f4961f87740]    0.401977 {1}{legate}: [cupynumeric] task 54 (global id: 1073743926), cupynumeric::UnpackbitsTask {CPU_VARIANT:[7f13f6746e10, ()],GPU_VARIANT:[7f13f7c79290, ()],}
+[0 - 7f4961f87740]    0.401995 {1}{legate}: [cupynumeric] task 37 (global id: 1073743909), cupynumeric::ScalarUnaryRedTask {CPU_VARIANT:[7f13f68fcaf0, ()],GPU_VARIANT:[7f13f8006e80, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402010 {1}{legate}: [cupynumeric] task 49 (global id: 1073743921), cupynumeric::UnaryOpTask {CPU_VARIANT:[7f13f6976640, ()],GPU_VARIANT:[7f13f85a9dc0, ()],}
+[0 - 7f4961f87740]    0.402025 {1}{legate}: [cupynumeric] task 50 (global id: 1073743922), cupynumeric::UnaryRedTask {CPU_VARIANT:[7f13f6d59470, ()],GPU_VARIANT:[7f13f80e0300, ()],}
+[0 - 7f4961f87740]    0.402041 {1}{legate}: [cupynumeric] task 11 (global id: 1073743883), cupynumeric::ConvertTask {CPU_VARIANT:[7f13f6fd9f40, ()],GPU_VARIANT:[7f13f89da120, ()],}
+[0 - 7f4961f87740]    0.402057 {1}{legate}: [cupynumeric] task 2 (global id: 1073743874), cupynumeric::ArangeTask {CPU_VARIANT:[7f13f7172130, ()],GPU_VARIANT:[7f13f8c58ae0, ()],}
+[0 - 7f4961f87740]    0.402073 {1}{legate}: [cupynumeric] task 17 (global id: 1073743889), cupynumeric::EyeTask {CPU_VARIANT:[7f13f71752f0, ()],GPU_VARIANT:[7f13f8c5c8f0, ()],}
+[0 - 7f4961f87740]    0.402089 {1}{legate}: [cupynumeric] task 19 (global id: 1073743891), cupynumeric::FillTask {CPU_VARIANT:[7f13f718ca30, ()],GPU_VARIANT:[7f13f8c86370, ()],}
+[0 - 7f4961f87740]    0.402106 {1}{legate}: [cupynumeric] task 56 (global id: 1073743928), cupynumeric::WindowTask {CPU_VARIANT:[7f13f718d560, ()],GPU_VARIANT:[7f13f8c86ec0, ()],}
+[0 - 7f4961f87740]    0.402122 {1}{legate}: [cupynumeric] task 1 (global id: 1073743873), cupynumeric::AdvancedIndexingTask {CPU_VARIANT:[7f13f71c36e0, (has_allocations,)],GPU_VARIANT:[7f13f8d032f0, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402138 {1}{legate}: [cupynumeric] task 9 (global id: 1073743881), cupynumeric::ChooseTask {CPU_VARIANT:[7f13f71fe700, ()],GPU_VARIANT:[7f13f8d53210, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402153 {1}{legate}: [cupynumeric] task 32 (global id: 1073743904), cupynumeric::PutmaskTask {CPU_VARIANT:[7f13f7213a60, ()],GPU_VARIANT:[7f13f8d71470, ()],}
+[0 - 7f4961f87740]    0.402186 {1}{legate}: [cupynumeric] task 36 (global id: 1073743908), cupynumeric::RepeatTask {CPU_VARIANT:[7f13f72549d0, (has_allocations,)],GPU_VARIANT:[7f13f8df6820, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402205 {1}{legate}: [cupynumeric] task 39 (global id: 1073743911), cupynumeric::SelectTask {CPU_VARIANT:[7f13f72a09f0, ()],GPU_VARIANT:[7f13f8e6b0c0, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402221 {1}{legate}: [cupynumeric] task 57 (global id: 1073743929), cupynumeric::WrapTask {CPU_VARIANT:[7f13f72a4d50, ()],GPU_VARIANT:[7f13f8e74490, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402238 {1}{legate}: [cupynumeric] task 59 (global id: 1073743931), cupynumeric::ZipTask {CPU_VARIANT:[7f13f72bd1b0, ()],GPU_VARIANT:[7f13f8eaa5c0, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402253 {1}{legate}: [cupynumeric] task 35 (global id: 1073743907), cupynumeric::ReadTask {CPU_VARIANT:[7f13f72bdf90, ()],GPU_VARIANT:[7f13f8eabd20, ()],}
+[0 - 7f4961f87740]    0.402269 {1}{legate}: [cupynumeric] task 58 (global id: 1073743930), cupynumeric::WriteTask {CPU_VARIANT:[7f13f72c41e0, ()],GPU_VARIANT:[7f13f8eb9db0, ()],}
+[0 - 7f4961f87740]    0.402285 {1}{legate}: [cupynumeric] task 4 (global id: 1073743876), cupynumeric::BatchedCholeskyTask {CPU_VARIANT:[7f13f72d38d0, ()],GPU_VARIANT:[7f13f8ec7a70, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402301 {1}{legate}: [cupynumeric] task 10 (global id: 1073743882), cupynumeric::ContractTask {CPU_VARIANT:[7f13f72eb130, (has_allocations,)],GPU_VARIANT:[7f13f8edd340, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402318 {1}{legate}: [cupynumeric] task 15 (global id: 1073743887), cupynumeric::DiagTask {CPU_VARIANT:[7f13f730c2d0, ()],GPU_VARIANT:[7f13f8f14720, ()],}
+[0 - 7f4961f87740]    0.402336 {1}{legate}: [cupynumeric] task 21 (global id: 1073743893), cupynumeric::GeevTask {CPU_VARIANT:[7f13f7314e90, (has_allocations,)],GPU_VARIANT:[7f13f8f1dfc0, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402351 {1}{legate}: [cupynumeric] task 22 (global id: 1073743894), cupynumeric::GemmTask {CPU_VARIANT:[7f13f73171d0, ()],GPU_VARIANT:[7f13f8f1fa80, ()],}
+[0 - 7f4961f87740]    0.402366 {1}{legate}: [cupynumeric] task 25 (global id: 1073743897), cupynumeric::MatMulTask {CPU_VARIANT:[7f13f7317f60, (has_allocations,)],GPU_VARIANT:[7f13f8f1fdd0, ()],}
+[0 - 7f4961f87740]    0.402383 {1}{legate}: [cupynumeric] task 26 (global id: 1073743898), cupynumeric::MatVecMulTask {CPU_VARIANT:[7f13f731a150, (has_allocations,)],GPU_VARIANT:[7f13f8f219b0, ()],}
+[0 - 7f4961f87740]    0.402397 {1}{legate}: [cupynumeric] task 16 (global id: 1073743888), cupynumeric::DotTask {CPU_VARIANT:[7f13f731f7e0, ()],GPU_VARIANT:[7f13f8f2c770, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402412 {1}{legate}: [cupynumeric] task 31 (global id: 1073743903), cupynumeric::PotrfTask {CPU_VARIANT:[7f13f7320610, ()],GPU_VARIANT:[7f13f8f2df20, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402431 {1}{legate}: [cupynumeric] task 33 (global id: 1073743905), cupynumeric::QrTask {CPU_VARIANT:[7f13f7321e70, (has_allocations,)],GPU_VARIANT:[7f13f8f317a0, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402446 {1}{legate}: [cupynumeric] task 40 (global id: 1073743912), cupynumeric::SolveTask {CPU_VARIANT:[7f13f7326180, (has_allocations,)],GPU_VARIANT:[7f13f8f349b0, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402466 {1}{legate}: [cupynumeric] task 42 (global id: 1073743914), cupynumeric::SvdTask {CPU_VARIANT:[7f13f7329b50, (has_allocations,)],GPU_VARIANT:[7f13f8f3c060, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402482 {1}{legate}: [cupynumeric] task 43 (global id: 1073743915), cupynumeric::SyevTask {CPU_VARIANT:[7f13f73361f0, (has_allocations,)],GPU_VARIANT:[7f13f8f46f00, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402497 {1}{legate}: [cupynumeric] task 44 (global id: 1073743916), cupynumeric::SyrkTask {CPU_VARIANT:[7f13f7336d40, ()],GPU_VARIANT:[7f13f8f47e30, ()],}
+[0 - 7f4961f87740]    0.402512 {1}{legate}: [cupynumeric] task 45 (global id: 1073743917), cupynumeric::TileTask {CPU_VARIANT:[7f13f7361190, ()],GPU_VARIANT:[7f13f8f954e0, ()],}
+[0 - 7f4961f87740]    0.402528 {1}{legate}: [cupynumeric] task 46 (global id: 1073743918), cupynumeric::TransposeTask {CPU_VARIANT:[7f13f7369fa0, ()],GPU_VARIANT:[7f13f8f98dd0, ()],}
+[0 - 7f4961f87740]    0.402543 {1}{legate}: [cupynumeric] task 47 (global id: 1073743919), cupynumeric::TriluTask {CPU_VARIANT:[7f13f738fc90, ()],GPU_VARIANT:[7f13f8fd25a0, ()],}
+[0 - 7f4961f87740]    0.402558 {1}{legate}: [cupynumeric] task 48 (global id: 1073743920), cupynumeric::TrsmTask {CPU_VARIANT:[7f13f73907e0, ()],GPU_VARIANT:[7f13f8fd26c0, ()],}
+[0 - 7f4961f87740]    0.402573 {1}{legate}: [cupynumeric] task 8 (global id: 1073743880), cupynumeric::BitGeneratorTask {CPU_VARIANT:[7f13f73c0860, ()],GPU_VARIANT:[7f13f96579d0, ()],}
+[0 - 7f4961f87740]    0.402589 {1}{legate}: [cupynumeric] task 34 (global id: 1073743906), cupynumeric::RandTask {CPU_VARIANT:[7f13f7449930, ()],GPU_VARIANT:[7f13f8fea750, ()],}
+[0 - 7f4961f87740]    0.402606 {1}{legate}: [cupynumeric] task 3 (global id: 1073743875), cupynumeric::ArgWhereTask {CPU_VARIANT:[7f13f745aec0, (has_allocations,)],GPU_VARIANT:[7f13f9010870, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402621 {1}{legate}: [cupynumeric] task 29 (global id: 1073743901), cupynumeric::NonzeroTask {CPU_VARIANT:[7f13f74709c0, (has_allocations,)],GPU_VARIANT:[7f13f9053bb0, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402637 {1}{legate}: [cupynumeric] task 51 (global id: 1073743923), cupynumeric::UniqueTask {CPU_VARIANT:[7f13f74837d0, (has_allocations,)],GPU_VARIANT:[7f13f909af90, (concurrent,has_allocations,)],}
+[0 - 7f4961f87740]    0.402651 {1}{legate}: [cupynumeric] task 52 (global id: 1073743924), cupynumeric::UniqueReduceTask {CPU_VARIANT:[7f13f74888b0, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402665 {1}{legate}: [cupynumeric] task 7 (global id: 1073743879), cupynumeric::BincountTask {CPU_VARIANT:[7f13f7494420, ()],GPU_VARIANT:[7f13f90f6370, ()],}
+[0 - 7f4961f87740]    0.402681 {1}{legate}: [cupynumeric] task 12 (global id: 1073743884), cupynumeric::ConvolveTask {CPU_VARIANT:[7f13f74c5f10, ()],GPU_VARIANT:[7f13f911fee0, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402697 {1}{legate}: [cupynumeric] task 20 (global id: 1073743892), cupynumeric::FlipTask {CPU_VARIANT:[7f13f74dc080, ()],GPU_VARIANT:[7f13f91e1510, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402713 {1}{legate}: [cupynumeric] task 23 (global id: 1073743895), cupynumeric::HistogramTask {CPU_VARIANT:[7f13f7510a40, (has_allocations,)],GPU_VARIANT:[7f13f922c130, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402730 {1}{legate}: [cupynumeric] task 18 (global id: 1073743890), cupynumeric::FFTTask {GPU_VARIANT:[7f13f91b7010, (has_allocations,)],}
+[0 - 7f4961f87740]    0.402742 {1}{legate}: [cupynumeric] task 24 (global id: 1073743896), cupynumeric::LoadCUDALibsTask {GPU_VARIANT:[7f13f9228f70, ()],}
+[0 - 7f4961f87740]    0.402752 {1}{legate}: [cupynumeric] task 53 (global id: 1073743925), cupynumeric::UnloadCUDALibsTask {GPU_VARIANT:[7f13f9228fb0, ()],}
+[0 - 7f4961f87740]    0.402764 {1}{legate}: [cupynumeric] task 41 (global id: 1073743913), cupynumeric::SortTask {CPU_VARIANT:[7f13f930cfa0, (concurrent,has_allocations,)],GPU_VARIANT:[7f13f93c2fc0, (concurrent,has_allocations,)],}
+[0 - 7f4961f87740]    0.402782 {1}{legate}: [cupynumeric] task 38 (global id: 1073743910), cupynumeric::SearchSortedTask {CPU_VARIANT:[7f13f93324c0, ()],GPU_VARIANT:[7f13f946fea0, ()],}
+[0 - 7f4961f87740]    1.109978 {1}{legate}: Field 10000 created on region LogicalRegion(1,IndexSpace(1,1),FieldSpace(1)) for shape Shape [16384, 16384] field size 4
+[0 - 7f4961f87740]    1.109994 {1}{legate}: Create Storage(1) {kind: Region, level: 0, region: (1, (1, 1), 1), field: 10000}
+[0 - 7f4961f87740]    1.110000 {1}{legate}: Create Store(1) {shape: [16384, 16384], type: float32, storage: Storage(1) {kind: Region, level: 0, region: (1, (1, 1), 1), field: 10000}}
+[0 - 7f4961f87740]    1.110128 {1}{legate}: cupynumeric::BitGeneratorTask:0[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:24", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 24}]] submitted
+[0 - 7f4961f87740]    1.110144 {1}{legate}: cupynumeric::BitGeneratorTask:0[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:24", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 24}]] launched
+[0 - 7f4961f87740]    1.110433 {1}{legate}: Field 10001 created on region LogicalRegion(1,IndexSpace(1,1),FieldSpace(1)) for shape Shape [16384, 16384] field size 4
+[0 - 7f4961f87740]    1.110441 {1}{legate}: Create Storage(2) {kind: Region, level: 0, region: (1, (1, 1), 1), field: 10001}
+[0 - 7f4961f87740]    1.110446 {1}{legate}: Create Store(2) {shape: [16384, 16384], type: float32, storage: Storage(2) {kind: Region, level: 0, region: (1, (1, 1), 1), field: 10001}}
+[0 - 7f4961f87740]    1.110509 {1}{legate}: cupynumeric::BitGeneratorTask:1[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:25", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 25}]] submitted
+[0 - 7f4961f87740]    1.110513 {1}{legate}: cupynumeric::BitGeneratorTask:1[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:25", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 25}]] launched
+[0 - 7f4961f87740]    1.110645 {1}{legate}: Field 10002 created on region LogicalRegion(1,IndexSpace(1,1),FieldSpace(1)) for shape Shape [16384, 16384] field size 4
+[0 - 7f4961f87740]    1.110653 {1}{legate}: Create Storage(3) {kind: Region, level: 0, region: (1, (1, 1), 1), field: 10002}
+[0 - 7f4961f87740]    1.110658 {1}{legate}: Create Store(3) {shape: [16384, 16384], type: float32, storage: Storage(3) {kind: Region, level: 0, region: (1, (1, 1), 1), field: 10002}}
+[0 - 7f4961f87740]    1.110688 {1}{legate}: Fill:2[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:26", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 26}]] submitted
+[0 - 7f4961f87740]    1.110692 {1}{legate}: Fill:2[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:26", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 26}]] launched
+[0 - 7f4961f87740]    1.143290 {1}{legate}: Create Storage(4) {kind: Future, level: 0}
+[0 - 7f4961f87740]    1.143310 {1}{legate}: Create Store(4) {shape: [], type: int64, storage: Storage(4) {kind: Future, level: 0}}
+[0 - 7f4961f87740]    1.143318 {1}{legate}: Timing:3 submitted
+[0 - 7f4961f87740]    1.143322 {1}{legate}: Timing:3 launched
+[0 - 7f4961f87740]    1.143380 {1}{legate}: Create Storage(5) {kind: Future, level: 0}
+[0 - 7f4961f87740]    1.143389 {1}{legate}: Create Store(5) {shape: [], type: int64, storage: Storage(5) {kind: Future, level: 0}}
+[0 - 7f4961f87740]    1.143395 {1}{legate}: Timing:4 submitted
+[0 - 7f4961f87740]    1.143399 {1}{legate}: Timing:4 launched
+[0 - 7f4961f87740]    1.143976 {1}{legate}: Fill:5[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] submitted
+[0 - 7f4961f87740]    1.143986 {1}{legate}: Fill:5[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] launched
+[0 - 7f4961f87740]    1.144285 {1}{legate}: cupynumeric::MatMulTask:6[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] submitted
+[0 - 7f4961f87740]    1.144296 {1}{legate}: cupynumeric::MatMulTask:6[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] launched
+[0 - 7f4961f87740]    1.144358 {1}{legate}: Query affine projection {src_ndim: 2, point: (COORD0,)}
+[0 - 7f4961f87740]    1.144374 {1}{legate}: Register affine projection 1073741834 {src_ndim: 2, point: (COORD0,)}
+[0 - 7f4961f87740]    1.144403 {1}{legate}: Query affine projection {src_ndim: 2, point: (,COORD1)}
+[0 - 7f4961f87740]    1.144413 {1}{legate}: Register affine projection 1073741835 {src_ndim: 2, point: (,COORD1)}
+[0 - 7f4961f87740]    1.144554 {1}{legate}: cupynumeric::MatMulTask:7[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] submitted
+[0 - 7f4961f87740]    1.144562 {1}{legate}: cupynumeric::MatMulTask:7[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] launched
+[0 - 7f4961f87740]    1.144574 {1}{legate}: Query affine projection {src_ndim: 2, point: (COORD0,+1)}
+[0 - 7f4961f87740]    1.144582 {1}{legate}: Register affine projection 1073741836 {src_ndim: 2, point: (COORD0,+1)}
+[0 - 7f4961f87740]    1.144588 {1}{legate}: Query affine projection {src_ndim: 2, point: (+1,COORD1)}
+[0 - 7f4961f87740]    1.144596 {1}{legate}: Register affine projection 1073741837 {src_ndim: 2, point: (+1,COORD1)}
+[0 - 7f4961f87740]    1.144730 {1}{legate}: cupynumeric::MatMulTask:8[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] submitted
+[0 - 7f4961f87740]    1.144744 {1}{legate}: cupynumeric::MatMulTask:8[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] launched
+[0 - 7f4961f87740]    1.144762 {1}{legate}: Query affine projection {src_ndim: 2, point: (COORD0,+2)}
+[0 - 7f4961f87740]    1.144774 {1}{legate}: Register affine projection 1073741838 {src_ndim: 2, point: (COORD0,+2)}
+[0 - 7f4961f87740]    1.144784 {1}{legate}: Query affine projection {src_ndim: 2, point: (+2,COORD1)}
+[0 - 7f4961f87740]    1.144794 {1}{legate}: Register affine projection 1073741839 {src_ndim: 2, point: (+2,COORD1)}
+[0 - 7f4961f87740]    1.144910 {1}{legate}: cupynumeric::MatMulTask:9[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] submitted
+[0 - 7f4961f87740]    1.144917 {1}{legate}: cupynumeric::MatMulTask:9[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] launched
+[0 - 7f4961f87740]    1.144927 {1}{legate}: Query affine projection {src_ndim: 2, point: (COORD0,+3)}
+[0 - 7f4961f87740]    1.144934 {1}{legate}: Register affine projection 1073741840 {src_ndim: 2, point: (COORD0,+3)}
+[0 - 7f4961f87740]    1.144939 {1}{legate}: Query affine projection {src_ndim: 2, point: (+3,COORD1)}
+[0 - 7f4961f87740]    1.144943 {1}{legate}: Register affine projection 1073741841 {src_ndim: 2, point: (+3,COORD1)}
+[0 - 7f4961f87740]    1.145007 {1}{legate}: cupynumeric::MatMulTask:10[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] submitted
+[0 - 7f4961f87740]    1.145013 {1}{legate}: cupynumeric::MatMulTask:10[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] launched
+[0 - 7f4961f87740]    1.145021 {1}{legate}: Query affine projection {src_ndim: 2, point: (COORD0,+4)}
+[0 - 7f4961f87740]    1.145026 {1}{legate}: Register affine projection 1073741842 {src_ndim: 2, point: (COORD0,+4)}
+[0 - 7f4961f87740]    1.145031 {1}{legate}: Query affine projection {src_ndim: 2, point: (+4,COORD1)}
+[0 - 7f4961f87740]    1.145034 {1}{legate}: Register affine projection 1073741843 {src_ndim: 2, point: (+4,COORD1)}
+[0 - 7f4961f87740]    1.145088 {1}{legate}: cupynumeric::MatMulTask:11[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] subProblem Size:     M=16384 N=16384 K=16384
+Total Iterations: 1
+Total Flops:      8795.824586752 GFLOPS/iter
+Total Size:       3221.225472 MB
+Elapsed Time:     150.951 ms
+Average GEMM:     150.951 ms
+FLOPS/s:          58269.40256607773 GFLOPS/s
+mitted
+[0 - 7f4961f87740]    1.145115 {1}{legate}: cupynumeric::MatMulTask:11[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] launched
+[0 - 7f4961f87740]    1.145125 {1}{legate}: Query affine projection {src_ndim: 2, point: (COORD0,+5)}
+[0 - 7f4961f87740]    1.145131 {1}{legate}: Register affine projection 1073741844 {src_ndim: 2, point: (COORD0,+5)}
+[0 - 7f4961f87740]    1.145135 {1}{legate}: Query affine projection {src_ndim: 2, point: (+5,COORD1)}
+[0 - 7f4961f87740]    1.145139 {1}{legate}: Register affine projection 1073741845 {src_ndim: 2, point: (+5,COORD1)}
+[0 - 7f4961f87740]    1.145193 {1}{legate}: cupynumeric::MatMulTask:12[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] submitted
+[0 - 7f4961f87740]    1.145198 {1}{legate}: cupynumeric::MatMulTask:12[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] launched
+[0 - 7f4961f87740]    1.145206 {1}{legate}: Query affine projection {src_ndim: 2, point: (COORD0,+6)}
+[0 - 7f4961f87740]    1.145211 {1}{legate}: Register affine projection 1073741846 {src_ndim: 2, point: (COORD0,+6)}
+[0 - 7f4961f87740]    1.145216 {1}{legate}: Query affine projection {src_ndim: 2, point: (+6,COORD1)}
+[0 - 7f4961f87740]    1.145222 {1}{legate}: Register affine projection 1073741847 {src_ndim: 2, point: (+6,COORD1)}
+[0 - 7f4961f87740]    1.145278 {1}{legate}: cupynumeric::MatMulTask:13[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] submitted
+[0 - 7f4961f87740]    1.145284 {1}{legate}: cupynumeric::MatMulTask:13[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] launched
+[0 - 7f4961f87740]    1.145291 {1}{legate}: Query affine projection {src_ndim: 2, point: (COORD0,+7)}
+[0 - 7f4961f87740]    1.145297 {1}{legate}: Register affine projection 1073741848 {src_ndim: 2, point: (COORD0,+7)}
+[0 - 7f4961f87740]    1.145301 {1}{legate}: Query affine projection {src_ndim: 2, point: (+7,COORD1)}
+[0 - 7f4961f87740]    1.145306 {1}{legate}: Register affine projection 1073741849 {src_ndim: 2, point: (+7,COORD1)}
+[0 - 7f4961f87740]    1.145357 {1}{legate}: cupynumeric::MatMulTask:14[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] submitted
+[0 - 7f4961f87740]    1.145362 {1}{legate}: cupynumeric::MatMulTask:14[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] launched
+[0 - 7f4961f87740]    1.145370 {1}{legate}: Query affine projection {src_ndim: 2, point: (COORD0,+8)}
+[0 - 7f4961f87740]    1.145376 {1}{legate}: Register affine projection 1073741850 {src_ndim: 2, point: (COORD0,+8)}
+[0 - 7f4961f87740]    1.145380 {1}{legate}: Query affine projection {src_ndim: 2, point: (+8,COORD1)}
+[0 - 7f4961f87740]    1.145384 {1}{legate}: Register affine projection 1073741851 {src_ndim: 2, point: (+8,COORD1)}
+[0 - 7f4961f87740]    1.145441 {1}{legate}: cupynumeric::MatMulTask:15[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] submitted
+[0 - 7f4961f87740]    1.145446 {1}{legate}: cupynumeric::MatMulTask:15[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] launched
+[0 - 7f4961f87740]    1.145454 {1}{legate}: Query affine projection {src_ndim: 2, point: (COORD0,+9)}
+[0 - 7f4961f87740]    1.145460 {1}{legate}: Register affine projection 1073741852 {src_ndim: 2, point: (COORD0,+9)}
+[0 - 7f4961f87740]    1.145465 {1}{legate}: Query affine projection {src_ndim: 2, point: (+9,COORD1)}
+[0 - 7f4961f87740]    1.145469 {1}{legate}: Register affine projection 1073741853 {src_ndim: 2, point: (+9,COORD1)}
+[0 - 7f4961f87740]    1.145519 {1}{legate}: cupynumeric::MatMulTask:16[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] submitted
+[0 - 7f4961f87740]    1.145525 {1}{legate}: cupynumeric::MatMulTask:16[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] launched
+[0 - 7f4961f87740]    1.145533 {1}{legate}: Query affine projection {src_ndim: 2, point: (COORD0,+10)}
+[0 - 7f4961f87740]    1.145538 {1}{legate}: Register affine projection 1073741854 {src_ndim: 2, point: (COORD0,+10)}
+[0 - 7f4961f87740]    1.145543 {1}{legate}: Query affine projection {src_ndim: 2, point: (+10,COORD1)}
+[0 - 7f4961f87740]    1.145548 {1}{legate}: Register affine projection 1073741855 {src_ndim: 2, point: (+10,COORD1)}
+[0 - 7f4961f87740]    1.145604 {1}{legate}: cupynumeric::MatMulTask:17[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] submitted
+[0 - 7f4961f87740]    1.145610 {1}{legate}: cupynumeric::MatMulTask:17[["/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py:52", {"file": "/home/scratch.shixunw_gpu/cupynumeric.internal/examples/gemm.py", "line": 52}]] launched
+[0 - 7f4961f87740]    1.145618 {1}{legate}: Query affine projection {src_ndim: 2, point: (COORD0,+11)}
+[0 - 7f4961f87740]    1.145623 {1}{legate}: Register affine projection 1073741856 {src_ndim: 2, point: (COORD0,+11)}
+[0 - 7f4961f87740]    1.145627 {1}{legate}: Query affine projection {src_ndim: 2, point: (+11,COORD1)}
+[0 - 7f4961f87740]    1.145631 {1}{legate}: Register affine projection 1073741857 {src_ndim: 2, point: (+11,COORD1)}
+[0 - 7f4961f87740]    1.145688 {1}{legate}: Create Storage(6) {kind: Future, level: 0}
+[0 - 7f4961f87740]    1.145696 {1}{legate}: Create Store(6) {shape: [], type: int64, storage: Storage(6) {kind: Future, level: 0}}
+[0 - 7f4961f87740]    1.145700 {1}{legate}: Timing:18 submitted
+[0 - 7f4961f87740]    1.145702 {1}{legate}: Timing:18 launched
+[0 - 7f4961f87740]    1.347820 {1}{legate}: ReleaseRegionField:19 submitted
+[0 - 7f4961f87740]    1.347836 {1}{legate}: ReleaseRegionField:19 launched
+[0 - 7f4961f87740]    1.347846 {1}{legate}: Field 10001 on region LogicalRegion(1,IndexSpace(1,1),FieldSpace(1)) freed in-order
+[0 - 7f4961f87740]    1.347850 {1}{legate}: Discard:20 submitted
+[0 - 7f4961f87740]    1.347869 {1}{legate}: Discard:20 launched
+[0 - 7f4961f87740]    1.347919 {1}{legate}: ReleaseRegionField:21 submitted
+[0 - 7f4961f87740]    1.347922 {1}{legate}: ReleaseRegionField:21 launched
+[0 - 7f4961f87740]    1.347925 {1}{legate}: Field 10002 on region LogicalRegion(1,IndexSpace(1,1),FieldSpace(1)) freed in-order
+[0 - 7f4961f87740]    1.347927 {1}{legate}: Discard:22 submitted
+[0 - 7f4961f87740]    1.347929 {1}{legate}: Discard:22 launched
+[0 - 7f4961f87740]    1.347938 {1}{legate}: ReleaseRegionField:23 submitted
+[0 - 7f4961f87740]    1.347940 {1}{legate}: ReleaseRegionField:23 launched
+[0 - 7f4961f87740]    1.347943 {1}{legate}: Field 10000 on region LogicalRegion(1,IndexSpace(1,1),FieldSpace(1)) freed in-order
+[0 - 7f4961f87740]    1.347945 {1}{legate}: Discard:24 submitted
+[0 - 7f4961f87740]    1.347946 {1}{legate}: Discard:24 launched
+[0 - 7f4961f87740]    1.358040 {1}{legate}: Destroying Legate runtime...
+[0 - 7f4961f87740]    1.358052 {1}{legate}: ExecutionFence:25 submitted
+[0 - 7f4961f87740]    1.358053 {1}{legate}: ExecutionFence:25 launched
+[0 - 7f4961f87740]    1.358084 {1}{legate}: cupynumeric::UnloadCUDALibsTask:26 submitted
+[0 - 7f4961f87740]    1.358086 {1}{legate}: cupynumeric::UnloadCUDALibsTask:26 launched
+[0 - 7f4961f87740]    1.358675 {1}{legate}: ExecutionFence:27 submitted
+[0 - 7f4961f87740]    1.358693 {1}{legate}: ExecutionFence:27 launched
+[0 - 7f4961f87740]    1.358698 {1}{legate}: ExecutionFence:28 submitted
+[0 - 7f4961f87740]    1.358699 {1}{legate}: ExecutionFence:28 launched
+[0 - 7f4961f87740]    1.358704 {1}{legate}: ExecutionFence:29 submitted
+[0 - 7f4961f87740]    1.358705 {1}{legate}: ExecutionFence:29 launched
+[0 - 7f4961f87740]    1.358724 {1}{legate}: ExecutionFence:30 submitted
+[0 - 7f4961f87740]    1.358725 {1}{legate}: ExecutionFence:30 launched
+[0 - 7f4961f87740]    1.359916 {1}{legate}: ExecutionFence:31 submitted
+[0 - 7f4961f87740]    1.359917 {1}{legate}: ExecutionFence:31 launched

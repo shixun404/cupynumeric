@@ -65,6 +65,7 @@ def run_gemm(N, I, warmup, ft):  # noqa: E741
 
 
 if __name__ == "__main__":
+    print("Start")
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-i",
@@ -100,7 +101,7 @@ if __name__ == "__main__":
     )
 
     args, np, timer = parse_args(parser)
-
+    print('finish arg parse')
     if args.P == 16:
         run_benchmark(
             run_gemm,

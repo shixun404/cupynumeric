@@ -2131,6 +2131,7 @@ class EagerArray(NumPyThunk):
 
     def shuffle(
         self,
+        method: str = "key_sort",
     ) -> None:
         """
         Modify a sequence in-place by shuffling its contents.
@@ -2138,10 +2139,25 @@ class EagerArray(NumPyThunk):
         This function only shuffles the array along the first axis of a 
         multi-dimensional array. The order of sub-arrays is changed but 
         their contents remains the same.
+        
+        Parameters
+        ----------
+        method : str, optional
+            The shuffle algorithm to use. For eager arrays, only "key_sort" 
+            is supported and the method parameter is ignored. Other methods
+            are only available for deferred arrays.
         """
         if self.deferred is not None:
-            self.deferred.shuffle()
+            self.deferred.shuffle(method)
         else:
+            # For eager arrays, we always use numpy's shuffle regardless of method
+            if method != "key_sort":
+                runtime.warn(
+                    f"Shuffle method '{method}' is only supported for deferred arrays. "
+                    "Using numpy.random.shuffle for eager arrays.",
+                    category=UserWarning,
+                )
+            
             # Handle edge cases
             if self.array.size == 0:
                 # Empty array, nothing to shuffle

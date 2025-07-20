@@ -3373,7 +3373,7 @@ class ndarray:
         # Handle an easy case
         if computed_shape == self.shape:
             return self
-
+        print(f"computed_shape={computed_shape}")
         return ndarray(
             shape=None,
             thunk=self._thunk.reshape(computed_shape, order),
@@ -3576,8 +3576,8 @@ class ndarray:
         )
         return result
 
-    def shuffle(self) -> None:
-        """a.shuffle()
+    def shuffle(self, method: str = "key_sort") -> None:
+        """a.shuffle(method="key_sort")
 
         Modify a sequence in-place by shuffling its contents.
         
@@ -3585,13 +3585,30 @@ class ndarray:
         multi-dimensional array. The order of sub-arrays is changed but 
         their contents remains the same.
 
+        Parameters
+        ----------
+        method : {"key_sort", "fisher_yates", "feistel", "feistel_bidirectional"}, optional
+            The shuffle algorithm to use. Default is "key_sort".
+            
+            - "key_sort": Random key generation + sort (default)
+              Best for: Small to medium arrays, uses cuPyNumeric operations
+              
+            - "fisher_yates": Fisher-Yates algorithm + NCCL all2all
+              Best for: Classic distributed shuffle, stable performance
+              
+            - "feistel": Feistel bijection + all2all communication  
+              Best for: Cryptographically uniform distribution
+              
+            - "feistel_bidirectional": Advanced Feistel forward/backward
+              Best for: Maximum performance on large distributed arrays
+
         Availability
         --------
         Multiple GPUs, Multiple CPUs
 
         """
         check_writeable(self)
-        self._thunk.shuffle()
+        self._thunk.shuffle(method)
 
     def squeeze(self, axis: Any = None) -> ndarray:
         """a.squeeze(axis=None)

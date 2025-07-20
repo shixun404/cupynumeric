@@ -1655,5 +1655,6 @@ class NumPyThunk(ABC):
     @abstractmethod
     def shuffle(
         self,
+        method: str = "key_sort",
     ) -> None:
         ...

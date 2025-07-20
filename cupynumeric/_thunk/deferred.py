@@ -1183,7 +1183,6 @@ class DeferredArray(NumPyThunk):
         needs_linearization = any(len(src_g) > 1 for src_g, _ in groups)
         needs_delinearization = any(len(tgt_g) > 1 for _, tgt_g in groups)
         needs_copy = needs_linearization or needs_delinearization
-
         if needs_copy:
             tmp_shape: NdShape = ()
             for src_g, tgt_g in groups:
@@ -1191,7 +1190,6 @@ class DeferredArray(NumPyThunk):
                     tmp_shape += (_prod(tgt_g),)
                 else:
                     tmp_shape += tgt_g
-
             result = runtime.create_empty_thunk(
                 tmp_shape, dtype=self.base.type, inputs=[self]
             )
@@ -1226,7 +1224,6 @@ class DeferredArray(NumPyThunk):
             src_array = DeferredArray(src)
             tgt_array = DeferredArray(tgt)
             tgt_array.copy(src_array, deep=True)
-
             if needs_delinearization and needs_linearization:
                 src = result.base  # type: ignore
                 src_dim = 0
@@ -3801,6 +3798,7 @@ class DeferredArray(NumPyThunk):
 
     def shuffle(
         self,
+        method: str = "key_sort",
     ) -> None:
         """
         Modify a sequence in-place by shuffling its contents.
@@ -3808,8 +3806,25 @@ class DeferredArray(NumPyThunk):
         This function only shuffles the array along the first axis of a 
         multi-dimensional array. The order of sub-arrays is changed but 
         their contents remains the same.
+        
+        Parameters
+        ----------
+        method : {"key_sort", "fisher_yates", "feistel", "feistel_bidirectional"}
+            The shuffle algorithm to use:
+            
+            - "key_sort": Random key generation + sort (default)
+              Best for: Small to medium arrays, uses cuPyNumeric operations
+              
+            - "fisher_yates": Fisher-Yates algorithm + NCCL all2all
+              Best for: Classic distributed shuffle, stable performance
+              
+            - "feistel": Feistel bijection + all2all communication  
+              Best for: Cryptographically uniform distribution
+              
+            - "feistel_bidirectional": Advanced Feistel forward/backward
+              Best for: Maximum performance on large distributed arrays
         """
-        shuffle_deferred(self)
+        shuffle_deferred(self, method)
 
     def create_window(self, op_code: WindowOpCode, M: int, *args: Any) -> None:
         task = legate_runtime.create_auto_task(

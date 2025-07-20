@@ -15,35 +15,40 @@ rank = comm.Get_rank()
 size = comm.Get_size()
 rank_1 = 0
 hostname = ""
-def demonstrate_2d_behavior(N=1000000,M = 10):
+def demonstrate_2d_behavior(N=100000000,M = 10):
     """Demonstrate the specific 2D behavior clearly"""
     print("Demonstrating 2D shuffle behavior:")
     print("(Only rows are reordered, row contents stay the same)")
     
     # Create a clearly structured 2D array
-    # arr = np.random.randint(low=0, high=5, size=10)
-    arr = np.arange(N)
     
-    print(f"[Rank {rank}/{size}]" + "Original array:")
-    output = f"[Rank {rank}/{size}]"
+    
+    arr = np.arange(N * 2)
+    print(f"[Rank {rank}/size] before reshape shape={arr.shape}")
+    # print(f"[Rank {rank}/{size}] before reshape {arr[rank * (N // size), 0]}")
+    # arr = np.reshape(arr_1, (N, 2, 2))
+    
+    # arr = np.arange(N)
+
+    print(f"[Rank {rank}/{size}] after reshape shape={arr.shape}")
+    print(f"[Rank {rank}/{size}] after reshape {arr[rank * (N // size):(rank * (N // size) + M)]}")
+    # output = f"[Rank {rank}/{size}]"
     
     # if rank == 0:
     
-    print(output, arr[rank*(N // size):(rank*(N // size) + M)])
+    # print(output, arr[rank * (N // size), 0])
+    # print(output, arr[rank*(N // size):(rank*(N // size) + M)])
     # perm = numpy.random.permutation(N)
     # res = arr[perm]
     # print(output, res[rank*(N // size):(rank*(N // size) + M)])
-    # print(output, arr[perm])
-    # if hostname in "lego-cg1-qs-139":
-    #     print(output, arr[0])
     
     
     
     arr.shuffle()
     print(f"[Rank {rank}/{size}]" + "After shuffle:")
     output = f"[Rank {rank}/{size}]"
-    # if rank == 0:
-    print(output, arr[rank*(N // size):(rank*(N // size) + M)])
+    print(f"[Rank {rank}/{size}] after shuffle {arr[rank * (N // size):(rank * (N // size) + M)]}")
+    # print(output, arr[rank*(N // size):(rank*(N // size) + M)])
     
 
 if __name__ == "__main__":

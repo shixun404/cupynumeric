@@ -183,7 +183,7 @@ def sort_complex(a: ndarray) -> ndarray:
 
 
 @add_boilerplate("a")
-def shuffle(a: ndarray) -> None:
+def shuffle(a: ndarray, method: str = "key_sort") -> None:
     """
 
     Modify a sequence in-place by shuffling its contents.
@@ -196,6 +196,20 @@ def shuffle(a: ndarray) -> None:
     ----------
     a : array_like
         The array to shuffle. The array is modified in-place.
+    method : {"key_sort", "fisher_yates", "feistel", "feistel_bidirectional"}, optional
+        The shuffle algorithm to use. Default is "key_sort".
+        
+        - "key_sort": Random key generation + sort (default)
+          Best for: Small to medium arrays, uses cuPyNumeric operations
+          
+        - "fisher_yates": Fisher-Yates algorithm + NCCL all2all
+          Best for: Classic distributed shuffle, stable performance
+          
+        - "feistel": Feistel bijection + all2all communication  
+          Best for: Cryptographically uniform distribution
+          
+        - "feistel_bidirectional": Advanced Feistel forward/backward
+          Best for: Maximum performance on large distributed arrays
 
     Returns
     -------
@@ -207,13 +221,13 @@ def shuffle(a: ndarray) -> None:
 
     Notes
     -----
-    This function is equivalent to calling `a.shuffle()` on the array.
+    This function is equivalent to calling `a.shuffle(method)` on the array.
 
     Availability
     --------
     Multiple GPUs, Multiple CPUs
     """
-    a.shuffle()
+    a.shuffle(method)
 
 
 # partition

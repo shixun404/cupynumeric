@@ -53,7 +53,16 @@ struct SortImpl {
 
     int64_t segment_size  = rect.hi[DIM - 1] - rect.lo[DIM - 1] + 1;
     size_t segment_size_l = segment_size > 0 ? segment_size : 0;
-
+    printf("DIM: %d\n"
+            "rect.hi[DIM - 1]: %zu\n"
+            "rect.lo[DIM - 1]: %zu\n"
+            "segment_size_l: %zu\n"
+            "segment_size_g: %zu\n", 
+            DIM,
+            rect.hi[DIM - 1], 
+            rect.lo[DIM - 1],
+            segment_size_l, 
+            args.segment_size_g);
     /*
      * Assumptions:
      * 1. Sort is always requested for the 'last' dimension within rect
@@ -98,7 +107,11 @@ static void sort_template(TaskContext& context)
   size_t local_rank     = get_rank(domain, context.get_task_index());
   size_t num_ranks      = domain.get_volume();
   size_t num_sort_ranks = domain.hi()[domain.get_dim() - 1] - domain.lo()[domain.get_dim() - 1] + 1;
-
+  printf("shape_span: %zu\n", shape_span.size());
+  printf("segment_size_g: %zu\n", segment_size_g);
+  printf("local_rank: %zu\n", local_rank);
+  printf("num_ranks: %zu\n", num_ranks);
+  printf("num_sort_ranks: %zu\n", num_sort_ranks);
   SortArgs args{context.input(0),
                 context.output(0),
                 context.scalar(0).value<bool>(),  // argsort

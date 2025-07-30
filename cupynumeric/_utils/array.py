@@ -28,19 +28,19 @@ if TYPE_CHECKING:
 
 SUPPORTED_DTYPES = {
     np.dtype(bool): ty.bool_,
-    np.dtype(np.int8): ty.int8,
-    np.dtype(np.int16): ty.int16,
+    # np.dtype(np.int8): ty.int8,
+    # np.dtype(np.int16): ty.int16,
     np.dtype(np.int32): ty.int32,
     np.dtype(np.int64): ty.int64,
-    np.dtype(np.uint8): ty.uint8,
-    np.dtype(np.uint16): ty.uint16,
+    # np.dtype(np.uint8): ty.uint8,
+    # np.dtype(np.uint16): ty.uint16,
     np.dtype(np.uint32): ty.uint32,
-    np.dtype(np.uint64): ty.uint64,
-    np.dtype(np.float16): ty.float16,
+    # np.dtype(np.uint64): ty.uint64,
+    # np.dtype(np.float16): ty.float16,
     np.dtype(np.float32): ty.float32,
     np.dtype(np.float64): ty.float64,
-    np.dtype(np.complex64): ty.complex64,
-    np.dtype(np.complex128): ty.complex128,
+    # np.dtype(np.complex64): ty.complex64,
+    # np.dtype(np.complex128): ty.complex128,
 }
 
 

@@ -322,6 +322,12 @@ endif()
 
 if(Legion_USE_CUDA)
   target_sources(cupynumeric PRIVATE
+    src/cupynumeric/shuffle/shuffle.cu
+  )
+endif()
+
+if(Legion_USE_CUDA)
+  target_sources(cupynumeric PRIVATE
     src/cupynumeric/sort/sort.cu
     src/cupynumeric/sort/searchsorted.cu
     src/cupynumeric/sort/cub_sort_bool.cu

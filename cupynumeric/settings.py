@@ -180,7 +180,8 @@ class CupynumericRuntimeSettings(Settings):
     min_gpu_chunk: EnvOnlySetting[int] = EnvOnlySetting(
         "min_gpu_chunk",
         "CUPYNUMERIC_MIN_GPU_CHUNK",
-        default=65536,  # 1 << 16
+        # default=65536,  # 1 << 16
+        default=4,  # 1 << 16
         test_default=2,
         convert=convert_int,
         help="""
@@ -196,7 +197,8 @@ class CupynumericRuntimeSettings(Settings):
     min_cpu_chunk: EnvOnlySetting[int] = EnvOnlySetting(
         "min_cpu_chunk",
         "CUPYNUMERIC_MIN_CPU_CHUNK",
-        default=1024,  # 1 << 10
+        # default=1024,  # 1 << 10
+        default=2,  # 1 << 10
         test_default=2,
         convert=convert_int,
         help="""
@@ -212,7 +214,8 @@ class CupynumericRuntimeSettings(Settings):
     min_omp_chunk: EnvOnlySetting[int] = EnvOnlySetting(
         "min_omp_chunk",
         "CUPYNUMERIC_MIN_OMP_CHUNK",
-        default=8192,  # 1 << 13
+        # default=8192,  # 1 << 13
+        default=2,  # 1 << 13
         test_default=2,
         convert=convert_int,
         help="""

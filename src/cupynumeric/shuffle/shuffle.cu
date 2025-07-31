@@ -365,6 +365,13 @@ void global_shuffle_bidirectional(
     thrust::sequence(indices.begin(), indices.end(), gpu_vector_offset);
     nvtxRangePop();
 
+    // Debug first few indices
+      for(int i = 0; i < std::min(5, (int)local_vector_count); i++) {
+        uint64_t value = indices[i];  // This forces a device-to-host copy
+        printf("Rank %d, Before bijection indices[%d]: %zu\n", rank_id, i, value);
+      }
+      printf("sizeof(DataType): %zu\n", sizeof(DataType));
+
 
     // Step 4: Apply Feistel bijection to vector indices
     printf("Rank %d, Step 4, File: %s:%d\n", rank_id, __FILE__, __LINE__);
@@ -372,7 +379,16 @@ void global_shuffle_bidirectional(
     random_bijection<uint64_t> bijection(global_vector_count, rng);
 
     apply_bijection_kernel<<<grid_size, block_size, 0, stream>>>(
-        thrust::raw_pointer_cast(indices.data()), local_vector_count, bijection);
+      thrust::raw_pointer_cast(indices.data()), local_vector_count, bijection);
+        
+    
+    
+      // Debug first few indices
+      for(int i = 0; i < std::min(5, (int)local_vector_count); i++) {
+        uint64_t value = indices[i];  // This forces a device-to-host copy
+        printf("Rank %d, After bijection indices[%d]: %zu\n", rank_id, i, value);
+      }
+      printf("sizeof(DataType): %zu\n", sizeof(DataType));
 
     // Step 5: Compute send histogram for vectors
     printf("Rank %d, Step 5, File: %s:%d\n", rank_id, __FILE__, __LINE__);
@@ -426,6 +442,14 @@ void global_shuffle_bidirectional(
     
     apply_inverse_bijection_kernel<<<grid_size, block_size, 0, stream>>>(
     thrust::raw_pointer_cast(recv_indices.data()), local_vector_count, bijection_1);
+
+        
+      // Debug first few indices
+      for(int i = 0; i < std::min(5, (int)local_vector_count); i++) {
+        uint64_t value = recv_indices[i];  // This forces a device-to-host copy
+        printf("Rank %d, After inverse bijection indices[%d]: %zu\n", rank_id, i, value);
+      }
+      printf("sizeof(DataType): %zu\n", sizeof(DataType));
     
     // Compute histogram from inverse indices
     thrust::fill(recv_histo.begin(), recv_histo.end(), 0);
@@ -453,14 +477,14 @@ void global_shuffle_bidirectional(
     for (size_t i = 0; i < total_gpus; ++i) {
         if (h_send_histo[i] > 0) {
             CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(send_data.data()) + h_send_offsets[i] * vector_length,
-                    h_send_histo[i] * vector_length, ncclInt, i, *nccl_comm, stream));
+                    h_send_histo[i] * vector_length, ncclInt64, i, *nccl_comm, stream));
             CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(send_indices.data()) + h_send_offsets[i],
                     h_send_histo[i], ncclUint64, i, *nccl_comm, stream));
         }
         
         if (h_recv_histo[i] > 0) {
             CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(recv_data.data()) + h_recv_offsets[i] * vector_length,
-                    h_recv_histo[i] * vector_length, ncclInt, i, *nccl_comm, stream));
+                    h_recv_histo[i] * vector_length, ncclInt64, i, *nccl_comm, stream));
             CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(recv_indices.data()) + h_recv_offsets[i],
                     h_recv_histo[i], ncclUint64, i, *nccl_comm, stream));
         }
@@ -470,6 +494,16 @@ void global_shuffle_bidirectional(
     // Step 9: Unpack to final positions (vectors)
     printf("Rank %d, Step 9, File: %s:%d\n", rank_id, __FILE__, __LINE__);
     printf("total_recv_vectors: %zu\n", total_recv_vectors);
+    
+    for (size_t i = 0; i < total_gpus; ++i) {
+      printf("----------Rank %d, GPU %zu------------------\n", rank_id, i);
+      printf("Rank %d, recv_histo[%d]: %zu\n", rank_id, h_recv_histo[i]);
+      for(int vec_id = 0; vec_id < h_recv_histo[i]; vec_id++) {
+        uint64_t value1 = recv_indices[vec_id];
+        printf("Rank %d, recv_indices[%d]: %zu\n", rank_id, vec_id, value1);
+      }
+    }
+    printf("--------------------------------\n");
     const size_t unpack_grid_size = (total_recv_vectors + block_size - 1) / block_size;
     unpack_recv_data_2d_kernel<<<unpack_grid_size, block_size, 0, stream>>>(
         thrust::raw_pointer_cast(recv_data.data()), thrust::raw_pointer_cast(recv_indices.data()),
@@ -610,6 +644,8 @@ struct ShuffleImpl {
     Pitches<DIM - 1> pitches;
     size_t volume = pitches.flatten(rect);
     printf("ShuffleImpl: volume: %zu, __FILE__: %s, __LINE__: %d\n", volume, __FILE__, __LINE__);
+    printf("Datatype: %s\n", typeid(VAL).name());
+    // printf("MIN_GPU_CHUNK_DEFAULT: %zu\n", MIN_GPU_CHUNK_DEFAULT);
     if (volume == 0) {
       return;
     }
@@ -658,7 +694,7 @@ static void shuffle_template(TaskContext& context)
   size_t num_shuffle_ranks = domain.hi()[0] - domain.lo()[0] + 1;
   printf("shape_span: %zu, %zu\n", d1, d2);
   printf("local_rank: %zu, num_ranks: %zu, num_shuffle_ranks: %zu\n", local_rank, num_ranks, num_shuffle_ranks);
-
+  
   ShuffleArgs args{
     input_output,
     d1,
@@ -668,7 +704,7 @@ static void shuffle_template(TaskContext& context)
     num_ranks,
     num_shuffle_ranks
   };
-
+  
   double_dispatch(
     args.input_output.dim(), args.input_output.code(), ShuffleImpl<KIND>{}, args, context, context.communicators());
 }

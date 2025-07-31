@@ -212,6 +212,7 @@ class _CupynumericSharedLib:
     CUPYNUMERIC_SELECT: int
     CUPYNUMERIC_SOLVE: int
     CUPYNUMERIC_SORT: int
+    CUPYNUMERIC_SHUFFLE: int
     CUPYNUMERIC_SVD: int
     CUPYNUMERIC_SYEV: int
     CUPYNUMERIC_SYRK: int

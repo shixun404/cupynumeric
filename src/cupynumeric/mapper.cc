@@ -210,6 +210,20 @@ std::vector<StoreMapping> CuPyNumericMapper::store_mappings(
       }
       return mappings;
     }
+    case CUPYNUMERIC_SHUFFLE: {
+      std::vector<StoreMapping> mappings;
+      auto inputs  = task.inputs();
+      auto outputs = task.outputs();
+      for (auto& input : inputs) {
+        mappings.push_back(
+          StoreMapping::default_mapping(input.data(), options.front(), true /*exact*/));
+      }
+      for (auto& output : outputs) {
+        mappings.push_back(
+          StoreMapping::default_mapping(output.data(), options.front(), true /*exact*/));
+      }
+      return mappings;
+    }
     case CUPYNUMERIC_SCAN_LOCAL: {
       std::vector<StoreMapping> mappings;
       auto inputs  = task.inputs();
@@ -484,6 +498,16 @@ std::optional<std::size_t> CuPyNumericMapper::allocation_pool_size(
       return memory_kind == legate::mapping::StoreTarget::ZCMEM ? compute_zc_alloc_size()
                                                                 : std::nullopt;
     }
+    case CUPYNUMERIC_SHUFFLE: {
+      // There can be up to seven buffers on the zero-copy memory holding pointers and sizes
+      auto compute_zc_alloc_size = [&]() -> std::optional<std::size_t> {
+        return task.is_single_task() ? 0
+                                     : 7 * task.get_launch_domain().get_volume() * sizeof(void*);
+      };
+      return memory_kind == legate::mapping::StoreTarget::ZCMEM ? compute_zc_alloc_size()
+                                                                : std::nullopt;
+    }
+    
     case CUPYNUMERIC_UNIQUE: {
       switch (memory_kind) {
         case legate::mapping::StoreTarget::SYSMEM: [[fallthrough]];

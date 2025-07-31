@@ -75,19 +75,19 @@ def shuffle_deferred(
     _shuffle_task(array, method)
 
 
-def _shuffle_task(array: "DeferredArray", method: str) -> None:
+def _shuffle_task(input: "DeferredArray", method: str) -> None:
     """
     Call the CUDA shuffle task implementation.
     """
     legate_runtime = get_legate_runtime()
     task = legate_runtime.create_auto_task(
-        array.library, CuPyNumericOpCode.SHUFFLE
+        input.library, CuPyNumericOpCode.SHUFFLE
     )
 
     # Add input/output (in-place shuffle)
-    task.add_output(array.base)
-    task.add_input(array.base)
-    task.add_alignment(array.base, array.base)
+    task.add_input(input.base)
+    task.add_output(input.base)
+    
 
     # Add communicators if needed for distributed shuffle
     if runtime.num_gpus > 1:
@@ -95,20 +95,9 @@ def _shuffle_task(array: "DeferredArray", method: str) -> None:
     elif runtime.num_gpus == 0 and runtime.num_procs > 1:
         task.add_cpu_communicator()
 
-    # Convert method string to enum value
-    method_map = {
-        "key_sort": 0,
-        "fisher_yates": 1, 
-        "feistel": 2,
-        "feistel_bidirectional": 3
-    }
-    method_value = method_map.get(method, 0)
-
+    print("ShuffleImpl:")
     # Add scalar arguments
-    task.add_scalar_arg(method_value, ty.int32)  # shuffle method
-    task.add_scalar_arg(array.size, ty.int64)   # total volume
-    task.add_scalar_arg(array.shape[0], ty.int64)  # first axis size
-    task.add_scalar_arg(runtime.num_procs > 1, ty.bool_)  # is_index_space
+    task.add_scalar_arg(input.base.shape, (ty.int64,))   # total volume
     
     task.execute()
 

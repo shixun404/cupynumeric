@@ -2147,6 +2147,7 @@ class EagerArray(NumPyThunk):
             is supported and the method parameter is ignored. Other methods
             are only available for deferred arrays.
         """
+        print("eager, shuffle\n")
         if self.deferred is not None:
             self.deferred.shuffle(method)
         else:

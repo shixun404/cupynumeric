@@ -112,6 +112,7 @@ static void sort_template(TaskContext& context)
   printf("local_rank: %zu\n", local_rank);
   printf("num_ranks: %zu\n", num_ranks);
   printf("num_sort_ranks: %zu\n", num_sort_ranks);
+  printf("__FILE__: %s, __LINE__: %d\n", __FILE__, __LINE__);
   SortArgs args{context.input(0),
                 context.output(0),
                 context.scalar(0).value<bool>(),  // argsort

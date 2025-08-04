@@ -95,7 +95,7 @@ def _shuffle_task(input: "DeferredArray", method: str) -> None:
     elif runtime.num_gpus == 0 and runtime.num_procs > 1:
         task.add_cpu_communicator()
 
-    print("ShuffleImpl:")
+    
     # Add scalar arguments
     task.add_scalar_arg(input.base.shape, (ty.int64,))   # total volume
     

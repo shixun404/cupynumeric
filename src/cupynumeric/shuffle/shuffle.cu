@@ -52,18 +52,6 @@
 namespace cupynumeric {
 
 using namespace legate;
-
-namespace {
-
-template <typename T>
-legate::Buffer<T> create_non_empty_buffer(
-  size_t size, legate::Memory::Kind kind = legate::Memory::Kind::NO_MEMKIND)
-{
-  return legate::create_buffer<T>(std::max(size, size_t{1}), kind, alignof(T));
-}
-
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////// CUDA Kernels (from global_shuffle.cu)
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,30 +72,6 @@ legate::Buffer<T> create_non_empty_buffer(
 /////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
-
-__global__
-void init_curand_states(curandState *states, unsigned long seed, int n) {
-    int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx < n) {
-        curand_init(seed, idx, 0, &states[idx]);
-    }
-}
-
-// 2. Device functor that uses cuRAND
-struct CurandFunctor {
-    curandState* states;
-    int n;
-    int gpu_rank;
-    __device__ int operator()() {
-        int idx = blockIdx.x * blockDim.x + threadIdx.x;
-        if (idx < n) {
-            // return curand(&states[idx]) % 1000;
-            return idx + gpu_rank * n + (gpu_rank + 1) * 10000;
-        }
-        return 0;
-    }
-};
-
 
 
 class feistel_bijection {
@@ -257,14 +221,16 @@ __global__ void apply_inverse_bijection_kernel(IndexType* indices, size_t count,
 
 // Compute send histogram kernel for 2D (vectors)
 template<typename IndexType>
-__global__ void compute_send_histogram_2d_kernel(const IndexType* indices, size_t vector_count,
+__global__ void compute_send_histogram_2d_kernel(const IndexType* indices, 
                                                  unsigned int* send_histo, size_t local_vector_count, size_t total_gpus) {
     size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx < vector_count) {
+    if (idx < local_vector_count) {
         size_t target_gpu = indices[idx] / local_vector_count;
-        if (target_gpu < total_gpus) {
-            atomicAdd(&send_histo[target_gpu], 1);
-        }
+        
+        
+        atomicAdd(&send_histo[target_gpu], 1);
+        
+        
     }
 }
 
@@ -277,16 +243,16 @@ __global__ void pack_send_data_2d_kernel(const DataType* data, const IndexType* 
     size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < vector_count) {
         size_t target_gpu = indices[idx] / local_vector_count;
-        if (target_gpu < total_gpus) {
-            size_t pos = atomicAdd(&counters[target_gpu], 1);
-            size_t offset = send_offsets[target_gpu] + pos;
-            
-            // Copy entire vector
-            for (size_t v = 0; v < vector_length; v++) {
-                send_data[offset * vector_length + v] = data[idx * vector_length + v];
-            }
-            send_indices[offset] = indices[idx];
+        
+        size_t pos = atomicAdd(&counters[target_gpu], 1);
+        size_t offset = send_offsets[target_gpu] + pos;
+        
+        // Copy entire vector
+        for (size_t v = 0; v < vector_length; v++) {
+            send_data[offset * vector_length + v] = data[idx * vector_length + v];
         }
+        send_indices[offset] = indices[idx];
+    
     }
 }
 
@@ -299,27 +265,12 @@ __global__ void unpack_recv_data_2d_kernel(const DataType* recv_data, const Inde
     if (idx < vector_count) {
         IndexType global_vector_idx = recv_indices[idx];
         size_t local_vector_idx = global_vector_idx - gpu_vector_offset;
-        if (local_vector_idx < local_vector_count) {
-            // Copy entire vector
-            for (size_t v = 0; v < vector_length; v++) {
-                output[local_vector_idx * vector_length + v] = recv_data[idx * vector_length + v];
-            }
+        for (size_t v = 0; v < vector_length; v++) {
+            output[local_vector_idx * vector_length + v] = recv_data[idx * vector_length + v];
         }
     }
 }
 
-// Kernel to scatter data based on permuted indices for single rank
-template<typename DataType>
-__global__ void single_rank_scatter_kernel(const DataType* input_data, const uint64_t* indices, 
-                                          size_t count, DataType* output_data) {
-    size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx < count) {
-        uint64_t target_idx = indices[idx];
-        if (target_idx < count) {
-            output_data[target_idx] = input_data[idx];
-        }
-    }
-}
 
 // Main global shuffle function for 2D data
 template<typename DataType>
@@ -343,38 +294,39 @@ void global_shuffle_bidirectional(
     size_t local_vector_count = local_count / vector_length;
     size_t global_vector_count = global_n / vector_length;
     size_t gpu_vector_offset = rank_id * local_vector_count;
-    printf("-----Shuffle Info------\n");
-    printf("rank_id:             %d\n", rank_id);
-    printf("num_ranks:           %zu\n", num_ranks);
-    printf("total_gpus:          %zu\n", total_gpus);
-    printf("global_gpu_id:       %zu\n", global_gpu_id);
-    printf("vector_length:       %zu\n", vector_length);
-    printf("local_count:         %zu\n", local_count);
-    printf("global_n:            %zu\n", global_n);
-    printf("local_vector_count:  %zu\n", local_vector_count);
-    printf("global_vector_count: %zu\n", global_vector_count);
-    printf("gpu_vector_offset:   %zu\n", gpu_vector_offset);
-    printf("--------------------------------\n");
+    // printf("-----Shuffle Info------\n");
+    // printf("rank_id:             %d\n", rank_id);
+    // printf("num_ranks:           %zu\n", num_ranks);
+    // printf("total_gpus:          %zu\n", total_gpus);
+    // printf("global_gpu_id:       %zu\n", global_gpu_id);
+    // printf("vector_length:       %zu\n", vector_length);
+    // printf("local_count:         %zu\n", local_count);
+    // printf("global_n:            %zu\n", global_n);
+    // printf("local_vector_count:  %zu\n", local_vector_count);
+    // printf("global_vector_count: %zu\n", global_vector_count);
+    // printf("gpu_vector_offset:   %zu\n", gpu_vector_offset);
+    // printf("--------------------------------\n");
     const size_t block_size = 256;
     const size_t grid_size = (local_vector_count + block_size - 1) / block_size;
     
     // Step 3: Initialize index array with global vector IDs
-    printf("Rank %d, Step 3, File: %s:%d\n", rank_id, __FILE__, __LINE__);
+    // printf("Rank %d, Step 3, File: %s:%d\n", rank_id, __FILE__, __LINE__);
     nvtxRangePush("Initialize indices");
     thrust::device_vector<uint64_t> indices(local_vector_count);
     thrust::sequence(indices.begin(), indices.end(), gpu_vector_offset);
     nvtxRangePop();
 
-    // Debug first few indices
-      for(int i = 0; i < std::min(5, (int)local_vector_count); i++) {
-        uint64_t value = indices[i];  // This forces a device-to-host copy
-        printf("Rank %d, Before bijection indices[%d]: %zu\n", rank_id, i, value);
-      }
-      printf("sizeof(DataType): %zu\n", sizeof(DataType));
+    // // Debug first few indices
+    //   for(int i = 0; i < std::min(5, (int)local_vector_count); i++) {
+    //     uint64_t value = indices[i];  // This forces a device-to-host copy
+    //     printf("Rank %d, Before bijection indices[%d]: %zu\n", rank_id, i, value);
+    //   }
+    //   printf("sizeof(DataType): %zu\n", sizeof(DataType));
 
 
     // Step 4: Apply Feistel bijection to vector indices
-    printf("Rank %d, Step 4, File: %s:%d\n", rank_id, __FILE__, __LINE__);
+    // printf("Rank %d, Step 4, File: %s:%d\n", rank_id, __FILE__, __LINE__);
+    
     thrust::default_random_engine rng(42);
     random_bijection<uint64_t> bijection(global_vector_count, rng);
 
@@ -383,21 +335,29 @@ void global_shuffle_bidirectional(
         
     
     
-      // Debug first few indices
-      for(int i = 0; i < std::min(5, (int)local_vector_count); i++) {
-        uint64_t value = indices[i];  // This forces a device-to-host copy
-        printf("Rank %d, After bijection indices[%d]: %zu\n", rank_id, i, value);
-      }
-      printf("sizeof(DataType): %zu\n", sizeof(DataType));
+      // // Debug first few indices
+      // for(int i = 0; i < std::min(5, (int)local_vector_count); i++) {
+      //   uint64_t value = indices[i];  // This forces a device-to-host copy
+      //   printf("Rank %d, After bijection indices[%d]: %zu\n", rank_id, i, value);
+      // }
+      // printf("sizeof(DataType): %zu\n", sizeof(DataType));
 
     // Step 5: Compute send histogram for vectors
-    printf("Rank %d, Step 5, File: %s:%d\n", rank_id, __FILE__, __LINE__);
+    // printf("Rank %d, Step 5, File: %s:%d\n", rank_id, __FILE__, __LINE__);
     thrust::device_vector<unsigned int> send_histo(total_gpus, 0);
     thrust::device_vector<unsigned int> counters(total_gpus, 0);
-    
+    cudaStreamSynchronize(stream);
+
+
+    // printf("grid_size: %zu, block_size: %zu\n", grid_size, block_size);
     compute_send_histogram_2d_kernel<<<grid_size, block_size, 0, stream>>>(
-        thrust::raw_pointer_cast(indices.data()), local_vector_count,
+        thrust::raw_pointer_cast(indices.data()),
         thrust::raw_pointer_cast(send_histo.data()), local_vector_count, total_gpus);
+    cudaStreamSynchronize(stream);
+    // for(int i = 0; i < total_gpus; i++) {
+    //   unsigned int value = send_histo[i];
+    //   printf("Rank %d, send_histo[%d]: %u\n", rank_id, i, value);
+    // }
     
     // Compute send offsets
     thrust::device_vector<unsigned int> send_offsets(total_gpus);
@@ -411,7 +371,7 @@ void global_shuffle_bidirectional(
     size_t total_send_vectors = thrust::reduce(send_histo.begin(), send_histo.end());
     thrust::device_vector<DataType> send_data(total_send_vectors * vector_length);
     thrust::device_vector<uint64_t> send_indices(total_send_vectors);
-    
+    cudaStreamSynchronize(stream);
     thrust::fill(counters.begin(), counters.end(), 0);
     pack_send_data_2d_kernel<<<grid_size, block_size, 0, stream>>>(
         local_data, thrust::raw_pointer_cast(indices.data()), local_vector_count,
@@ -421,7 +381,7 @@ void global_shuffle_bidirectional(
     
 
     // Step 6: All2all exchange histograms
-    printf("Rank %d, Step 6, File: %s:%d\n", rank_id, __FILE__, __LINE__);
+    // printf("Rank %d, Step 6, File: %s:%d\n", rank_id, __FILE__, __LINE__);
     thrust::host_vector<unsigned int> h_recv_histo(total_gpus);
     thrust::device_vector<unsigned int> recv_histo(total_gpus);
     thrust::host_vector<unsigned int> h_send_histo = send_histo;
@@ -439,40 +399,44 @@ void global_shuffle_bidirectional(
     
     thrust::default_random_engine rng_1(42);
     random_bijection<uint64_t> bijection_1(global_vector_count, rng_1);
-    
+    cudaStreamSynchronize(stream);
     apply_inverse_bijection_kernel<<<grid_size, block_size, 0, stream>>>(
     thrust::raw_pointer_cast(recv_indices.data()), local_vector_count, bijection_1);
 
         
-      // Debug first few indices
-      for(int i = 0; i < std::min(5, (int)local_vector_count); i++) {
-        uint64_t value = recv_indices[i];  // This forces a device-to-host copy
-        printf("Rank %d, After inverse bijection indices[%d]: %zu\n", rank_id, i, value);
-      }
-      printf("sizeof(DataType): %zu\n", sizeof(DataType));
+      // // Debug first few indices
+      // for(int i = 0; i < std::min(5, (int)local_vector_count); i++) {
+      //   uint64_t value = recv_indices[i];  // This forces a device-to-host copy
+      //   printf("Rank %d, After inverse bijection indices[%d]: %zu\n", rank_id, i, value);
+      // }
+      // printf("sizeof(DataType): %zu\n", sizeof(DataType));
     
     // Compute histogram from inverse indices
     thrust::fill(recv_histo.begin(), recv_histo.end(), 0);
+    cudaStreamSynchronize(stream);
     compute_send_histogram_2d_kernel<<<grid_size, block_size, 0, stream>>>(
-    thrust::raw_pointer_cast(recv_indices.data()), local_vector_count,
+    thrust::raw_pointer_cast(recv_indices.data()),
     thrust::raw_pointer_cast(recv_histo.data()), local_vector_count, total_gpus);
+    cudaStreamSynchronize(stream);
     thrust::copy_n(recv_histo.begin(), total_gpus, h_recv_histo.begin());
     nvtxRangePop();
 
     
     // Step 7: Create recv buffers for vectors
-    printf("Rank %d, Step 7, File: %s:%d\n", rank_id, __FILE__, __LINE__);
+    // printf("Rank %d, Step 7, File: %s:%d\n", rank_id, __FILE__, __LINE__);
+    
     size_t total_recv_vectors = thrust::reduce(recv_histo.begin(), recv_histo.end());
     thrust::device_vector<DataType> recv_data(total_recv_vectors * vector_length);
     
     thrust::device_vector<size_t> recv_offsets(total_gpus);
     thrust::host_vector<size_t> h_recv_offsets(total_gpus);
-
+    
     thrust::exclusive_scan(recv_histo.begin(), recv_histo.end(), recv_offsets.begin());
     thrust::copy_n(recv_offsets.begin(), total_gpus, h_recv_offsets.begin());
 
     // Step 8: All2all distribute data
-    printf("Rank %d, Step 8, File: %s:%d\n", rank_id, __FILE__, __LINE__);
+    // printf("Rank %d, Step 8, File: %s:%d\n", rank_id, __FILE__, __LINE__);
+    nvtxRangePush("NCCL_ALL2ALL");
     CHECK_NCCL(ncclGroupStart());
     for (size_t i = 0; i < total_gpus; ++i) {
         if (h_send_histo[i] > 0) {
@@ -490,28 +454,31 @@ void global_shuffle_bidirectional(
         }
     }
     CHECK_NCCL(ncclGroupEnd());
-    
+    nvtxRangePop();
     // Step 9: Unpack to final positions (vectors)
-    printf("Rank %d, Step 9, File: %s:%d\n", rank_id, __FILE__, __LINE__);
-    printf("total_recv_vectors: %zu\n", total_recv_vectors);
+    // printf("Rank %d, Step 9, File: %s:%d\n", rank_id, __FILE__, __LINE__);
+    // printf("total_recv_vectors: %zu\n", total_recv_vectors);
     
-    for (size_t i = 0; i < total_gpus; ++i) {
-      printf("----------Rank %d, GPU %zu------------------\n", rank_id, i);
-      printf("Rank %d, recv_histo[%d]: %zu\n", rank_id, h_recv_histo[i]);
-      for(int vec_id = 0; vec_id < h_recv_histo[i]; vec_id++) {
-        uint64_t value1 = recv_indices[vec_id];
-        printf("Rank %d, recv_indices[%d]: %zu\n", rank_id, vec_id, value1);
-      }
-    }
-    printf("--------------------------------\n");
+    // for (int i = 0; i < total_gpus; ++i) {
+    //   printf("----------Rank %d, GPU %d------------------\n", rank_id, i);
+    //   printf("Rank %d, send_histo[%d]: %u\n", rank_id, i,h_send_histo[i]);
+    //   printf("Rank %d, recv_histo[%d]: %u\n", rank_id, i,h_recv_histo[i]);
+    //   // for(int vec_id = 0; vec_id < h_recv_histo[i]; vec_id++) {
+    //   //   uint64_t value1 = recv_indices[vec_id];
+    //   //   printf("Rank %d, recv_indices[%d]: %zu\n", rank_id, vec_id, value1);
+    //   // }
+    // }
+    // printf("Rank %d, gpu_vector_offset: %zu, total_recv_vectors: %zu \n", rank_id, gpu_vector_offset, total_recv_vectors);
+    // printf("--------------------------------\n");
     const size_t unpack_grid_size = (total_recv_vectors + block_size - 1) / block_size;
+    cudaStreamSynchronize(stream);
     unpack_recv_data_2d_kernel<<<unpack_grid_size, block_size, 0, stream>>>(
         thrust::raw_pointer_cast(recv_data.data()), thrust::raw_pointer_cast(recv_indices.data()),
         total_recv_vectors, local_data, local_vector_count, gpu_vector_offset, vector_length);
     
     cudaStreamSynchronize(stream);
     nvtxRangePop(); // End of global_shuffle_bidirectional
-    printf("Rank %d, End of global_shuffle_bidirectional, File: %s:%d\n", rank_id, __FILE__, __LINE__);
+    // printf("Rank %d, End of global_shuffle_bidirectional, File: %s:%d\n", rank_id, __FILE__, __LINE__);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -606,13 +573,17 @@ struct ShuffleImplBody<VariantKind::GPU, CODE, DIM> {
       
       VAL* data_ptr = input_output.ptr(rect.lo);
       
-      printf("------Parameters - Rank %zu------\n"
-            "vector_length: %zu\n"
-            "local_count:   %zu\n"
-            "global_n:      %zu\n"
-            "rank:          %zu\n"
-            "num_ranks:     %zu\n"
-            "--------------------------------\n", rank, vector_length, local_count, global_n, rank, num_ranks);
+      // printf("------Parameters - Rank %zu------\n"
+      //       "vector_length: %zu\n"
+      //       "local_count:   %zu\n"
+      //       "global_n:      %zu\n"
+      //       "rank:          %zu\n"
+      //       "num_ranks:     %zu\n"
+      //       "--------------------------------\n", rank, vector_length, local_count, global_n, rank, num_ranks);
+      cudaEvent_t start1, stop1;
+      cudaEventCreate(&start1);
+      cudaEventCreate(&stop1);
+      cudaEventRecord(start1, stream);
       global_shuffle_bidirectional<VAL>(
           data_ptr,
           vector_length,
@@ -623,6 +594,16 @@ struct ShuffleImplBody<VariantKind::GPU, CODE, DIM> {
           comms[0].get<ncclComm_t*>(),
           stream
       );
+      cudaEventRecord(stop1, stream);
+      cudaEventSynchronize(stop1);
+      float time1;
+      cudaEventElapsedTime(&time1, start1, stop1);
+      
+      cudaEventDestroy(start1);
+      cudaEventDestroy(stop1);
+
+      // std::cout << "[Rank " << world_rank << "] global_shuffle_bidirectional time: " << time2 << " ms" << std::endl;
+      printf("Rank %d, time: %f ms\n", rank, time1);
 
 
      
@@ -643,8 +624,8 @@ struct ShuffleImpl {
 
     Pitches<DIM - 1> pitches;
     size_t volume = pitches.flatten(rect);
-    printf("ShuffleImpl: volume: %zu, __FILE__: %s, __LINE__: %d\n", volume, __FILE__, __LINE__);
-    printf("Datatype: %s\n", typeid(VAL).name());
+    // printf("ShuffleImpl: volume: %zu, __FILE__: %s, __LINE__: %d\n", volume, __FILE__, __LINE__);
+    // printf("Datatype: %s\n", typeid(VAL).name());
     // printf("MIN_GPU_CHUNK_DEFAULT: %zu\n", MIN_GPU_CHUNK_DEFAULT);
     if (volume == 0) {
       return;
@@ -692,8 +673,8 @@ static void shuffle_template(TaskContext& context)
   size_t local_rank     = get_rank(domain, context.get_task_index());
   size_t num_ranks      = domain.get_volume();
   size_t num_shuffle_ranks = domain.hi()[0] - domain.lo()[0] + 1;
-  printf("shape_span: %zu, %zu\n", d1, d2);
-  printf("local_rank: %zu, num_ranks: %zu, num_shuffle_ranks: %zu\n", local_rank, num_ranks, num_shuffle_ranks);
+  // printf("shape_span: %zu, %zu\n", d1, d2);
+  // printf("local_rank: %zu, num_ranks: %zu, num_shuffle_ranks: %zu\n", local_rank, num_ranks, num_shuffle_ranks);
   
   ShuffleArgs args{
     input_output,

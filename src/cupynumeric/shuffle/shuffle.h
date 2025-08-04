@@ -26,18 +26,6 @@ namespace cupynumeric {
 
 using namespace legate;
 
-enum class ShuffleMethod : int32_t {
-  KEY_SORT = 0,
-  FISHER_YATES = 1,
-  FEISTEL = 2,
-  FEISTEL_BIDIRECTIONAL = 3
-};
-
-enum class DistributedShuffleMethod : int32_t {
-  FEISTEL_ALL2ALL = 0,      // Feistel forward + all2all exchange
-  FEISTEL_BIDIRECTIONAL = 1, // Feistel forward + backward (no communication)
-  FISHER_YATES_GLOBAL = 2    // Fisher-Yates global permutation
-};
 
 struct ShuffleArgs {
   legate::PhysicalStore input_output;  // in-place shuffle

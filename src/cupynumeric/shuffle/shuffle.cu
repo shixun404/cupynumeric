@@ -712,7 +712,7 @@ static void shuffle_template(TaskContext& context)
 namespace  // unnamed
 {
 static const auto cupynumeric_reg_task_ = []() -> char {
-  ShuffleTask::register_variants();
+  ShuffleTask::register_variants(); 
   return 0;
 }();
 }  // namespace

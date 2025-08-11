@@ -961,9 +961,24 @@ class DeferredArray(NumPyThunk):
                         inputs=[self],
                     )
 
-                legate_runtime.issue_gather(
-                    result.base, rhs.base, index_array.base  # type: ignore
+                # legate_runtime.issue_gather(
+                #     result.base, rhs.base, index_array.base  # type: ignore
+                # )
+                 # Add communicators if needed for distributed shuffle
+                
+                task = legate_runtime.create_auto_task(
+                    self.library, CuPyNumericOpCode.ALL2ALL
                 )
+                task.add_input(rhs.base)
+                task.add_input(index_array.base)
+                task.add_output(result.base)
+                
+                if runtime.num_gpus > 1:
+                    task.add_nccl_communicator()
+                elif runtime.num_gpus == 0 and runtime.num_procs > 1:
+                    task.add_cpu_communicator()
+                    
+                task.execute()
 
             else:
                 return index_array

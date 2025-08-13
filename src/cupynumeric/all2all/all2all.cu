@@ -204,7 +204,7 @@ void global_all2all(
     thrust::device_vector<IndexType> recv_indices(total_recv);
     thrust::exclusive_scan(recv_histo.begin(), recv_histo.end(), recv_offsets.begin());
 
-    printf("request_indices: ");
+    printf("recv_offsets: ");
     for(size_t i = 0; i < num_ranks; i++){
       unsigned int tmp = recv_offsets[i];
       printf("%u ", tmp);

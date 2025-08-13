@@ -122,7 +122,23 @@ size_t get_volume(auto rect){
   return volume;
 }
 
- template<typename DataType, typename IndexType, int DIM>
+ /*
+ * Implements fancy indexing using 3-round NCCL All2All communication:
+ * 
+ * Round 1: Exchange request size histograms
+ *   - Each rank computes how many indices it wants from each other rank
+ *   - All2All exchange of histogram counts to determine communication pattern
+ * 
+ * Round 2: Exchange request indices  
+ *   - Send the actual indices that each rank needs from other ranks
+ *   - Receive indices that other ranks need from this rank
+ * 
+ * Round 3: Exchange actual data
+ *   - Send the requested data elements to other ranks
+ *   - Receive the data elements this rank requested from other ranks
+ *   - Unpack received data into final output array
+ */
+template<typename DataType, typename IndexType, int DIM>
 void global_all2all(
   const DataType* input_ptr, 
   const IndexType* index_ptr, 
@@ -143,139 +159,146 @@ void global_all2all(
   printf("local_index_count: %zu\n", local_index_count);
   printf("local_output_count: %zu\n", local_output_count);
   
-  size_t request_count = local_index_count;
+  size_t num_requests = local_index_count;
 
-  thrust::device_vector<unsigned int> send_histo(num_ranks, 0);
-  thrust::device_vector<IndexType> send_indices(request_count, 0);
-  thrust::device_vector<unsigned int> request_indices(request_count, 0);
-  thrust::device_vector<unsigned int> counters(num_ranks, 0);
-  thrust::device_vector<unsigned int> send_offsets(num_ranks, 0);
-  thrust::device_vector<unsigned int> recv_histo(num_ranks, 0);
-  thrust::device_vector<unsigned int> recv_offsets(num_ranks, 0);
-  thrust::host_vector<unsigned int> h_recv_histo(num_ranks);
-  thrust::device_vector<DataType> recv_data(request_count, 0);
+  // ===== Round 1: Exchange request size histograms =====
+  thrust::device_vector<unsigned int> round1_send_histo(num_ranks, 0);  // How many requests to send to each rank
+  thrust::device_vector<unsigned int> round1_send_offsets(num_ranks, 0); // Offsets for packing requests
+  thrust::device_vector<unsigned int> round1_recv_histo(num_ranks, 0);  // How many requests to receive from each rank
+  thrust::device_vector<unsigned int> round1_recv_offsets(num_ranks, 0); // Offsets for unpacking requests
+  thrust::device_vector<unsigned int> packing_counters(num_ranks, 0);   // Temporary counters for packing
+  
+  // ===== Round 2: Exchange request indices =====
+  thrust::device_vector<IndexType> round2_send_indices(num_requests, 0);    // Indices to send (packed by target rank)
+  thrust::device_vector<unsigned int> round2_request_positions(num_requests, 0); // Position of each request in output
+  
+  // ===== Round 3: Exchange actual data =====
+  thrust::device_vector<DataType> round3_recv_data(num_requests, 0);  // Final received data
 
   const size_t block_size = 256;
   const size_t grid_size = (local_index_count + block_size - 1) / block_size;
-  // Index array send histogram
-  compute_send_histogram<<<grid_size, block_size>>>(index_ptr,  thrust::raw_pointer_cast(send_histo.data()), local_index_count, local_input_count);
+  
+  // ===== Round 1: Compute request size histogram =====
+  compute_send_histogram<<<grid_size, block_size>>>(index_ptr, thrust::raw_pointer_cast(round1_send_histo.data()), local_index_count, local_input_count);
 
-  printf("send_histo: ");
+  printf("round1_send_histo: ");
   for(size_t i = 0; i < num_ranks; i++){
-    unsigned int tmp = send_histo[i];
+    unsigned int tmp = round1_send_histo[i];
     printf("%u ", tmp);
   }
   printf("\n");
   
-  thrust::exclusive_scan(send_histo.begin(), send_histo.end(), send_offsets.begin());
+  thrust::exclusive_scan(round1_send_histo.begin(), round1_send_histo.end(), round1_send_offsets.begin());
 
-  printf("send_offsets: ");
+  printf("round1_send_offsets: ");
   for(size_t i = 0; i < num_ranks; i++){
-    unsigned int tmp = send_offsets[i];
+    unsigned int tmp = round1_send_offsets[i];
     printf("%u ", tmp);
   }
   printf("\n");
   
   
-  pack_request_indices_kernel<<<grid_size, block_size>>>(index_ptr, request_count,  
-    thrust::raw_pointer_cast(send_indices.data()),  thrust::raw_pointer_cast(send_offsets.data()),
-    thrust::raw_pointer_cast(request_indices.data()), thrust::raw_pointer_cast(counters.data()), local_input_count);
+  // Pack request indices by target rank
+  pack_request_indices_kernel<<<grid_size, block_size>>>(index_ptr, num_requests,  
+    thrust::raw_pointer_cast(round2_send_indices.data()), thrust::raw_pointer_cast(round1_send_offsets.data()),
+    thrust::raw_pointer_cast(round2_request_positions.data()), thrust::raw_pointer_cast(packing_counters.data()), local_input_count);
 
-    printf("send_indices: ");
-    for(size_t i = 0; i < request_count; i++){
-      unsigned int tmp = send_indices[i];
+    printf("round2_send_indices: ");
+    for(size_t i = 0; i < num_requests; i++){
+      unsigned int tmp = round2_send_indices[i];
       printf("%u ", tmp);
     }
     printf("\n");
     
     
 
-    // Index array send and recv histogram
+    // ===== Round 1: All2All exchange request size histograms =====
     CHECK_NCCL(ncclGroupStart());
     
     for (size_t i = 0; i < num_ranks; ++i) {
-        CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(send_histo.data()) + i, 1, ncclUint32, i, *nccl_comm, stream));
-        CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(recv_histo.data()) + i, 1, ncclUint32, i, *nccl_comm, stream));
+        CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(round1_send_histo.data()) + i, 1, ncclUint32, i, *nccl_comm, stream));
+        CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(round1_recv_histo.data()) + i, 1, ncclUint32, i, *nccl_comm, stream));
     }
     CHECK_NCCL(ncclGroupEnd());
-    size_t total_recv = thrust::reduce(recv_histo.begin(), recv_histo.end());
-    printf("total_recv: %zu\n", total_recv);
+    size_t total_indices_to_receive = thrust::reduce(round1_recv_histo.begin(), round1_recv_histo.end());
+    printf("total_indices_to_receive: %zu\n", total_indices_to_receive);
     
-    thrust::device_vector<IndexType> recv_indices(total_recv);
-    thrust::exclusive_scan(recv_histo.begin(), recv_histo.end(), recv_offsets.begin());
+    thrust::device_vector<IndexType> round2_recv_indices(total_indices_to_receive);
+    thrust::exclusive_scan(round1_recv_histo.begin(), round1_recv_histo.end(), round1_recv_offsets.begin());
 
-    printf("recv_offsets: ");
+    printf("round1_recv_offsets: ");
     for(size_t i = 0; i < num_ranks; i++){
-      unsigned int tmp = recv_offsets[i];
+      unsigned int tmp = round1_recv_offsets[i];
       printf("%u ", tmp);
     }
     printf("\n");
 
-    // Index array send and recv
+    // ===== Round 2: All2All exchange request indices =====
     CHECK_NCCL(ncclGroupStart());
     for (size_t i = 0; i < num_ranks; ++i) {
-        unsigned int h_send_histo_i = send_histo[i];
-        unsigned int h_send_offsets_i = send_offsets[i];
-        unsigned int h_recv_histo_i = recv_histo[i];
-        unsigned int h_recv_offsets_i = recv_offsets[i];
-        if (h_send_histo_i > 0) {
-            CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(send_indices.data()) + h_send_offsets_i,
-              h_send_histo_i * sizeof(IndexType), ncclInt8, i, *nccl_comm, stream));
+        unsigned int indices_to_send_to_rank_i = round1_send_histo[i];
+        unsigned int send_offset_for_rank_i = round1_send_offsets[i];
+        unsigned int indices_to_recv_from_rank_i = round1_recv_histo[i];
+        unsigned int recv_offset_for_rank_i = round1_recv_offsets[i];
+        if (indices_to_send_to_rank_i > 0) {
+            CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(round2_send_indices.data()) + send_offset_for_rank_i,
+              indices_to_send_to_rank_i * sizeof(IndexType), ncclInt8, i, *nccl_comm, stream));
         }
         
-        if (h_recv_histo_i > 0) {
-            CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(recv_indices.data()) + h_recv_offsets_i,
-                    h_recv_histo_i * sizeof(IndexType), ncclInt8, i, *nccl_comm, stream));
+        if (indices_to_recv_from_rank_i > 0) {
+            CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(round2_recv_indices.data()) + recv_offset_for_rank_i,
+                    indices_to_recv_from_rank_i * sizeof(IndexType), ncclInt8, i, *nccl_comm, stream));
         }
     }
     CHECK_NCCL(ncclGroupEnd());
     cudaStreamSynchronize(stream);
-    printf("recv_indices: ");
-    for(size_t i = 0; i < total_recv; i++){
-      unsigned int tmp = recv_indices[i];
+    printf("round2_recv_indices: ");
+    for(size_t i = 0; i < total_indices_to_receive; i++){
+      unsigned int tmp = round2_recv_indices[i];
       printf("%u ", tmp);
     }
     printf("\n");
 
-    thrust::device_vector<DataType> send_data(total_recv);
-    pack_send_data_kernel<<<grid_size, block_size>>>(input_ptr, thrust::raw_pointer_cast(recv_indices.data()),
-    total_recv, thrust::raw_pointer_cast(send_data.data()), rank_id, local_input_count);
+    thrust::device_vector<DataType> round3_send_data(total_indices_to_receive);
+    pack_send_data_kernel<<<grid_size, block_size>>>(input_ptr, thrust::raw_pointer_cast(round2_recv_indices.data()),
+    total_indices_to_receive, thrust::raw_pointer_cast(round3_send_data.data()), rank_id, local_input_count);
 
-    // printf("send_data: ");
-    // for(size_t i = 0; i < total_recv; i++){
-    //   unsigned int tmp = send_data[i];
+    // printf("round3_send_data: ");
+    // for(size_t i = 0; i < total_indices_to_receive; i++){
+    //   unsigned int tmp = round3_send_data[i];
     //   printf("%u ", tmp);
     // }
     // printf("\n");
     
-    // Data array send and recv
+    // ===== Round 3: All2All exchange actual data =====
      CHECK_NCCL(ncclGroupStart());
      for (size_t i = 0; i < num_ranks; ++i) {
-         unsigned int h_send_histo_i = send_histo[i];
-         unsigned int h_send_offsets_i = send_offsets[i];
-         unsigned int h_recv_histo_i = recv_histo[i];
-         unsigned int h_recv_offsets_i = recv_offsets[i];
-         if (h_send_histo_i > 0) {
-            CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(recv_data.data()) + h_send_offsets_i,
-            h_send_histo_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
+         unsigned int data_to_send_to_rank_i = round1_send_histo[i];
+         unsigned int send_offset_for_rank_i = round1_send_offsets[i];
+         unsigned int data_to_recv_from_rank_i = round1_recv_histo[i];
+         unsigned int recv_offset_for_rank_i = round1_recv_offsets[i];
+         if (data_to_send_to_rank_i > 0) {
+            CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(round3_recv_data.data()) + send_offset_for_rank_i,
+            data_to_send_to_rank_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
          }
          
-         if (h_recv_histo_i > 0) {
-            CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(send_data.data()) + h_recv_offsets_i,
-            h_recv_histo_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
+         if (data_to_recv_from_rank_i > 0) {
+            CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(round3_send_data.data()) + recv_offset_for_rank_i,
+            data_to_recv_from_rank_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
          }
      }
      CHECK_NCCL(ncclGroupEnd());
 
-    // printf("recv_data: ");
-    // for(size_t i = 0; i < total_recv; i++){
-    //   unsigned int tmp = recv_data[i];
+    // printf("round3_recv_data: ");
+    // for(size_t i = 0; i < total_indices_to_receive; i++){
+    //   unsigned int tmp = round3_recv_data[i];
     //   printf("%u ", tmp);
     // }
     // printf("\n");
 
-    unpack_recv_data_kernel<<<grid_size, block_size>>>(output_ptr, thrust::raw_pointer_cast(request_indices.data()),
-     request_count, thrust::raw_pointer_cast(recv_data.data()));
+    // ===== Final step: Unpack received data to output =====
+    unpack_recv_data_kernel<<<grid_size, block_size>>>(output_ptr, thrust::raw_pointer_cast(round2_request_positions.data()),
+     num_requests, thrust::raw_pointer_cast(round3_recv_data.data()));
 
 
 }

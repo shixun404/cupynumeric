@@ -281,7 +281,7 @@ void global_all2all(
           CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(round3_send_data.data()) + recv_offset_for_rank_i,
           data_to_recv_from_rank_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
        }
-       
+
          if (data_to_send_to_rank_i > 0) {
             CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(round3_recv_data.data()) + send_offset_for_rank_i,
             data_to_send_to_rank_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
@@ -301,6 +301,7 @@ void global_all2all(
     // ===== Final step: Unpack received data to output =====
     unpack_recv_data_kernel<<<grid_size, block_size>>>(output_ptr, thrust::raw_pointer_cast(round2_request_positions.data()),
      num_requests, thrust::raw_pointer_cast(round3_recv_data.data()));
+     printf("rank %d finished\n", rank_id);
 
 
 }

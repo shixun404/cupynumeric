@@ -52,34 +52,232 @@
  namespace cupynumeric {
  
  using namespace legate;
- template<typename DataType, int DIM>
+
+//  static int get_index(Domain domain, DomainPoint index_point)
+//  {
+//    int domain_index = 0;
+//    auto hi          = domain.hi();
+//    auto lo          = domain.lo();
+//    for (int i = 0; i < domain.get_dim(); ++i) {
+//      if (i > 0) {
+//        domain_index *= hi[i] - lo[i] + 1;
+//      }
+//      domain_index += index_point[i];
+//    }
+//    return domain_index;
+//  }
+
+// Compute send histogram kernel for 2D (vectors)
+template<typename IndexType>
+__global__ void compute_send_histogram(const IndexType* indices, 
+                                                 unsigned int* send_histo, size_t local_vector_count, size_t local_input_count) {
+    size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (idx < local_vector_count) {
+        size_t target_gpu = indices[idx] / local_input_count;
+        printf("idx: %d, indices[idx]: %d, target_gpu: %d\n", (int)idx, (int)indices[idx], (int)target_gpu);
+        atomicAdd(&send_histo[target_gpu], 1);
+    }
+}
+
+// Pack send data kernel for 2D (vectors)
+template<typename DataType, typename IndexType>
+__global__ void pack_send_data_kernel(const DataType* data, const IndexType* indices, size_t request_count,
+                                          DataType* send_data, int rank_id, int local_input_count) {
+    size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (idx < request_count) {
+        send_data[idx] = data[indices[idx] - rank_id * local_input_count];
+    }
+}
+
+template<typename DataType, typename IndexType>
+__global__ void unpack_recv_data_kernel(DataType* data, const IndexType* request_indices, size_t request_count,
+                                          const DataType* recv_data) {
+    size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (idx < request_count) {
+        printf("idx: %d, request_indices[idx]: %d\n", (int)idx, (int)request_indices[idx]);
+        data[request_indices[idx]] = recv_data[idx];
+    }
+}
+ 
+
+template<typename IndexType>
+__global__ void pack_request_indices_kernel(const IndexType* indices, size_t vector_count,
+                                          IndexType* send_indices, unsigned int* send_offsets, unsigned int* request_indices,
+                                          unsigned int* counters, size_t local_input_count) {
+    size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (idx < vector_count) {
+        size_t target_gpu = indices[idx] / local_input_count;
+        size_t pos = atomicAdd(&counters[target_gpu], 1);
+        size_t offset = send_offsets[target_gpu] + pos;
+        send_indices[offset] = indices[idx];
+        request_indices[offset] = idx;
+    }
+}
+template<int DIM>
+size_t get_volume(auto rect){
+  size_t volume = 1;
+  for(int i = 0; i < DIM; i++){
+    volume *= rect.hi[i] - rect.lo[i] + 1;
+  }
+  return volume;
+}
+
+ template<typename DataType, typename IndexType, int DIM>
 void global_all2all(
   const DataType* input_ptr, 
-  const DataType* index_ptr, 
+  const IndexType* index_ptr, 
   DataType* output_ptr, 
- //  auto input_rect,
- //  auto index_rect,
- //  auto output_rect,
+  auto input_rect,
+  auto index_rect,
+  auto output_rect,
   int rank_id, 
   int num_ranks,
   ncclComm_t* nccl_comm, 
   cudaStream_t stream
 ) {
-  // TODO: Implement global all2all communication using NCCL
-  // For now, this is a placeholder that avoids the segmentation fault
-  // caused by improper NCCL communicator handling
   
-  // The communicator should be valid at this point since we included nccl.h
-  // Basic validation to ensure nccl_comm is not null
-  if (nccl_comm == nullptr) {
-    return; // Early return if communicator is invalid
+  size_t local_input_count = get_volume<DIM>(input_rect);
+  size_t local_index_count = get_volume<DIM>(index_rect);
+  size_t local_output_count = get_volume<DIM>(output_rect);
+  printf("local_input_count: %zu\n", local_input_count);
+  printf("local_index_count: %zu\n", local_index_count);
+  printf("local_output_count: %zu\n", local_output_count);
+  
+  size_t request_count = local_index_count;
+
+  thrust::device_vector<unsigned int> send_histo(num_ranks, 0);
+  thrust::device_vector<IndexType> send_indices(request_count, 0);
+  thrust::device_vector<unsigned int> request_indices(request_count, 0);
+  thrust::device_vector<unsigned int> counters(num_ranks, 0);
+  thrust::device_vector<unsigned int> send_offsets(num_ranks, 0);
+  thrust::device_vector<unsigned int> recv_histo(num_ranks, 0);
+  thrust::device_vector<unsigned int> recv_offsets(num_ranks, 0);
+  thrust::host_vector<unsigned int> h_recv_histo(num_ranks);
+  thrust::device_vector<DataType> recv_data(request_count, 0);
+
+  const size_t block_size = 256;
+  const size_t grid_size = (local_index_count + block_size - 1) / block_size;
+  // Index array send histogram
+  compute_send_histogram<<<grid_size, block_size>>>(index_ptr,  thrust::raw_pointer_cast(send_histo.data()), local_index_count, local_input_count);
+
+  printf("send_histo: ");
+  for(size_t i = 0; i < num_ranks; i++){
+    unsigned int tmp = send_histo[i];
+    printf("%u ", tmp);
   }
+  printf("\n");
   
-  // Placeholder implementation - actual all2all logic would go here
-  // This would typically involve:
-  // 1. Calculating send/receive counts per rank
-  // 2. Using ncclGroupStart()/ncclGroupEnd() with ncclSend/ncclRecv
-  // 3. Proper data movement based on index_ptr values
+  thrust::exclusive_scan(send_histo.begin(), send_histo.end(), send_offsets.begin());
+
+  printf("send_offsets: ");
+  for(size_t i = 0; i < num_ranks; i++){
+    unsigned int tmp = send_offsets[i];
+    printf("%u ", tmp);
+  }
+  printf("\n");
+  
+  
+  pack_request_indices_kernel<<<grid_size, block_size>>>(index_ptr, request_count,  
+    thrust::raw_pointer_cast(send_indices.data()),  thrust::raw_pointer_cast(send_offsets.data()),
+    thrust::raw_pointer_cast(request_indices.data()), thrust::raw_pointer_cast(counters.data()), local_input_count);
+
+    printf("send_indices: ");
+    for(size_t i = 0; i < request_count; i++){
+      unsigned int tmp = send_indices[i];
+      printf("%u ", tmp);
+    }
+    printf("\n");
+    
+    
+
+    // Index array send and recv histogram
+    CHECK_NCCL(ncclGroupStart());
+    
+    for (size_t i = 0; i < num_ranks; ++i) {
+        CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(send_histo.data()) + i, 1, ncclUint32, i, *nccl_comm, stream));
+        CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(recv_histo.data()) + i, 1, ncclUint32, i, *nccl_comm, stream));
+    }
+    CHECK_NCCL(ncclGroupEnd());
+    size_t total_recv = thrust::reduce(recv_histo.begin(), recv_histo.end());
+    printf("total_recv: %zu\n", total_recv);
+    
+    thrust::device_vector<IndexType> recv_indices(total_recv);
+    thrust::exclusive_scan(recv_histo.begin(), recv_histo.end(), recv_offsets.begin());
+
+    printf("request_indices: ");
+    for(size_t i = 0; i < num_ranks; i++){
+      unsigned int tmp = recv_offsets[i];
+      printf("%u ", tmp);
+    }
+    printf("\n");
+
+    // Index array send and recv
+    CHECK_NCCL(ncclGroupStart());
+    for (size_t i = 0; i < num_ranks; ++i) {
+        unsigned int h_send_histo_i = send_histo[i];
+        unsigned int h_send_offsets_i = send_offsets[i];
+        unsigned int h_recv_histo_i = recv_histo[i];
+        unsigned int h_recv_offsets_i = recv_offsets[i];
+        if (h_send_histo_i > 0) {
+            CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(send_indices.data()) + h_send_offsets_i,
+              h_send_histo_i * sizeof(IndexType), ncclInt8, i, *nccl_comm, stream));
+        }
+        
+        if (h_recv_histo_i > 0) {
+            CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(recv_indices.data()) + h_recv_offsets_i,
+                    h_recv_histo_i * sizeof(IndexType), ncclInt8, i, *nccl_comm, stream));
+        }
+    }
+    CHECK_NCCL(ncclGroupEnd());
+    cudaStreamSynchronize(stream);
+    printf("recv_indices: ");
+    for(size_t i = 0; i < total_recv; i++){
+      unsigned int tmp = recv_indices[i];
+      printf("%u ", tmp);
+    }
+    printf("\n");
+
+    thrust::device_vector<DataType> send_data(total_recv);
+    pack_send_data_kernel<<<grid_size, block_size>>>(input_ptr, thrust::raw_pointer_cast(recv_indices.data()),
+    total_recv, thrust::raw_pointer_cast(send_data.data()), rank_id, local_input_count);
+
+    // printf("send_data: ");
+    // for(size_t i = 0; i < total_recv; i++){
+    //   unsigned int tmp = send_data[i];
+    //   printf("%u ", tmp);
+    // }
+    // printf("\n");
+    
+    // Data array send and recv
+     CHECK_NCCL(ncclGroupStart());
+     for (size_t i = 0; i < num_ranks; ++i) {
+         unsigned int h_send_histo_i = send_histo[i];
+         unsigned int h_send_offsets_i = send_offsets[i];
+         unsigned int h_recv_histo_i = recv_histo[i];
+         unsigned int h_recv_offsets_i = recv_offsets[i];
+         if (h_send_histo_i > 0) {
+            CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(recv_data.data()) + h_send_offsets_i,
+            h_send_histo_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
+         }
+         
+         if (h_recv_histo_i > 0) {
+            CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(send_data.data()) + h_recv_offsets_i,
+            h_recv_histo_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
+         }
+     }
+     CHECK_NCCL(ncclGroupEnd());
+
+    // printf("recv_data: ");
+    // for(size_t i = 0; i < total_recv; i++){
+    //   unsigned int tmp = recv_data[i];
+    //   printf("%u ", tmp);
+    // }
+    // printf("\n");
+
+    unpack_recv_data_kernel<<<grid_size, block_size>>>(output_ptr, thrust::raw_pointer_cast(request_indices.data()),
+     request_count, thrust::raw_pointer_cast(recv_data.data()));
+
+
 }
  
  template <Type::Code CODE, int32_t DIM>
@@ -121,25 +319,28 @@ void global_all2all(
  #endif
  
  template <Type::Code CODE, int32_t DIM>
- struct All2AllImplBody<VariantKind::GPU, CODE, DIM> {
-   using VAL = type_of<CODE>;
- 
-   void operator()(TaskContext& context,
-     const legate::PhysicalStore& input_array,
-     const legate::PhysicalStore& index_array,
-     const legate::PhysicalStore& output_array,
-     const bool is_index_space,
-     const size_t rank,
-     const size_t num_ranks,
-     const std::vector<comm::Communicator>& comms)
-   {
-     auto input_rect = input_array.shape<DIM>();
-     auto index_rect = index_array.shape<DIM>();
-     auto output_rect = output_array.shape<DIM>();
-     
-     auto input = input_array.read_accessor<VAL, DIM>(input_rect);
-     auto index = index_array.read_accessor<VAL, DIM>(index_rect);
-     auto output = output_array.read_write_accessor<VAL, DIM>(output_rect);
+struct All2AllImplBody<VariantKind::GPU, CODE, DIM> {
+  using VAL = type_of<CODE>;
+  
+  template <Type::Code INDEX_CODE>
+  void execute_with_index_type(TaskContext& context,
+    const legate::PhysicalStore& input_array,
+    const legate::PhysicalStore& index_array,
+    const legate::PhysicalStore& output_array,
+    const bool is_index_space,
+    const size_t rank,
+    const size_t num_ranks,
+    const std::vector<comm::Communicator>& comms)
+  {
+    using INDEX_VAL = type_of<INDEX_CODE>;
+    
+    auto input_rect = input_array.shape<DIM>();
+    auto index_rect = index_array.shape<DIM>();
+    auto output_rect = output_array.shape<DIM>();
+    
+    auto input = input_array.read_accessor<VAL, DIM>(input_rect);
+    auto index = index_array.read_accessor<INDEX_VAL, DIM>(index_rect);
+    auto output = output_array.read_write_accessor<VAL, DIM>(output_rect);
  
      // we allow empty domains for distributed sorting
     //  assert(input_rect.empty() || input.accessor.is_dense_row_major(input_rect));
@@ -161,15 +362,18 @@ void global_all2all(
        // Handle distributed all2all
        
        
-       const VAL* input_ptr = input.ptr(input_rect.lo);
-       const VAL* index_ptr = index.ptr(index_rect.lo);
-       VAL* output_ptr = output.ptr(output_rect.lo);
+                const VAL* input_ptr = input.ptr(input_rect.lo);
+         const INDEX_VAL* index_ptr = index.ptr(index_rect.lo);
+         VAL* output_ptr = output.ptr(output_rect.lo);
        
 
-       global_all2all<VAL, DIM>(
+       global_all2all<VAL, INDEX_VAL, DIM>(
            input_ptr,
            index_ptr,
            output_ptr,
+           input_rect,
+           index_rect,
+           output_rect,
            rank,
            num_ranks,
            comms[0].get<ncclComm_t*>(),
@@ -179,6 +383,42 @@ void global_all2all(
      }
  
      CUPYNUMERIC_CHECK_CUDA_STREAM(stream);
+   }
+   
+   void operator()(TaskContext& context,
+     const legate::PhysicalStore& input_array,
+     const legate::PhysicalStore& index_array,
+     const legate::PhysicalStore& output_array,
+     const bool is_index_space,
+     const size_t rank,
+     const size_t num_ranks,
+     const std::vector<comm::Communicator>& comms)
+   {
+     // Dispatch based on index array type
+     auto index_code = index_array.code();
+     switch (index_code) {
+       case legate::Type::Code::INT32:
+         execute_with_index_type<legate::Type::Code::INT32>(context, input_array, index_array, output_array, is_index_space, rank, num_ranks, comms);
+         break;
+       case legate::Type::Code::INT64:
+         execute_with_index_type<legate::Type::Code::INT64>(context, input_array, index_array, output_array, is_index_space, rank, num_ranks, comms);
+         break;
+       case legate::Type::Code::UINT32:
+         execute_with_index_type<legate::Type::Code::UINT32>(context, input_array, index_array, output_array, is_index_space, rank, num_ranks, comms);
+         break;
+       case legate::Type::Code::UINT64:
+         execute_with_index_type<legate::Type::Code::UINT64>(context, input_array, index_array, output_array, is_index_space, rank, num_ranks, comms);
+         break;
+       case legate::Type::Code::FIXED_ARRAY:
+         // Point<1> (struct int64[1]) can be treated as INT64
+         // Note: STRUCT has value 18, not 17 as might be expected
+         execute_with_index_type<legate::Type::Code::INT64>(context, input_array, index_array, output_array, is_index_space, rank, num_ranks, comms);
+         break;
+       default:
+         printf("Unsupported index type code: %d\n", (int)index_code);
+         assert(false && "Unsupported index type");
+         break;
+     }
    }
  };
 
@@ -253,6 +493,9 @@ void global_all2all(
    };
    auto dim = std::max(1, std::max(args.input.dim(), args.index_array.dim()));
    dim = std::max(dim, args.output.dim());
+   printf("args.input.code(): %d\n", args.input.code());
+   printf("args.index_array.code(): %d\n", args.index_array.code());
+   printf("args.output.code(): %d\n", args.output.code());  
    double_dispatch(
      dim, args.input.code(), All2AllImpl<KIND>{}, args, context, context.communicators());
  }

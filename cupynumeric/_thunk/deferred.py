@@ -960,7 +960,13 @@ class DeferredArray(NumPyThunk):
                         self.base.type,
                         inputs=[self],
                     )
-
+                # print(index_array.base.code())
+                print(rhs)
+                print(rhs.base)
+                
+                print(index_array)
+                print(index_array.base)
+                
                 # legate_runtime.issue_gather(
                 #     result.base, rhs.base, index_array.base  # type: ignore
                 # )

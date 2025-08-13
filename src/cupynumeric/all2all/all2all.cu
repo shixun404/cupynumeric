@@ -280,6 +280,7 @@ void global_all2all(
          }   
      }
      CHECK_NCCL(ncclGroupEnd());
+     printf("rank %d finished ncclAll2All round 3\n", rank_id);
     // ===== Final step: Unpack received data to output =====
     unpack_recv_data_kernel<<<grid_size, block_size>>>(output_ptr, thrust::raw_pointer_cast(round2_request_positions.data()),
      num_requests, thrust::raw_pointer_cast(round3_recv_data.data()));

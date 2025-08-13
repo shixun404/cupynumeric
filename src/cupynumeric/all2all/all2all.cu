@@ -277,15 +277,17 @@ void global_all2all(
          unsigned int send_offset_for_rank_i = round1_send_offsets[i];
          unsigned int data_to_recv_from_rank_i = round1_recv_histo[i];
          unsigned int recv_offset_for_rank_i = round1_recv_offsets[i];
+         if (data_to_recv_from_rank_i > 0) {
+          CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(round3_send_data.data()) + recv_offset_for_rank_i,
+          data_to_recv_from_rank_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
+       }
+       
          if (data_to_send_to_rank_i > 0) {
             CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(round3_recv_data.data()) + send_offset_for_rank_i,
             data_to_send_to_rank_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
          }
          
-         if (data_to_recv_from_rank_i > 0) {
-            CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(round3_send_data.data()) + recv_offset_for_rank_i,
-            data_to_recv_from_rank_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
-         }
+         
      }
      CHECK_NCCL(ncclGroupEnd());
 

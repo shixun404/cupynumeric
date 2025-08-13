@@ -179,7 +179,7 @@ void global_all2all(
   const size_t grid_size = (local_index_count + block_size - 1) / block_size;
   
   // ===== Round 1: Compute request size histogram =====
-  compute_send_histogram<<<grid_size, block_size>>>(index_ptr, thrust::raw_pointer_cast(round1_send_histo.data()), local_index_count, local_input_count);
+  compute_send_histogram<<<grid_size, block_size, 0, stream>>>(index_ptr, thrust::raw_pointer_cast(round1_send_histo.data()), local_index_count, local_input_count);
 
   printf("round1_send_histo: ");
   for(size_t i = 0; i < num_ranks; i++){
@@ -196,10 +196,10 @@ void global_all2all(
     printf("%u ", tmp);
   }
   printf("\n");
-  
+  cudaStreamSynchronize(stream);
   
   // Pack request indices by target rank
-  pack_request_indices_kernel<<<grid_size, block_size>>>(index_ptr, num_requests,  
+  pack_request_indices_kernel<<<grid_size, block_size, 0, stream>>>(index_ptr, num_requests,  
     thrust::raw_pointer_cast(round2_send_indices.data()), thrust::raw_pointer_cast(round1_send_offsets.data()),
     thrust::raw_pointer_cast(round2_request_positions.data()), thrust::raw_pointer_cast(packing_counters.data()), local_input_count);
 
@@ -210,7 +210,7 @@ void global_all2all(
     }
     printf("\n");
     
-    
+    cudaStreamSynchronize(stream);
 
     // ===== Round 1: All2All exchange request size histograms =====
     CHECK_NCCL(ncclGroupStart());
@@ -232,7 +232,7 @@ void global_all2all(
       printf("%u ", tmp);
     }
     printf("\n");
-
+    cudaStreamSynchronize(stream);
     // ===== Round 2: All2All exchange request indices =====
     CHECK_NCCL(ncclGroupStart());
     for (size_t i = 0; i < num_ranks; ++i) {
@@ -260,8 +260,9 @@ void global_all2all(
     printf("\n");
 
     thrust::device_vector<DataType> round3_send_data(total_indices_to_receive);
-    pack_send_data_kernel<<<grid_size, block_size>>>(input_ptr, thrust::raw_pointer_cast(round2_recv_indices.data()),
+    pack_send_data_kernel<<<grid_size, block_size, 0, stream>>>(input_ptr, thrust::raw_pointer_cast(round2_recv_indices.data()),
     total_indices_to_receive, thrust::raw_pointer_cast(round3_send_data.data()), rank_id, local_input_count);
+    cudaStreamSynchronize(stream);
 
     // ===== Round 3: All2All exchange actual data =====
      CHECK_NCCL(ncclGroupStart());
@@ -280,9 +281,10 @@ void global_all2all(
          }   
      }
      CHECK_NCCL(ncclGroupEnd());
+     cudaStreamSynchronize(stream);
      printf("rank %d finished ncclAll2All round 3\n", rank_id);
     // ===== Final step: Unpack received data to output =====
-    unpack_recv_data_kernel<<<grid_size, block_size>>>(output_ptr, thrust::raw_pointer_cast(round2_request_positions.data()),
+    unpack_recv_data_kernel<<<grid_size, block_size, 0, stream>>>(output_ptr, thrust::raw_pointer_cast(round2_request_positions.data()),
      num_requests, thrust::raw_pointer_cast(round3_recv_data.data()));
      printf("rank %d finished\n", rank_id);
 

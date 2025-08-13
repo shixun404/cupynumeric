@@ -74,7 +74,7 @@ __global__ void compute_send_histogram(const IndexType* indices,
     size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < local_vector_count) {
         size_t target_gpu = indices[idx] / local_input_count;
-        printf("idx: %d, indices[idx]: %d, target_gpu: %d\n", (int)idx, (int)indices[idx], (int)target_gpu);
+        // printf("idx: %d, indices[idx]: %d, target_gpu: %d\n", (int)idx, (int)indices[idx], (int)target_gpu);
         atomicAdd(&send_histo[target_gpu], 1);
     }
 }
@@ -94,7 +94,7 @@ __global__ void unpack_recv_data_kernel(DataType* data, const IndexType* request
                                           const DataType* recv_data) {
     size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < request_count) {
-        printf("idx: %d, request_indices[idx]: %d\n", (int)idx, (int)request_indices[idx]);
+        // printf("idx: %d, request_indices[idx]: %d\n", (int)idx, (int)request_indices[idx]);
         data[request_indices[idx]] = recv_data[idx];
     }
 }

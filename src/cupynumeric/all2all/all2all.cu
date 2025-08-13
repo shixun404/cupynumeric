@@ -216,14 +216,10 @@ void global_all2all(
     CHECK_NCCL(ncclGroupStart());
     
     for (size_t i = 0; i < num_ranks; ++i) {
-        if (i == rank_id) continue; // Skip self-communication to avoid deadlock
         CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(round1_send_histo.data()) + i, 1, ncclUint32, i, *nccl_comm, stream));
         CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(round1_recv_histo.data()) + i, 1, ncclUint32, i, *nccl_comm, stream));
     }
     CHECK_NCCL(ncclGroupEnd());
-    
-    // Handle self-communication with local copy
-    round1_recv_histo[rank_id] = round1_send_histo[rank_id];
     size_t total_indices_to_receive = thrust::reduce(round1_recv_histo.begin(), round1_recv_histo.end());
     printf("total_indices_to_receive: %zu\n", total_indices_to_receive);
     
@@ -240,8 +236,6 @@ void global_all2all(
     // ===== Round 2: All2All exchange request indices =====
     CHECK_NCCL(ncclGroupStart());
     for (size_t i = 0; i < num_ranks; ++i) {
-        if (i == rank_id) continue; // Skip self-communication to avoid deadlock
-        
         unsigned int indices_to_send_to_rank_i = round1_send_histo[i];
         unsigned int send_offset_for_rank_i = round1_send_offsets[i];
         unsigned int indices_to_recv_from_rank_i = round1_recv_histo[i];
@@ -257,19 +251,6 @@ void global_all2all(
         }
     }
     CHECK_NCCL(ncclGroupEnd());
-    
-    // Handle self-communication with local memory copy
-    unsigned int self_indices_count = round1_send_histo[rank_id];
-    if (self_indices_count > 0) {
-        unsigned int self_send_offset = round1_send_offsets[rank_id];
-        unsigned int self_recv_offset = round1_recv_offsets[rank_id];
-        CUPYNUMERIC_CHECK_CUDA(cudaMemcpyAsync(
-            thrust::raw_pointer_cast(round2_recv_indices.data()) + self_recv_offset,
-            thrust::raw_pointer_cast(round2_send_indices.data()) + self_send_offset,
-            self_indices_count * sizeof(IndexType),
-            cudaMemcpyDeviceToDevice,
-            stream));
-    }
     cudaStreamSynchronize(stream);
     printf("round2_recv_indices: ");
     for(size_t i = 0; i < total_indices_to_receive; i++){
@@ -285,13 +266,10 @@ void global_all2all(
     // ===== Round 3: All2All exchange actual data =====
      CHECK_NCCL(ncclGroupStart());
      for (size_t i = 0; i < num_ranks; ++i) {
-         if (i == rank_id) continue; // Skip self-communication to avoid deadlock
-         
          unsigned int data_to_send_to_rank_i = round1_send_histo[i];
          unsigned int send_offset_for_rank_i = round1_send_offsets[i];
          unsigned int data_to_recv_from_rank_i = round1_recv_histo[i];
          unsigned int recv_offset_for_rank_i = round1_recv_offsets[i];
-         
          if (data_to_recv_from_rank_i > 0) {
           CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(round3_send_data.data()) + recv_offset_for_rank_i,
           data_to_recv_from_rank_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
@@ -302,19 +280,6 @@ void global_all2all(
          }   
      }
      CHECK_NCCL(ncclGroupEnd());
-     
-     // Handle self-communication with local memory copy
-     unsigned int self_data_count = round1_send_histo[rank_id];
-     if (self_data_count > 0) {
-         unsigned int self_send_offset = round1_send_offsets[rank_id];
-         unsigned int self_recv_offset = round1_recv_offsets[rank_id];
-         CUPYNUMERIC_CHECK_CUDA(cudaMemcpyAsync(
-             thrust::raw_pointer_cast(round3_recv_data.data()) + self_send_offset,
-             thrust::raw_pointer_cast(round3_send_data.data()) + self_recv_offset,
-             self_data_count * sizeof(DataType),
-             cudaMemcpyDeviceToDevice,
-             stream));
-     }
     // ===== Final step: Unpack received data to output =====
     unpack_recv_data_kernel<<<grid_size, block_size>>>(output_ptr, thrust::raw_pointer_cast(round2_request_positions.data()),
      num_requests, thrust::raw_pointer_cast(round3_recv_data.data()));

@@ -155,9 +155,9 @@ void global_all2all(
   size_t local_input_count = get_volume<DIM>(input_rect);
   size_t local_index_count = get_volume<DIM>(index_rect);
   size_t local_output_count = get_volume<DIM>(output_rect);
-  printf("local_input_count: %zu\n", local_input_count);
-  printf("local_index_count: %zu\n", local_index_count);
-  printf("local_output_count: %zu\n", local_output_count);
+  // printf("local_input_count: %zu\n", local_input_count);
+  // printf("local_index_count: %zu\n", local_index_count);
+  // printf("local_output_count: %zu\n", local_output_count);
   
   size_t num_requests = local_index_count;
 
@@ -181,21 +181,21 @@ void global_all2all(
   // ===== Round 1: Compute request size histogram =====
   compute_send_histogram<<<grid_size, block_size, 0, stream>>>(index_ptr, thrust::raw_pointer_cast(round1_send_histo.data()), local_index_count, local_input_count);
 
-  printf("round1_send_histo: ");
-  for(size_t i = 0; i < num_ranks; i++){
-    unsigned int tmp = round1_send_histo[i];
-    printf("%u ", tmp);
-  }
-  printf("\n");
+  // printf("round1_send_histo: ");
+  // for(size_t i = 0; i < num_ranks; i++){
+  //   unsigned int tmp = round1_send_histo[i];
+  //   printf("%u ", tmp);
+  // }
+  // printf("\n");
   
   thrust::exclusive_scan(round1_send_histo.begin(), round1_send_histo.end(), round1_send_offsets.begin());
 
-  printf("round1_send_offsets: ");
-  for(size_t i = 0; i < num_ranks; i++){
-    unsigned int tmp = round1_send_offsets[i];
-    printf("%u ", tmp);
-  }
-  printf("\n");
+  // printf("round1_send_offsets: ");
+  // for(size_t i = 0; i < num_ranks; i++){
+  //   unsigned int tmp = round1_send_offsets[i];
+  //   printf("%u ", tmp);
+  // }
+  // printf("\n");
   cudaStreamSynchronize(stream);
   
   // Pack request indices by target rank
@@ -203,12 +203,12 @@ void global_all2all(
     thrust::raw_pointer_cast(round2_send_indices.data()), thrust::raw_pointer_cast(round1_send_offsets.data()),
     thrust::raw_pointer_cast(round2_request_positions.data()), thrust::raw_pointer_cast(packing_counters.data()), local_input_count);
 
-    printf("round2_send_indices: ");
-    for(size_t i = 0; i < num_requests; i++){
-      unsigned int tmp = round2_send_indices[i];
-      printf("%u ", tmp);
-    }
-    printf("\n");
+    // printf("round2_send_indices: ");
+    // for(size_t i = 0; i < num_requests; i++){
+    //   unsigned int tmp = round2_send_indices[i];
+    //   printf("%u ", tmp);
+    // }
+    // printf("\n");
     
     cudaStreamSynchronize(stream);
 
@@ -221,17 +221,17 @@ void global_all2all(
     }
     CHECK_NCCL(ncclGroupEnd());
     size_t total_indices_to_receive = thrust::reduce(round1_recv_histo.begin(), round1_recv_histo.end());
-    printf("total_indices_to_receive: %zu\n", total_indices_to_receive);
+    // printf("total_indices_to_receive: %zu\n", total_indices_to_receive);
     
     thrust::device_vector<IndexType> round2_recv_indices(total_indices_to_receive);
     thrust::exclusive_scan(round1_recv_histo.begin(), round1_recv_histo.end(), round1_recv_offsets.begin());
 
-    printf("round1_recv_offsets: ");
-    for(size_t i = 0; i < num_ranks; i++){
-      unsigned int tmp = round1_recv_offsets[i];
-      printf("%u ", tmp);
-    }
-    printf("\n");
+    // printf("round1_recv_offsets: ");
+    // for(size_t i = 0; i < num_ranks; i++){
+    //   unsigned int tmp = round1_recv_offsets[i];
+    //   printf("%u ", tmp);
+    // }
+    // printf("\n");
     cudaStreamSynchronize(stream);
     // ===== Round 2: All2All exchange request indices =====
     CHECK_NCCL(ncclGroupStart());
@@ -252,12 +252,12 @@ void global_all2all(
     }
     CHECK_NCCL(ncclGroupEnd());
     cudaStreamSynchronize(stream);
-    printf("round2_recv_indices: ");
-    for(size_t i = 0; i < total_indices_to_receive; i++){
-      unsigned int tmp = round2_recv_indices[i];
-      printf("%u ", tmp);
-    }
-    printf("\n");
+    // printf("round2_recv_indices: ");
+    // for(size_t i = 0; i < total_indices_to_receive; i++){
+    //   unsigned int tmp = round2_recv_indices[i];
+    //   printf("%u ", tmp);
+    // }
+    // printf("\n");
 
     thrust::device_vector<DataType> round3_send_data(total_indices_to_receive);
     pack_send_data_kernel<<<grid_size, block_size, 0, stream>>>(input_ptr, thrust::raw_pointer_cast(round2_recv_indices.data()),
@@ -282,11 +282,11 @@ void global_all2all(
      }
      CHECK_NCCL(ncclGroupEnd());
      cudaStreamSynchronize(stream);
-     printf("rank %d finished ncclAll2All round 3\n", rank_id);
+    //  printf("rank %d finished ncclAll2All round 3\n", rank_id);
     // ===== Final step: Unpack received data to output =====
     unpack_recv_data_kernel<<<grid_size, block_size, 0, stream>>>(output_ptr, thrust::raw_pointer_cast(round2_request_positions.data()),
      num_requests, thrust::raw_pointer_cast(round3_recv_data.data()));
-     printf("rank %d finished\n", rank_id);
+    //  printf("rank %d finished\n", rank_id);
 
 
 }
@@ -362,7 +362,7 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM> {
  
      bool need_distributed_all2all = (num_ranks > 1) && is_index_space;
      
-     printf("rank %d, num_ranks: %d, is_index_space: %d, need_distributed_all2all: %d\n", rank, num_ranks, is_index_space, need_distributed_all2all);
+    //  printf("rank %d, num_ranks: %d, is_index_space: %d, need_distributed_all2all: %d\n", rank, num_ranks, is_index_space, need_distributed_all2all);
      // For local all2all (single node or within a node)
      if (!need_distributed_all2all) {
      
@@ -504,9 +504,9 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM> {
    };
    auto dim = std::max(1, std::max(args.input.dim(), args.index_array.dim()));
    dim = std::max(dim, args.output.dim());
-   printf("args.input.code(): %d\n", args.input.code());
-   printf("args.index_array.code(): %d\n", args.index_array.code());
-   printf("args.output.code(): %d\n", args.output.code());  
+  //  printf("args.input.code(): %d\n", args.input.code());
+  //  printf("args.index_array.code(): %d\n", args.index_array.code());
+  //  printf("args.output.code(): %d\n", args.output.code());  
    double_dispatch(
      dim, args.input.code(), All2AllImpl<KIND>{}, args, context, context.communicators());
  }

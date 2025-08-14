@@ -17,7 +17,7 @@ data_array = np.arange(N_ROWS * N_COLS, dtype=np.float32)
 print("Data generated")
 
 print("Taking pairs")
-pair_list = [[i * N_COLS + j] for i in range(N_COLS) for j in range(i + 1, N_COLS)]
+pair_list = [i * N_COLS + j for i in range(N_COLS) for j in range(i + 1, N_COLS)]
 pairs_array = np.array(pair_list)
 print(len(pair_list))
 

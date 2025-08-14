@@ -361,8 +361,8 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM> {
      auto stream = get_cached_stream();
  
      bool need_distributed_all2all = (num_ranks > 1) && is_index_space;
- 
      
+     printf("rank %d, num_ranks: %d, is_index_space: %d, need_distributed_all2all: %d\n", rank, num_ranks, is_index_space, need_distributed_all2all);
      // For local all2all (single node or within a node)
      if (!need_distributed_all2all) {
      

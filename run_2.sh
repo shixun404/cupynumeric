@@ -67,7 +67,7 @@ export LD_LIBRARY_PATH=$HOME/miniconda3/envs/legate_1/lib/libibverbs:$LD_LIBRARY
 #export UCX_CUDA_TLS=ipc,cma
 # Disable the VFS feature to prevent non-fatal startup warnings
 # export UCX_VFS_ENABLE=n
-export UCX_IB_MLX5_DEVX=n
+# export UCX_IB_MLX5_DEVX=n
 # --- Run the application ---
 echo "--- Starting Legate Application ---"
 legate --gpus 8 --fbmem 50000 /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py

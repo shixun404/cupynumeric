@@ -38,17 +38,11 @@ export PATH=$MPI_HOME/bin:$PATH;
 export MPI_C_COMPILER=mpicc;
 export MPI_CXX_COMPILER=mpicxx;
 export ucc_DIR=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ucc/lib/cmake/ucc;
-#export UCX_TLS=rc,dc,sm,self,cuda_copy
-# export UCX_IB_GPU_DIRECT_RDMA=no
-export UCX_LOG_LEVEL=debug;
-#export OMPI_MCA_pml_ucx_tls="sm,cuda_copy,ib"
-# export UCX_NET_DEVICES=mlx5_0:1;
-#export UCX_NET_DEVICES=mlx5_0:1;
-
+export UCX_LOG_LEVEL=error;
 
 export CMAKE_PREFIX_PATH=/usr/local/cuda-12:$CMAKE_PREFIX_PATH;
 export CMAKE_PREFIX_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/25.3/math_libs/12.8/targets/x86_64-linux::$CMAKE_PREFIX_PATH;
-#export LD_LIBRARY_PATH=$HOME/miniconda3/envs/legate_1/lib:$LD_LIBRARY_PATH;
+export LD_LIBRARY_PATH=$HOME/miniconda3/envs/legate_1/lib:$LD_LIBRARY_PATH;
 export LD_LIBRARY_PATH=$HOME/miniconda3/envs/legate_1/lib/libibverbs:$LD_LIBRARY_PATH;
 export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/25.3/math_libs/12.8/targets/x86_64-linux/lib/:$LD_LIBRARY_PATH;
 export LD_LIBRARY_PATH=/usr/local/cuda-12.8/lib64:$LD_LIBRARY_PATH;

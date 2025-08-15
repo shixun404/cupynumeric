@@ -38,7 +38,7 @@ export PATH=$MPI_HOME/bin:$PATH;
 export MPI_C_COMPILER=mpicc;
 export MPI_CXX_COMPILER=mpicxx;
 export ucc_DIR=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ucc/lib/cmake/ucc;
-export UCX_LOG_LEVEL=error;
+export UCX_LOG_LEVEL=debug;
 
 export CMAKE_PREFIX_PATH=/usr/local/cuda-12:$CMAKE_PREFIX_PATH;
 export CMAKE_PREFIX_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/25.3/math_libs/12.8/targets/x86_64-linux::$CMAKE_PREFIX_PATH;

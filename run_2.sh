@@ -57,14 +57,12 @@ export CUDNN_PATH=$HPC_SDK_ROOT/math_libs/12.8/targets/sbsa-linux;
 export CUDA_PATH=$HPC_SDSK_ROOT;
 export CPATH=$CUDNN_PATH/include:$CPATH;
 export RAPIDS_LIBUCX_PREFER_SYSTEM_LIBRARY=1;
-export UCX_LOG_LEVEL=debug
-export LEGATE_TEST=1
 export OMPI_ALLOW_RUN_AS_ROOT=1
 export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 #export LD_LIBRARY_PATH=$HOME/miniconda3/envs/legate_1/lib:$LD_LIBRARY_PATH;
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$CONDA_ENV_DIR/lib"
 export LD_LIBRARY_PATH=$HOME/miniconda3/envs/legate_1/lib/libibverbs:$LD_LIBRARY_PATH;
-export OMPI_MCA_btl_base_verbose=100
+# export OMPI_MCA_btl_base_verbose=100
 # NEW: Explicitly tell the UCX CUDA transport to avoid gdrcopy
 #export UCX_CUDA_TLS=ipc,cma
 # Disable the VFS feature to prevent non-fatal startup warnings

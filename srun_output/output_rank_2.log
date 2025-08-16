@@ -1,37 +1,55 @@
 --- Starting Legate Application ---
-[1755304871.273686] [eos0519:3298841:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
-[1755304871.274570] [eos0519:3298841:0]          module.c:280  UCX  ERROR loading modules for ucs
-[1755304871.274572] [eos0519:3298841:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
-[1755304871.274651] [eos0519:3298841:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b33420]
-[1755304871.417542] [eos0519:3298851:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
-[1755304871.417562] [eos0519:3298851:0]          module.c:280  UCX  ERROR loading modules for ucs
-[1755304871.417565] [eos0519:3298851:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
-[1755304871.417645] [eos0519:3298851:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555564420]
-[1755304871.462071] [eos0519:3298851:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
-[1755304871.462866] [eos0519:3298851:0]          module.c:280  UCX  ERROR loading modules for ucs
-[1755304871.462868] [eos0519:3298851:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
-[1755304871.462931] [eos0519:3298851:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x5555556b94a0]
-[1755304871.508137] [eos0519:3298851:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
-[1755304871.509052] [eos0519:3298851:0]          module.c:280  UCX  ERROR loading modules for ucs
-[1755304871.509055] [eos0519:3298851:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
-[1755304871.509143] [eos0519:3298851:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b33420]
-[1755304871.749825] [eos0519:3298851:0]          module.c:280  UCX  ERROR loading modules for uct
-[1755304871.749835] [eos0519:3298851:0]          module.c:242  UCX  ERROR loading module 'cuda' with mode 0x1
-[1755304876.528808] [eos0519:3298851:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda.so.0.0.0 [0x5555563beef0]
-[1755304876.528824] [eos0519:3298851:0]          module.c:192  UCX  ERROR calling 'ucs_module_global_init' in '/opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda.so.0.0.0': [0x7fffcab0b470]
-[1755304876.528830] [eos0519:3298851:0]          module.c:280  UCX  ERROR loading modules for uct_cuda
-[1755304876.528833] [eos0519:3298851:0]          module.c:242  UCX  ERROR loading module 'gdrcopy' with mode 0x1
-[1755304876.529003] [eos0519:3298851:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0 [0x5555563c7590]
-[1755304876.529007] [eos0519:3298851:0]          module.c:165  UCX  ERROR ignoring 'ucs_module_global_init' (0x7fffcab0b470) from libuct_cuda.so.0 (0x7fffcab03000), expected in libuct_cuda_gdrcopy.so.0 (7fffcaa0a000)
-[1755304876.529010] [eos0519:3298851:0]          module.c:242  UCX  ERROR loading module 'ib' with mode 0x1
-[1755304876.529626] [eos0519:3298851:0]          module.c:280  UCX  ERROR loading modules for uct_ib
-[1755304876.529629] [eos0519:3298851:0]          module.c:242  UCX  ERROR loading module 'mlx5' with mode 0x1
-[1755304876.529875] [eos0519:3298851:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_ib_mlx5.so.0.0.0 [0x5555563ca440]
-[1755304876.529887] [eos0519:3298851:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_ib.so.0.0.0 [0x5555563c8290]
-[1755304876.529889] [eos0519:3298851:0]          module.c:242  UCX  ERROR loading module 'rdmacm' with mode 0x1
-[1755304876.530060] [eos0519:3298851:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_rdmacm.so.0.0.0 [0x5555563cb600]
-[1755304876.530062] [eos0519:3298851:0]          module.c:242  UCX  ERROR loading module 'cma' with mode 0x1
-[1755304876.530114] [eos0519:3298851:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cma.so.0.0.0 [0x5555563cc740]
-[1755304876.910335] [eos0519:3298851:0]          module.c:280  UCX  ERROR loading modules for ucm
-[1755304876.910344] [eos0519:3298851:0]          module.c:242  UCX  ERROR loading module 'cuda' with mode 0x1001
-[1755304876.910489] [eos0519:3298851:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucm_cuda.so.0.0.0 [0x555556535cc0]
+[1755321015.933683] [eos0183:1774539:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1755321015.934504] [eos0183:1774539:0]          module.c:280  UCX  ERROR loading modules for ucs
+[1755321015.934506] [eos0183:1774539:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
+[1755321015.934574] [eos0183:1774539:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b33400]
+[1755321016.057901] [eos0183:1774546:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1755321016.057914] [eos0183:1774546:0]          module.c:280  UCX  ERROR loading modules for ucs
+[1755321016.057917] [eos0183:1774546:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
+[1755321016.057974] [eos0183:1774546:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555564400]
+[1755321016.103023] [eos0183:1774546:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1755321016.103940] [eos0183:1774546:0]          module.c:280  UCX  ERROR loading modules for ucs
+[1755321016.103943] [eos0183:1774546:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
+[1755321016.104034] [eos0183:1774546:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x5555556b9480]
+[1755321016.169245] [eos0183:1774546:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1755321016.170059] [eos0183:1774546:0]          module.c:280  UCX  ERROR loading modules for ucs
+[1755321016.170061] [eos0183:1774546:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
+[1755321016.170141] [eos0183:1774546:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b33400]
+--------------------------------------------------------------------------
+It looks like orte_init failed for some reason; your parallel process is
+likely to abort.  There are many reasons that a parallel process can
+fail during orte_init; some of which are due to configuration or
+environment problems.  This failure appears to be an internal failure;
+here's some additional information (which may only be relevant to an
+Open MPI developer):
+
+  getting job size failed
+  --> Returned value Not found (-13) instead of ORTE_SUCCESS
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+It looks like orte_init failed for some reason; your parallel process is
+likely to abort.  There are many reasons that a parallel process can
+fail during orte_init; some of which are due to configuration or
+environment problems.  This failure appears to be an internal failure;
+here's some additional information (which may only be relevant to an
+Open MPI developer):
+
+  orte_ess_init failed
+  --> Returned value Not found (-13) instead of ORTE_SUCCESS
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+It looks like MPI_INIT failed for some reason; your parallel process is
+likely to abort.  There are many reasons that a parallel process can
+fail during MPI_INIT; some of which are due to configuration or environment
+problems.  This failure appears to be an internal failure; here's some
+additional information (which may only be relevant to an Open MPI
+developer):
+
+  ompi_mpi_init: ompi_rte_init failed
+  --> Returned "Not found" (-13) instead of "Success" (0)
+--------------------------------------------------------------------------
+*** An error occurred in MPI_Init_thread
+*** on a NULL communicator
+*** MPI_ERRORS_ARE_FATAL (processes in this communicator will now abort,
+***    and potentially your MPI job)
+[eos0183.eos.clusters.nvidia.com:1774546] Local abort before MPI_INIT completed completed successfully, but am not able to aggregate error messages, and not able to guarantee that all other processes were killed!

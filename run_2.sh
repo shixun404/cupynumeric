@@ -45,7 +45,7 @@ export PATH=$MPI_HOME/bin:$PATH;
 export MPI_C_COMPILER=mpicc;
 export MPI_CXX_COMPILER=mpicxx;
 export ucc_DIR=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ucc/lib/cmake/ucc;
-export UCX_LOG_LEVEL=debug;
+export UCX_LOG_LEVEL=error;
 export UCX_MODULE_LOG_LEVEL=error;
 
 
@@ -79,6 +79,11 @@ export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 # Disable the VFS feature to prevent non-fatal startup warnings
 # export UCX_VFS_ENABLE=n
 export UCX_IB_MLX5_DEVX=n
+# Force TCP transport and disable problematic ones
+export UCX_TLS=tcp,self
+export UCX_NET_DEVICES=all
+# Disable VFS to prevent warnings
+export UCX_VFS_ENABLE=n
 # --- Run the application ---
 echo "--- Starting Legate Application ---"
 legate --gpus 8 --fbmem 50000 /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py

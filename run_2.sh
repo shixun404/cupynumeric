@@ -94,7 +94,7 @@ export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 #export UCX_CUDA_TLS=ipc,cma
 # Disable the VFS feature to prevent non-fatal startup warnings
 # export UCX_VFS_ENABLE=n
-export UCX_IB_MLX5_DEVX=n
+# export UCX_IB_MLX5_DEVX=n
 # Force TCP transport and disable problematic ones
 # export UCX_TLS=rc,dc,sm,self,cuda_copy
 # export UCX_TLS=tcp,sm,self,cuda_copy

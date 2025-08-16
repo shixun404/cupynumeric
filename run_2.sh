@@ -48,6 +48,11 @@ export ucc_DIR=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ucc/lib/cmake/ucc;
 export UCX_LOG_LEVEL=debug;
 export UCX_MODULE_LOG_LEVEL=error;
 
+
+
+export UCX_IB_TIMEOUT=22s
+export UCX_TCP_KEEPALIVE=1
+
 export CMAKE_PREFIX_PATH=/usr/local/cuda-12:$CMAKE_PREFIX_PATH;
 export CMAKE_PREFIX_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/25.3/math_libs/12.8/targets/x86_64-linux::$CMAKE_PREFIX_PATH;
 export LD_LIBRARY_PATH=$HOME/miniconda3/envs/legate_1/lib:$LD_LIBRARY_PATH;

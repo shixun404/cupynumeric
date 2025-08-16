@@ -20,16 +20,9 @@ conda activate legate
 export OMPI_MCA_btl_tcp_if_include=eth0  # 或者你的网络接口名
 export OMPI_MCA_btl=tcp,self,vader
 export OMPI_MCA_pml=ob1
-export OMPI_MCA_coll_ucc_enable=0  # 禁用 UCC
-export OMPI_MCA_coll=^ucc          # 排除 UCC 组件
+
 export OMPI_MCA_btl_base_verbose=100  # 最详细的 BTL 调试
 export OMPI_MCA_mca_base_component_show_load_errors=1  # 显示组件加载错误
-# 在 run_2.sh 中添加
-# export CUDA_LAUNCH_BLOCKING=1
-# export REALM_CUDA_DEBUG=1  # 如果支持的话
-
-
-
 export HOME=/project/coreai_devtech_all/shixunw;
 export MPI_HOME=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ompi;
 export HPC_SDK_ROOT=/opt/nvidia/hpc_sdk/Linux_x86_64/25.3;

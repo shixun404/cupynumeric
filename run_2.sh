@@ -20,6 +20,9 @@ conda activate legate
 export OMPI_MCA_btl_tcp_if_include=eth0  # 或者你的网络接口名
 export OMPI_MCA_btl=tcp,self,vader
 export OMPI_MCA_pml=ob1
+export OMPI_MCA_coll=^ucc
+export OMPI_MCA_coll_base_verbose=1
+
 
 export OMPI_MCA_btl_base_verbose=100  # 最详细的 BTL 调试
 export OMPI_MCA_mca_base_component_show_load_errors=1  # 显示组件加载错误
@@ -93,4 +96,4 @@ export UCX_NET_DEVICES=all
 export UCX_VFS_ENABLE=n
 # --- Run the application ---
 echo "--- Starting Legate Application ---"
-legate --gpus 8 --fbmem 20000 /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py
+legate --gpus 1 --fbmem 20000 /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py

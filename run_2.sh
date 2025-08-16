@@ -25,7 +25,7 @@ conda activate legate
 export OMPI_MCA_pml=^ucx
 export OMPI_MCA_coll=^hcoll
 
-# export OMPI_MCA_btl_base_verbose=100  # 最详细的 BTL 调试
+export OMPI_MCA_btl_base_verbose=100  # 最详细的 BTL 调试
 # export OMPI_MCA_mca_base_component_show_load_errors=1  # 显示组件加载错误
 export HOME=/project/coreai_devtech_all/shixunw;
 export MPI_HOME=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ompi;
@@ -55,8 +55,8 @@ export PATH=$MPI_HOME/bin:$PATH;
 export MPI_C_COMPILER=mpicc;
 export MPI_CXX_COMPILER=mpicxx;
 export ucc_DIR=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ucc/lib/cmake/ucc;
-export UCX_LOG_LEVEL=error;
-export UCX_MODULE_LOG_LEVEL=error;
+export UCX_LOG_LEVEL=debug;
+export UCX_MODULE_LOG_LEVEL=debug;
 
 
 

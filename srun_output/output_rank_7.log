@@ -1,625 +1,625 @@
 --- Starting Legate Application ---
-[1755302669.535126] [eos0519:3238678:0]           debug.c:1158 UCX  DEBUG using signal stack 0x7ffff7b92000 size 141824
-[1755302669.561760] [eos0519:3238678:0]             cpu.c:339  UCX  DEBUG measured tsc frequency 1983.980 MHz after 0.10 ms
-[1755302669.561778] [eos0519:3238678:0]            init.c:121  UCX  DEBUG /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0 loaded at 0x7ffff7e30000
-[1755302669.561791] [eos0519:3238678:0]            init.c:122  UCX  DEBUG cmd line: /project/coreai_devtech_all/shixunw/miniconda3/envs/legate/bin/python3.13 /project/coreai_devtech_all/shixunw/miniconda3/envs/legate/bin/legate --gpus 8 --fbmem 50000 /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py 
-[1755302669.561798] [eos0519:3238678:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
-[1755302669.561806] [eos0519:3238678:0]          module.c:280  UCX  ERROR loading modules for ucs
-[1755302669.561808] [eos0519:3238678:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
-[1755302669.561951] [eos0519:3238678:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b334e0]
-[1755302670.601080] [eos0519:3238722:0]           debug.c:1158 UCX  DEBUG using signal stack 0x7ffff7b90000 size 141824
-[1755302670.603215] [eos0519:3238722:0]             cpu.c:339  UCX  DEBUG measured tsc frequency 1984.639 MHz after 0.07 ms
-[1755302670.603228] [eos0519:3238722:0]            init.c:121  UCX  DEBUG /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0 loaded at 0x7ffff7e30000
-[1755302670.603240] [eos0519:3238722:0]            init.c:122  UCX  DEBUG cmd line: /usr/bin/env bash /project/coreai_devtech_all/shixunw/miniconda3/envs/legate/share/legate/libexec/legate-bind.sh --launcher auto -- python /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py 
-[1755302670.603246] [eos0519:3238722:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
-[1755302670.603254] [eos0519:3238722:0]          module.c:280  UCX  ERROR loading modules for ucs
-[1755302670.603256] [eos0519:3238722:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
-[1755302670.603374] [eos0519:3238722:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x5555555644e0]
-[1755302670.647434] [eos0519:3238722:0]           debug.c:1158 UCX  DEBUG using signal stack 0x7ffff7b4a000 size 141824
-[1755302670.650532] [eos0519:3238722:0]             cpu.c:339  UCX  DEBUG measured tsc frequency 1985.348 MHz after 0.09 ms
-[1755302670.650548] [eos0519:3238722:0]            init.c:121  UCX  DEBUG /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0 loaded at 0x7ffff7e30000
-[1755302670.650557] [eos0519:3238722:0]            init.c:122  UCX  DEBUG cmd line: bash /project/coreai_devtech_all/shixunw/miniconda3/envs/legate/share/legate/libexec/legate-bind.sh --launcher auto -- python /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py 
-[1755302670.650564] [eos0519:3238722:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
-[1755302670.650572] [eos0519:3238722:0]          module.c:280  UCX  ERROR loading modules for ucs
-[1755302670.650574] [eos0519:3238722:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
-[1755302670.650710] [eos0519:3238722:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x5555556b9560]
-[1755302670.650785] [eos0519:3238722:f]        vfs_fuse.c:420  UCX  DEBUG connecting vfs socket 4 to daemon on '/run/user/0/ucx/vfs.sock'
-[1755302670.650800] [eos0519:3238722:f]        vfs_fuse.c:428  UCX  DEBUG failed to connect to vfs socket '/run/user/0/ucx/vfs.sock': No such file or directory
-[1755302670.650815] [eos0519:3238722:f]        vfs_sock.c:50   UCX  DIAG  failed to create directory '/run/user/0/ucx': No such file or directory
-[1755302670.650827] [eos0519:3238722:f]        vfs_fuse.c:436  UCX  DIAG  failed to watch on '/run/user/0/ucx/vfs.sock': Input/output error, VFS will be disabled
-[1755302670.697553] [eos0519:3238722:0]           debug.c:1158 UCX  DEBUG using signal stack 0x7ffff7b92000 size 141824
-[1755302670.700436] [eos0519:3238722:0]             cpu.c:339  UCX  DEBUG measured tsc frequency 2000.050 MHz after 0.08 ms
-[1755302670.700449] [eos0519:3238722:0]            init.c:121  UCX  DEBUG /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0 loaded at 0x7ffff7e30000
-[1755302670.700457] [eos0519:3238722:0]            init.c:122  UCX  DEBUG cmd line: python /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py 
-[1755302670.700463] [eos0519:3238722:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
-[1755302670.700468] [eos0519:3238722:0]          module.c:280  UCX  ERROR loading modules for ucs
-[1755302670.700470] [eos0519:3238722:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
-[1755302670.700581] [eos0519:3238722:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b334e0]
-[1755302670.700856] [eos0519:3238722:f]        vfs_fuse.c:420  UCX  DEBUG connecting vfs socket 3 to daemon on '/run/user/0/ucx/vfs.sock'
-[1755302670.700868] [eos0519:3238722:f]        vfs_fuse.c:428  UCX  DEBUG failed to connect to vfs socket '/run/user/0/ucx/vfs.sock': No such file or directory
-[1755302670.700875] [eos0519:3238722:f]        vfs_sock.c:50   UCX  DIAG  failed to create directory '/run/user/0/ucx': No such file or directory
-[1755302670.700878] [eos0519:3238722:f]        vfs_fuse.c:436  UCX  DIAG  failed to watch on '/run/user/0/ucx/vfs.sock': Input/output error, VFS will be disabled
-[1755302672.321712] [eos0519:3238722:0]            time.c:22   UCX  DEBUG arch clock frequency: 2000050000.00 Hz
-[1755302672.321757] [eos0519:3238722:0]     ucp_context.c:2257 UCX  INFO  Version 1.18.0 (loaded from /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucp.so.0)
-[1755302672.321762] [eos0519:3238722:0]     ucp_context.c:2016 UCX  DEBUG estimated number of endpoints is 8
-[1755302672.321763] [eos0519:3238722:0]     ucp_context.c:2023 UCX  DEBUG estimated number of endpoints per node is 8
-[1755302672.321764] [eos0519:3238722:0]     ucp_context.c:2033 UCX  DEBUG estimated bcopy bandwidth is 7340032000.000000
-[1755302672.321770] [eos0519:3238722:0]     ucp_context.c:2092 UCX  DEBUG allocation method[0] is md 'sysv'
-[1755302672.321771] [eos0519:3238722:0]     ucp_context.c:2092 UCX  DEBUG allocation method[1] is md 'posix'
-[1755302672.321778] [eos0519:3238722:0]     ucp_context.c:2104 UCX  DEBUG allocation method[2] is 'thp'
-[1755302672.321779] [eos0519:3238722:0]     ucp_context.c:2092 UCX  DEBUG allocation method[3] is md '*'
-[1755302672.321779] [eos0519:3238722:0]     ucp_context.c:2104 UCX  DEBUG allocation method[4] is 'mmap'
-[1755302672.321780] [eos0519:3238722:0]     ucp_context.c:2104 UCX  DEBUG allocation method[5] is 'heap'
-[1755302672.321789] [eos0519:3238722:0]          module.c:280  UCX  ERROR loading modules for uct
-[1755302672.321797] [eos0519:3238722:0]          module.c:242  UCX  ERROR loading module 'cuda' with mode 0x1
-[1755302677.197722] [eos0519:3238722:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda.so.0.0.0 [0x5555565c42d0]
-[1755302677.197740] [eos0519:3238722:0]          module.c:192  UCX  ERROR calling 'ucs_module_global_init' in '/opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda.so.0.0.0': [0x7fffc645e470]
-[1755302677.197751] [eos0519:3238722:0]          module.c:280  UCX  ERROR loading modules for uct_cuda
-[1755302677.197755] [eos0519:3238722:0]          module.c:242  UCX  ERROR loading module 'gdrcopy' with mode 0x1
-[1755302677.197939] [eos0519:3238722:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0 [0x5555565ccbf0]
-[1755302677.197945] [eos0519:3238722:0]          module.c:165  UCX  ERROR ignoring 'ucs_module_global_init' (0x7fffc645e470) from libuct_cuda.so.0 (0x7fffc6456000), expected in libuct_cuda_gdrcopy.so.0 (7fffc634d000)
-[1755302677.197947] [eos0519:3238722:0]          module.c:242  UCX  ERROR loading module 'ib' with mode 0x1
-[1755302677.199446] [eos0519:3238722:0]          module.c:280  UCX  ERROR loading modules for uct_ib
-[1755302677.199449] [eos0519:3238722:0]          module.c:242  UCX  ERROR loading module 'mlx5' with mode 0x1
-[1755302677.200906] [eos0519:3238722:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_ib_mlx5.so.0.0.0 [0x5555565ce960]
-[1755302677.200916] [eos0519:3238722:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_ib.so.0.0.0 [0x5555565cd8f0]
-[1755302677.200919] [eos0519:3238722:0]          module.c:242  UCX  ERROR loading module 'rdmacm' with mode 0x1
-[1755302677.202252] [eos0519:3238722:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_rdmacm.so.0.0.0 [0x5555565cfc20]
-[1755302677.202255] [eos0519:3238722:0]          module.c:242  UCX  ERROR loading module 'cma' with mode 0x1
-[1755302677.202309] [eos0519:3238722:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cma.so.0.0.0 [0x5555565d0d00]
-[1755302677.202363] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 0 for bus id 1b:00.0
-[1755302677.202380] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 1 for bus id 43:00.0
-[1755302677.202394] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 2 for bus id 52:00.0
-[1755302677.202408] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 3 for bus id 61:00.0
-[1755302677.202423] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 4 for bus id 9d:00.0
-[1755302677.202437] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 5 for bus id c3:00.0
-[1755302677.202452] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 6 for bus id d1:00.0
-[1755302677.202466] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 7 for bus id df:00.0
-[1755302677.203666] [eos0519:3238722:0]            topo.c:895  UCX  DEBUG /sys/class/net/bmc-redfish0/lower_enxea2983fa0d10: sysfs path undetected
-[1755302677.203669] [eos0519:3238722:0]            topo.c:556  UCX  DEBUG bmc-redfish0: system device unknown
-[1755302677.212947] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/eth3: PF sysfs path is '/sys/devices/pci0000:80/0000:80:05.0/0000:82:00.1'
-[1755302677.212964] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 8 for bus id 82:00.1
-[1755302677.212967] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG eth3: bdf_name 0000:82:00.1 sys_dev 8
-[1755302677.213839] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp154s0: PF sysfs path is '/sys/devices/pci0000:97/0000:97:01.0/0000:98:00.0/0000:99:00.0/0000:9a:00.0'
-[1755302677.213854] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 9 for bus id 9a:00.0
-[1755302677.213855] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG ibp154s0: bdf_name 0000:9a:00.0 sys_dev 9
-[1755302677.214765] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp170s0f0: PF sysfs path is '/sys/devices/pci0000:a5/0000:a5:01.0/0000:a6:00.0/0000:a7:00.0/0000:a8:00.0/0000:a9:00.0/0000:aa:00.0'
-[1755302677.214791] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 10 for bus id aa:00.0
-[1755302677.214792] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG ibp170s0f0: bdf_name 0000:aa:00.0 sys_dev 10
-[1755302677.215700] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp192s0: PF sysfs path is '/sys/devices/pci0000:bd/0000:bd:01.0/0000:be:00.0/0000:bf:00.0/0000:c0:00.0'
-[1755302677.215720] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 11 for bus id c0:00.0
-[1755302677.215721] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG ibp192s0: bdf_name 0000:c0:00.0 sys_dev 11
-[1755302677.216633] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp206s0: PF sysfs path is '/sys/devices/pci0000:cb/0000:cb:01.0/0000:cc:00.0/0000:cd:00.0/0000:ce:00.0'
-[1755302677.216657] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 12 for bus id ce:00.0
-[1755302677.216658] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG ibp206s0: bdf_name 0000:ce:00.0 sys_dev 12
-[1755302677.217568] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp220s0: PF sysfs path is '/sys/devices/pci0000:d9/0000:d9:01.0/0000:da:00.0/0000:db:00.0/0000:dc:00.0'
-[1755302677.217588] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 13 for bus id dc:00.0
-[1755302677.217589] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG ibp220s0: bdf_name 0000:dc:00.0 sys_dev 13
-[1755302677.218495] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp24s0: PF sysfs path is '/sys/devices/pci0000:15/0000:15:01.0/0000:16:00.0/0000:17:00.0/0000:18:00.0'
-[1755302677.218515] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 14 for bus id 18:00.0
-[1755302677.218516] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG ibp24s0: bdf_name 0000:18:00.0 sys_dev 14
-[1755302677.219436] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp41s0f0: PF sysfs path is '/sys/devices/pci0000:24/0000:24:01.0/0000:25:00.0/0000:26:00.0/0000:27:00.0/0000:28:00.0/0000:29:00.0'
-[1755302677.219460] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 15 for bus id 29:00.0
-[1755302677.219461] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG ibp41s0f0: bdf_name 0000:29:00.0 sys_dev 15
-[1755302677.220372] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp64s0: PF sysfs path is '/sys/devices/pci0000:3d/0000:3d:01.0/0000:3e:00.0/0000:3f:00.0/0000:40:00.0'
-[1755302677.220393] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 16 for bus id 40:00.0
-[1755302677.220394] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG ibp64s0: bdf_name 0000:40:00.0 sys_dev 16
-[1755302677.221297] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp79s0: PF sysfs path is '/sys/devices/pci0000:4c/0000:4c:01.0/0000:4d:00.0/0000:4e:00.0/0000:4f:00.0'
-[1755302677.221318] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 17 for bus id 4f:00.0
-[1755302677.221319] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG ibp79s0: bdf_name 0000:4f:00.0 sys_dev 17
-[1755302677.222235] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp94s0: PF sysfs path is '/sys/devices/pci0000:5b/0000:5b:01.0/0000:5c:00.0/0000:5d:00.0/0000:5e:00.0'
-[1755302677.222257] [eos0519:3238722:0]            topo.c:298  UCX  DEBUG added sys_dev 18 for bus id 5e:00.0
-[1755302677.222258] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG ibp94s0: bdf_name 0000:5e:00.0 sys_dev 18
-[1755302677.223148] [eos0519:3238722:0]            topo.c:895  UCX  DEBUG /sys/class/net/lo: sysfs path undetected
-[1755302677.223150] [eos0519:3238722:0]            topo.c:556  UCX  DEBUG lo: system device unknown
-[1755302677.223230] [eos0519:3238722:0]    cuda_copy_md.c:104  UCX  DEBUG dmabuf is supported on cuda device 0
-[1755302677.223247] [eos0519:3238722:0]      cuda_iface.c:52   UCX  DEBUG set cuda sys_device to `unknown` as no context is currently active
-[1755302677.620495] [eos0519:3238722:0]     cuda_ipc_md.c:449  UCX  DEBUG fabric_info: state=3 status=0 uuid=00000000:00000000:00000000:00000000
-[1755302677.623193] [eos0519:3238722:0]      cuda_iface.c:52   UCX  DEBUG set cuda sys_device to `unknown` as no context is currently active
-[1755302677.623246] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool rcache_mp: align 8, maxelems 4294967295, elemsize 144
-[1755302677.628185] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x5555565865e0 [id=47 ref 1] ucs_rcache_invalidate_handler() to hash
-[1755302677.628268] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 47 events 0x1 mode thread_spinlock
-[1755302677.628300] [eos0519:3238722:0]          module.c:280  UCX  ERROR loading modules for ucm
-[1755302677.628313] [eos0519:3238722:0]          module.c:242  UCX  ERROR loading module 'cuda' with mode 0x1001
-[1755302677.628467] [eos0519:3238722:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucm_cuda.so.0.0.0 [0x5555567392c0]
-[1755302677.693617] [eos0519:3238722:0]      cuda_iface.c:52   UCX  DEBUG set cuda sys_device to `unknown` as no context is currently active
-[1755302677.698397] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_0: PF sysfs path is '/sys/devices/pci0000:15/0000:15:01.0/0000:16:00.0/0000:17:00.0/0000:18:00.0'
-[1755302677.698402] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG mlx5_0: bdf_name 0000:18:00.0 sys_dev 14
-[1755302677.698415] [eos0519:3238722:0]       ib_device.c:498  UCX  DEBUG mlx5_0: vendor_id 0x15b3 device_id 4129
-[1755302677.698913] [eos0519:3238722:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_0: cross gvmi alias mkey is supported
-[1755302677.698914] [eos0519:3238722:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_0: mkey_by_name_reserve is not supported
-[1755302677.698915] [eos0519:3238722:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_0: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
-[1755302677.699033] [eos0519:3238722:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_0: ODP is disabled because version 1 is not supported for DevX QP
-[1755302677.702281] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x555556900010 [id=53 ref 1] uct_ib_async_event_handler() to hash
-[1755302677.702289] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 53 events 0x1 mode thread_spinlock
-[1755302677.702294] [eos0519:3238722:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_0' (InfiniBand channel adapter) with 1 ports
-[1755302677.702302] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_0: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
-[1755302677.702306] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_0: rocm GPUDirect RDMA is not detected by checking /dev/kfd
-[1755302677.702316] [eos0519:3238722:0]           ib_md.c:1202 UCX  DEBUG mlx5_0: dmabuf is supported
-[1755302677.702320] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
-[1755302677.702478] [eos0519:3238722:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_0: opened DEVX md log_max_qp=17
-[1755302677.702889] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_0: KSM dm memory registration status "Success" range 0x7ffff4000000..0x7ffff4000020 iova 0x0 mkey_index 0x0
-[1755302677.703158] [eos0519:3238722:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_0: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7ffff4000000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
-[1755302677.703160] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_0: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7ffff4000000 atomic mkey_index 0x0
-[1755302677.703546] [eos0519:3238722:0]           ib_md.c:1161 UCX  DEBUG mlx5_0: relaxed order memory access is disabled
-[1755302677.703785] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_0: KSM flush-mr memory registration status "Success" range 0x5555568fd000..0x5555568fd008 iova 0x0 mkey_index 0x0
-[1755302677.703786] [eos0519:3238722:0]           ib_md.c:1031 UCX  DEBUG mlx5_0: md open by 'uct_ib_mlx5_devx_md_ops' is successful
-[1755302677.728773] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_3: PF sysfs path is '/sys/devices/pci0000:3d/0000:3d:01.0/0000:3e:00.0/0000:3f:00.0/0000:40:00.0'
-[1755302677.728779] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG mlx5_3: bdf_name 0000:40:00.0 sys_dev 16
-[1755302677.728789] [eos0519:3238722:0]       ib_device.c:498  UCX  DEBUG mlx5_3: vendor_id 0x15b3 device_id 4129
-[1755302677.729314] [eos0519:3238722:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_3: cross gvmi alias mkey is supported
-[1755302677.729315] [eos0519:3238722:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_3: mkey_by_name_reserve is not supported
-[1755302677.729316] [eos0519:3238722:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_3: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
-[1755302677.729438] [eos0519:3238722:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_3: ODP is disabled because version 1 is not supported for DevX QP
-[1755302677.729568] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x55555692fca0 [id=55 ref 1] uct_ib_async_event_handler() to hash
-[1755302677.729574] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 55 events 0x1 mode thread_spinlock
-[1755302677.729576] [eos0519:3238722:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_3' (InfiniBand channel adapter) with 1 ports
-[1755302677.729582] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_3: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
-[1755302677.729585] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_3: rocm GPUDirect RDMA is not detected by checking /dev/kfd
-[1755302677.729589] [eos0519:3238722:0]           ib_md.c:1202 UCX  DEBUG mlx5_3: dmabuf is supported
-[1755302677.729591] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
-[1755302677.729773] [eos0519:3238722:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_3: opened DEVX md log_max_qp=17
-[1755302677.730179] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_3: KSM dm memory registration status "Success" range 0x7fffc622a000..0x7fffc622a020 iova 0x0 mkey_index 0x0
-[1755302677.730481] [eos0519:3238722:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_3: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc622a000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
-[1755302677.730483] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_3: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc622a000 atomic mkey_index 0x0
-[1755302677.730856] [eos0519:3238722:0]           ib_md.c:1161 UCX  DEBUG mlx5_3: relaxed order memory access is disabled
-[1755302677.731137] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_3: KSM flush-mr memory registration status "Success" range 0x5555569fe000..0x5555569fe008 iova 0x0 mkey_index 0x0
-[1755302677.731138] [eos0519:3238722:0]           ib_md.c:1031 UCX  DEBUG mlx5_3: md open by 'uct_ib_mlx5_devx_md_ops' is successful
-[1755302677.762147] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_4: PF sysfs path is '/sys/devices/pci0000:4c/0000:4c:01.0/0000:4d:00.0/0000:4e:00.0/0000:4f:00.0'
-[1755302677.762150] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG mlx5_4: bdf_name 0000:4f:00.0 sys_dev 17
-[1755302677.762159] [eos0519:3238722:0]       ib_device.c:498  UCX  DEBUG mlx5_4: vendor_id 0x15b3 device_id 4129
-[1755302677.762664] [eos0519:3238722:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_4: cross gvmi alias mkey is supported
-[1755302677.762665] [eos0519:3238722:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_4: mkey_by_name_reserve is not supported
-[1755302677.762666] [eos0519:3238722:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_4: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
-[1755302677.762783] [eos0519:3238722:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_4: ODP is disabled because version 1 is not supported for DevX QP
-[1755302677.762918] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x5555565870e0 [id=57 ref 1] uct_ib_async_event_handler() to hash
-[1755302677.762922] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 57 events 0x1 mode thread_spinlock
-[1755302677.762924] [eos0519:3238722:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_4' (InfiniBand channel adapter) with 1 ports
-[1755302677.762928] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_4: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
-[1755302677.762931] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_4: rocm GPUDirect RDMA is not detected by checking /dev/kfd
-[1755302677.762934] [eos0519:3238722:0]           ib_md.c:1202 UCX  DEBUG mlx5_4: dmabuf is supported
-[1755302677.762936] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
-[1755302677.763130] [eos0519:3238722:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_4: opened DEVX md log_max_qp=17
-[1755302677.763539] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_4: KSM dm memory registration status "Success" range 0x7fffc6225000..0x7fffc6225020 iova 0x0 mkey_index 0x0
-[1755302677.763910] [eos0519:3238722:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_4: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc6225000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
-[1755302677.763912] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_4: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc6225000 atomic mkey_index 0x0
-[1755302677.764337] [eos0519:3238722:0]           ib_md.c:1161 UCX  DEBUG mlx5_4: relaxed order memory access is disabled
-[1755302677.764583] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_4: KSM flush-mr memory registration status "Success" range 0x555556a00000..0x555556a00008 iova 0x0 mkey_index 0x0
-[1755302677.764583] [eos0519:3238722:0]           ib_md.c:1031 UCX  DEBUG mlx5_4: md open by 'uct_ib_mlx5_devx_md_ops' is successful
-[1755302677.794587] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_5: PF sysfs path is '/sys/devices/pci0000:5b/0000:5b:01.0/0000:5c:00.0/0000:5d:00.0/0000:5e:00.0'
-[1755302677.794589] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG mlx5_5: bdf_name 0000:5e:00.0 sys_dev 18
-[1755302677.794597] [eos0519:3238722:0]       ib_device.c:498  UCX  DEBUG mlx5_5: vendor_id 0x15b3 device_id 4129
-[1755302677.795097] [eos0519:3238722:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_5: cross gvmi alias mkey is supported
-[1755302677.795098] [eos0519:3238722:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_5: mkey_by_name_reserve is not supported
-[1755302677.795099] [eos0519:3238722:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_5: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
-[1755302677.795231] [eos0519:3238722:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_5: ODP is disabled because version 1 is not supported for DevX QP
-[1755302677.795376] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x55555677e4e0 [id=59 ref 1] uct_ib_async_event_handler() to hash
-[1755302677.795381] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 59 events 0x1 mode thread_spinlock
-[1755302677.795382] [eos0519:3238722:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_5' (InfiniBand channel adapter) with 1 ports
-[1755302677.795386] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_5: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
-[1755302677.795389] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_5: rocm GPUDirect RDMA is not detected by checking /dev/kfd
-[1755302677.795392] [eos0519:3238722:0]           ib_md.c:1202 UCX  DEBUG mlx5_5: dmabuf is supported
-[1755302677.795393] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
-[1755302677.795567] [eos0519:3238722:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_5: opened DEVX md log_max_qp=17
-[1755302677.795968] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_5: KSM dm memory registration status "Success" range 0x7fffc6220000..0x7fffc6220020 iova 0x0 mkey_index 0x0
-[1755302677.796251] [eos0519:3238722:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_5: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc6220000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
-[1755302677.796253] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_5: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc6220000 atomic mkey_index 0x0
-[1755302677.796670] [eos0519:3238722:0]           ib_md.c:1161 UCX  DEBUG mlx5_5: relaxed order memory access is disabled
-[1755302677.796902] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_5: KSM flush-mr memory registration status "Success" range 0x55555677f000..0x55555677f008 iova 0x0 mkey_index 0x0
-[1755302677.796903] [eos0519:3238722:0]           ib_md.c:1031 UCX  DEBUG mlx5_5: md open by 'uct_ib_mlx5_devx_md_ops' is successful
-[1755302677.827458] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_6: PF sysfs path is '/sys/devices/pci0000:97/0000:97:01.0/0000:98:00.0/0000:99:00.0/0000:9a:00.0'
-[1755302677.827461] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG mlx5_6: bdf_name 0000:9a:00.0 sys_dev 9
-[1755302677.827469] [eos0519:3238722:0]       ib_device.c:498  UCX  DEBUG mlx5_6: vendor_id 0x15b3 device_id 4129
-[1755302677.827984] [eos0519:3238722:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_6: cross gvmi alias mkey is supported
-[1755302677.827985] [eos0519:3238722:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_6: mkey_by_name_reserve is not supported
-[1755302677.827986] [eos0519:3238722:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_6: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
-[1755302677.828128] [eos0519:3238722:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_6: ODP is disabled because version 1 is not supported for DevX QP
-[1755302677.828274] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x555556a03850 [id=61 ref 1] uct_ib_async_event_handler() to hash
-[1755302677.828279] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 61 events 0x1 mode thread_spinlock
-[1755302677.828280] [eos0519:3238722:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_6' (InfiniBand channel adapter) with 1 ports
-[1755302677.828284] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_6: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
-[1755302677.828287] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_6: rocm GPUDirect RDMA is not detected by checking /dev/kfd
-[1755302677.828290] [eos0519:3238722:0]           ib_md.c:1202 UCX  DEBUG mlx5_6: dmabuf is supported
-[1755302677.828292] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
-[1755302677.828464] [eos0519:3238722:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_6: opened DEVX md log_max_qp=17
-[1755302677.828881] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_6: KSM dm memory registration status "Success" range 0x7fffc621b000..0x7fffc621b020 iova 0x0 mkey_index 0x0
-[1755302677.829176] [eos0519:3238722:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_6: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc621b000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
-[1755302677.829178] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_6: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc621b000 atomic mkey_index 0x0
-[1755302677.829546] [eos0519:3238722:0]           ib_md.c:1161 UCX  DEBUG mlx5_6: relaxed order memory access is disabled
-[1755302677.829855] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_6: KSM flush-mr memory registration status "Success" range 0x555556781000..0x555556781008 iova 0x0 mkey_index 0x0
-[1755302677.829856] [eos0519:3238722:0]           ib_md.c:1031 UCX  DEBUG mlx5_6: md open by 'uct_ib_mlx5_devx_md_ops' is successful
-[1755302677.860347] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_9: PF sysfs path is '/sys/devices/pci0000:bd/0000:bd:01.0/0000:be:00.0/0000:bf:00.0/0000:c0:00.0'
-[1755302677.860350] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG mlx5_9: bdf_name 0000:c0:00.0 sys_dev 11
-[1755302677.860359] [eos0519:3238722:0]       ib_device.c:498  UCX  DEBUG mlx5_9: vendor_id 0x15b3 device_id 4129
-[1755302677.860882] [eos0519:3238722:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_9: cross gvmi alias mkey is supported
-[1755302677.860883] [eos0519:3238722:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_9: mkey_by_name_reserve is not supported
-[1755302677.860884] [eos0519:3238722:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_9: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
-[1755302677.861025] [eos0519:3238722:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_9: ODP is disabled because version 1 is not supported for DevX QP
-[1755302677.861173] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x555556782010 [id=63 ref 1] uct_ib_async_event_handler() to hash
-[1755302677.861178] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 63 events 0x1 mode thread_spinlock
-[1755302677.861179] [eos0519:3238722:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_9' (InfiniBand channel adapter) with 1 ports
-[1755302677.861183] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_9: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
-[1755302677.861186] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_9: rocm GPUDirect RDMA is not detected by checking /dev/kfd
-[1755302677.861190] [eos0519:3238722:0]           ib_md.c:1202 UCX  DEBUG mlx5_9: dmabuf is supported
-[1755302677.861191] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
-[1755302677.861374] [eos0519:3238722:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_9: opened DEVX md log_max_qp=17
-[1755302677.861784] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_9: KSM dm memory registration status "Success" range 0x7fffc6216000..0x7fffc6216020 iova 0x0 mkey_index 0x0
-[1755302677.862103] [eos0519:3238722:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_9: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc6216000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
-[1755302677.862105] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_9: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc6216000 atomic mkey_index 0x0
-[1755302677.862474] [eos0519:3238722:0]           ib_md.c:1161 UCX  DEBUG mlx5_9: relaxed order memory access is disabled
-[1755302677.862835] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_9: KSM flush-mr memory registration status "Success" range 0x555556a27000..0x555556a27008 iova 0x0 mkey_index 0x0
-[1755302677.862836] [eos0519:3238722:0]           ib_md.c:1031 UCX  DEBUG mlx5_9: md open by 'uct_ib_mlx5_devx_md_ops' is successful
-[1755302677.869920] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_10: PF sysfs path is '/sys/devices/pci0000:cb/0000:cb:01.0/0000:cc:00.0/0000:cd:00.0/0000:ce:00.0'
-[1755302677.869923] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG mlx5_10: bdf_name 0000:ce:00.0 sys_dev 12
-[1755302677.869930] [eos0519:3238722:0]       ib_device.c:498  UCX  DEBUG mlx5_10: vendor_id 0x15b3 device_id 4129
-[1755302677.870454] [eos0519:3238722:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_10: cross gvmi alias mkey is supported
-[1755302677.870455] [eos0519:3238722:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_10: mkey_by_name_reserve is not supported
-[1755302677.870456] [eos0519:3238722:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_10: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
-[1755302677.870579] [eos0519:3238722:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_10: ODP is disabled because version 1 is not supported for DevX QP
-[1755302677.870723] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x55555671a880 [id=65 ref 1] uct_ib_async_event_handler() to hash
-[1755302677.870728] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 65 events 0x1 mode thread_spinlock
-[1755302677.870729] [eos0519:3238722:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_10' (InfiniBand channel adapter) with 1 ports
-[1755302677.870733] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_10: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
-[1755302677.870735] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_10: rocm GPUDirect RDMA is not detected by checking /dev/kfd
-[1755302677.870738] [eos0519:3238722:0]           ib_md.c:1202 UCX  DEBUG mlx5_10: dmabuf is supported
-[1755302677.870740] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
-[1755302677.870925] [eos0519:3238722:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_10: opened DEVX md log_max_qp=17
-[1755302677.871331] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_10: KSM dm memory registration status "Success" range 0x7fffc6211000..0x7fffc6211020 iova 0x0 mkey_index 0x0
-[1755302677.871643] [eos0519:3238722:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_10: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc6211000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
-[1755302677.871644] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_10: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc6211000 atomic mkey_index 0x0
-[1755302677.872019] [eos0519:3238722:0]           ib_md.c:1161 UCX  DEBUG mlx5_10: relaxed order memory access is disabled
-[1755302677.872255] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_10: KSM flush-mr memory registration status "Success" range 0x555556a29000..0x555556a29008 iova 0x0 mkey_index 0x0
-[1755302677.872256] [eos0519:3238722:0]           ib_md.c:1031 UCX  DEBUG mlx5_10: md open by 'uct_ib_mlx5_devx_md_ops' is successful
-[1755302677.902952] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_11: PF sysfs path is '/sys/devices/pci0000:d9/0000:d9:01.0/0000:da:00.0/0000:db:00.0/0000:dc:00.0'
-[1755302677.902955] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG mlx5_11: bdf_name 0000:dc:00.0 sys_dev 13
-[1755302677.902964] [eos0519:3238722:0]       ib_device.c:498  UCX  DEBUG mlx5_11: vendor_id 0x15b3 device_id 4129
-[1755302677.903474] [eos0519:3238722:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_11: cross gvmi alias mkey is supported
-[1755302677.903475] [eos0519:3238722:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_11: mkey_by_name_reserve is not supported
-[1755302677.903475] [eos0519:3238722:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_11: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
-[1755302677.903627] [eos0519:3238722:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_11: ODP is disabled because version 1 is not supported for DevX QP
-[1755302677.903765] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x555556a2c010 [id=67 ref 1] uct_ib_async_event_handler() to hash
-[1755302677.903769] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 67 events 0x1 mode thread_spinlock
-[1755302677.903770] [eos0519:3238722:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_11' (InfiniBand channel adapter) with 1 ports
-[1755302677.903774] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_11: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
-[1755302677.903777] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_11: rocm GPUDirect RDMA is not detected by checking /dev/kfd
-[1755302677.903780] [eos0519:3238722:0]           ib_md.c:1202 UCX  DEBUG mlx5_11: dmabuf is supported
-[1755302677.903782] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
-[1755302677.903958] [eos0519:3238722:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_11: opened DEVX md log_max_qp=17
-[1755302677.904380] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_11: KSM dm memory registration status "Success" range 0x7fffc620c000..0x7fffc620c020 iova 0x0 mkey_index 0x0
-[1755302677.904761] [eos0519:3238722:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_11: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc620c000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
-[1755302677.904762] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_11: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc620c000 atomic mkey_index 0x0
-[1755302677.905127] [eos0519:3238722:0]           ib_md.c:1161 UCX  DEBUG mlx5_11: relaxed order memory access is disabled
-[1755302677.905464] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_11: KSM flush-mr memory registration status "Success" range 0x555556769000..0x555556769008 iova 0x0 mkey_index 0x0
-[1755302677.905465] [eos0519:3238722:0]           ib_md.c:1031 UCX  DEBUG mlx5_11: md open by 'uct_ib_mlx5_devx_md_ops' is successful
-[1755302677.912050] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_0: PF sysfs path is '/sys/devices/pci0000:15/0000:15:01.0/0000:16:00.0/0000:17:00.0/0000:18:00.0'
-[1755302677.912053] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG mlx5_0: bdf_name 0000:18:00.0 sys_dev 14
-[1755302677.912060] [eos0519:3238722:0]       ib_device.c:498  UCX  DEBUG mlx5_0: vendor_id 0x15b3 device_id 4129
-[1755302677.912578] [eos0519:3238722:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_0: cross gvmi alias mkey is supported
-[1755302677.912579] [eos0519:3238722:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_0: mkey_by_name_reserve is not supported
-[1755302677.912580] [eos0519:3238722:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_0: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
-[1755302677.912722] [eos0519:3238722:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_0: ODP is disabled because version 1 is not supported for DevX QP
-[1755302677.912852] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x5555568e21a0 [id=69 ref 1] uct_ib_async_event_handler() to hash
-[1755302677.912857] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 69 events 0x1 mode thread_spinlock
-[1755302677.912858] [eos0519:3238722:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_0' (InfiniBand channel adapter) with 1 ports
-[1755302677.912861] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_0: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
-[1755302677.912864] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_0: rocm GPUDirect RDMA is not detected by checking /dev/kfd
-[1755302677.912867] [eos0519:3238722:0]           ib_md.c:1202 UCX  DEBUG mlx5_0: dmabuf is supported
-[1755302677.912869] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
-[1755302677.913026] [eos0519:3238722:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_0: opened DEVX md log_max_qp=17
-[1755302677.913432] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_0: KSM dm memory registration status "Success" range 0x7fffc6207000..0x7fffc6207020 iova 0x0 mkey_index 0x0
-[1755302677.913721] [eos0519:3238722:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_0: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc6207000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
-[1755302677.913723] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_0: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc6207000 atomic mkey_index 0x0
-[1755302677.914117] [eos0519:3238722:0]           ib_md.c:1161 UCX  DEBUG mlx5_0: relaxed order memory access is disabled
-[1755302677.914337] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_0: KSM flush-mr memory registration status "Success" range 0x55555676b000..0x55555676b008 iova 0x0 mkey_index 0x0
-[1755302677.914356] [eos0519:3238722:0]          uct_md.c:96   UCX  DEBUG failed to query gga_mlx5 resources: No such device
-[1755302677.914357] [eos0519:3238722:0]     ucp_context.c:1188 UCX  DEBUG No tl resources found for md mlx5_0
-[1755302677.914358] [eos0519:3238722:0]     ucp_context.c:1648 UCX  DEBUG closing md mlx5_0 because it has no selected transport resources
-[1755302677.914363] [eos0519:3238722:0]    ib_mlx5dv_md.c:2496 UCX  DEBUG mlx5_0: md=0x555556821ba0 md->flags=0x3fb3f7f flush_rkey=0x9100
-[1755302677.914672] [eos0519:3238722:0]           mpool.c:194  UCX  DEBUG mpool devx dbrec destroyed
-[1755302677.914677] [eos0519:3238722:0]       ib_device.c:616  UCX  DEBUG destroying ib device mlx5_0
-[1755302677.914680] [eos0519:3238722:0]           async.c:173  UCX  DEBUG removed async handler 0x5555568e21a0 [id=69 ref 1] uct_ib_async_event_handler() from hash
-[1755302677.914681] [eos0519:3238722:0]           async.c:576  UCX  DEBUG removing async handler 0x5555568e21a0 [id=69 ref 1] uct_ib_async_event_handler()
-[1755302677.914684] [eos0519:3238722:0]           async.c:188  UCX  DEBUG release async handler 0x5555568e21a0 [id=69 ref 0] uct_ib_async_event_handler()
-[1755302677.943400] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_3: PF sysfs path is '/sys/devices/pci0000:3d/0000:3d:01.0/0000:3e:00.0/0000:3f:00.0/0000:40:00.0'
-[1755302677.943402] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG mlx5_3: bdf_name 0000:40:00.0 sys_dev 16
-[1755302677.943411] [eos0519:3238722:0]       ib_device.c:498  UCX  DEBUG mlx5_3: vendor_id 0x15b3 device_id 4129
-[1755302677.943881] [eos0519:3238722:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_3: cross gvmi alias mkey is supported
-[1755302677.943882] [eos0519:3238722:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_3: mkey_by_name_reserve is not supported
-[1755302677.943883] [eos0519:3238722:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_3: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
-[1755302677.943989] [eos0519:3238722:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_3: ODP is disabled because version 1 is not supported for DevX QP
-[1755302677.944107] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x55555676c010 [id=69 ref 1] uct_ib_async_event_handler() to hash
-[1755302677.944111] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 69 events 0x1 mode thread_spinlock
-[1755302677.944112] [eos0519:3238722:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_3' (InfiniBand channel adapter) with 1 ports
-[1755302677.944116] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_3: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
-[1755302677.944118] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_3: rocm GPUDirect RDMA is not detected by checking /dev/kfd
-[1755302677.944121] [eos0519:3238722:0]           ib_md.c:1202 UCX  DEBUG mlx5_3: dmabuf is supported
-[1755302677.944123] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
-[1755302677.944294] [eos0519:3238722:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_3: opened DEVX md log_max_qp=17
-[1755302677.944684] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_3: KSM dm memory registration status "Success" range 0x7fffc6207000..0x7fffc6207020 iova 0x0 mkey_index 0x0
-[1755302677.944966] [eos0519:3238722:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_3: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc6207000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
-[1755302677.944968] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_3: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc6207000 atomic mkey_index 0x0
-[1755302677.945310] [eos0519:3238722:0]           ib_md.c:1161 UCX  DEBUG mlx5_3: relaxed order memory access is disabled
-[1755302677.945526] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_3: KSM flush-mr memory registration status "Success" range 0x55555676d000..0x55555676d008 iova 0x0 mkey_index 0x0
-[1755302677.945541] [eos0519:3238722:0]          uct_md.c:96   UCX  DEBUG failed to query gga_mlx5 resources: No such device
-[1755302677.945541] [eos0519:3238722:0]     ucp_context.c:1188 UCX  DEBUG No tl resources found for md mlx5_3
-[1755302677.945542] [eos0519:3238722:0]     ucp_context.c:1648 UCX  DEBUG closing md mlx5_3 because it has no selected transport resources
-[1755302677.945546] [eos0519:3238722:0]    ib_mlx5dv_md.c:2496 UCX  DEBUG mlx5_3: md=0x55555676a9b0 md->flags=0x3fb3f7f flush_rkey=0x36100
-[1755302677.945779] [eos0519:3238722:0]           mpool.c:194  UCX  DEBUG mpool devx dbrec destroyed
-[1755302677.945781] [eos0519:3238722:0]       ib_device.c:616  UCX  DEBUG destroying ib device mlx5_3
-[1755302677.945782] [eos0519:3238722:0]           async.c:173  UCX  DEBUG removed async handler 0x55555676c010 [id=69 ref 1] uct_ib_async_event_handler() from hash
-[1755302677.945792] [eos0519:3238722:0]           async.c:576  UCX  DEBUG removing async handler 0x55555676c010 [id=69 ref 1] uct_ib_async_event_handler()
-[1755302677.945794] [eos0519:3238722:0]           async.c:188  UCX  DEBUG release async handler 0x55555676c010 [id=69 ref 0] uct_ib_async_event_handler()
-[1755302677.950570] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_4: PF sysfs path is '/sys/devices/pci0000:4c/0000:4c:01.0/0000:4d:00.0/0000:4e:00.0/0000:4f:00.0'
-[1755302677.950572] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG mlx5_4: bdf_name 0000:4f:00.0 sys_dev 17
-[1755302677.950580] [eos0519:3238722:0]       ib_device.c:498  UCX  DEBUG mlx5_4: vendor_id 0x15b3 device_id 4129
-[1755302677.951056] [eos0519:3238722:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_4: cross gvmi alias mkey is supported
-[1755302677.951057] [eos0519:3238722:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_4: mkey_by_name_reserve is not supported
-[1755302677.951058] [eos0519:3238722:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_4: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
-[1755302677.951167] [eos0519:3238722:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_4: ODP is disabled because version 1 is not supported for DevX QP
-[1755302677.951285] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x555556768fc0 [id=69 ref 1] uct_ib_async_event_handler() to hash
-[1755302677.951289] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 69 events 0x1 mode thread_spinlock
-[1755302677.951290] [eos0519:3238722:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_4' (InfiniBand channel adapter) with 1 ports
-[1755302677.951293] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_4: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
-[1755302677.951295] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_4: rocm GPUDirect RDMA is not detected by checking /dev/kfd
-[1755302677.951298] [eos0519:3238722:0]           ib_md.c:1202 UCX  DEBUG mlx5_4: dmabuf is supported
-[1755302677.951299] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
-[1755302677.951471] [eos0519:3238722:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_4: opened DEVX md log_max_qp=17
-[1755302677.951864] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_4: KSM dm memory registration status "Success" range 0x7fffc6207000..0x7fffc6207020 iova 0x0 mkey_index 0x0
-[1755302677.952139] [eos0519:3238722:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_4: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc6207000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
-[1755302677.952140] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_4: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc6207000 atomic mkey_index 0x0
-[1755302677.952488] [eos0519:3238722:0]           ib_md.c:1161 UCX  DEBUG mlx5_4: relaxed order memory access is disabled
-[1755302677.952703] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_4: KSM flush-mr memory registration status "Success" range 0x55555676b000..0x55555676b008 iova 0x0 mkey_index 0x0
-[1755302677.952717] [eos0519:3238722:0]          uct_md.c:96   UCX  DEBUG failed to query gga_mlx5 resources: No such device
-[1755302677.952718] [eos0519:3238722:0]     ucp_context.c:1188 UCX  DEBUG No tl resources found for md mlx5_4
-[1755302677.952719] [eos0519:3238722:0]     ucp_context.c:1648 UCX  DEBUG closing md mlx5_4 because it has no selected transport resources
-[1755302677.952722] [eos0519:3238722:0]    ib_mlx5dv_md.c:2496 UCX  DEBUG mlx5_4: md=0x55555681f320 md->flags=0x3fb3f7f flush_rkey=0x32400
-[1755302677.953005] [eos0519:3238722:0]           mpool.c:194  UCX  DEBUG mpool devx dbrec destroyed
-[1755302677.953006] [eos0519:3238722:0]       ib_device.c:616  UCX  DEBUG destroying ib device mlx5_4
-[1755302677.953007] [eos0519:3238722:0]           async.c:173  UCX  DEBUG removed async handler 0x555556768fc0 [id=69 ref 1] uct_ib_async_event_handler() from hash
-[1755302677.953008] [eos0519:3238722:0]           async.c:576  UCX  DEBUG removing async handler 0x555556768fc0 [id=69 ref 1] uct_ib_async_event_handler()
-[1755302677.953010] [eos0519:3238722:0]           async.c:188  UCX  DEBUG release async handler 0x555556768fc0 [id=69 ref 0] uct_ib_async_event_handler()
-[1755302677.957839] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_5: PF sysfs path is '/sys/devices/pci0000:5b/0000:5b:01.0/0000:5c:00.0/0000:5d:00.0/0000:5e:00.0'
-[1755302677.957841] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG mlx5_5: bdf_name 0000:5e:00.0 sys_dev 18
-[1755302677.957848] [eos0519:3238722:0]       ib_device.c:498  UCX  DEBUG mlx5_5: vendor_id 0x15b3 device_id 4129
-[1755302677.958327] [eos0519:3238722:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_5: cross gvmi alias mkey is supported
-[1755302677.958327] [eos0519:3238722:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_5: mkey_by_name_reserve is not supported
-[1755302677.958328] [eos0519:3238722:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_5: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
-[1755302677.958438] [eos0519:3238722:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_5: ODP is disabled because version 1 is not supported for DevX QP
-[1755302677.958555] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x55555676a680 [id=69 ref 1] uct_ib_async_event_handler() to hash
-[1755302677.958559] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 69 events 0x1 mode thread_spinlock
-[1755302677.958560] [eos0519:3238722:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_5' (InfiniBand channel adapter) with 1 ports
-[1755302677.958564] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_5: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
-[1755302677.958567] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_5: rocm GPUDirect RDMA is not detected by checking /dev/kfd
-[1755302677.958570] [eos0519:3238722:0]           ib_md.c:1202 UCX  DEBUG mlx5_5: dmabuf is supported
-[1755302677.958571] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
-[1755302677.958744] [eos0519:3238722:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_5: opened DEVX md log_max_qp=17
-[1755302677.959132] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_5: KSM dm memory registration status "Success" range 0x7fffc6207000..0x7fffc6207020 iova 0x0 mkey_index 0x0
-[1755302677.959410] [eos0519:3238722:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_5: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc6207000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
-[1755302677.959411] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_5: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc6207000 atomic mkey_index 0x0
-[1755302677.959751] [eos0519:3238722:0]           ib_md.c:1161 UCX  DEBUG mlx5_5: relaxed order memory access is disabled
-[1755302677.959962] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_5: KSM flush-mr memory registration status "Success" range 0x55555676b000..0x55555676b008 iova 0x0 mkey_index 0x0
-[1755302677.959976] [eos0519:3238722:0]          uct_md.c:96   UCX  DEBUG failed to query gga_mlx5 resources: No such device
-[1755302677.959977] [eos0519:3238722:0]     ucp_context.c:1188 UCX  DEBUG No tl resources found for md mlx5_5
-[1755302677.959978] [eos0519:3238722:0]     ucp_context.c:1648 UCX  DEBUG closing md mlx5_5 because it has no selected transport resources
-[1755302677.959981] [eos0519:3238722:0]    ib_mlx5dv_md.c:2496 UCX  DEBUG mlx5_5: md=0x55555681f320 md->flags=0x3fb3f7f flush_rkey=0x34800
-[1755302677.960209] [eos0519:3238722:0]           mpool.c:194  UCX  DEBUG mpool devx dbrec destroyed
-[1755302677.960210] [eos0519:3238722:0]       ib_device.c:616  UCX  DEBUG destroying ib device mlx5_5
-[1755302677.960218] [eos0519:3238722:0]           async.c:173  UCX  DEBUG removed async handler 0x55555676a680 [id=69 ref 1] uct_ib_async_event_handler() from hash
-[1755302677.960219] [eos0519:3238722:0]           async.c:576  UCX  DEBUG removing async handler 0x55555676a680 [id=69 ref 1] uct_ib_async_event_handler()
-[1755302677.960221] [eos0519:3238722:0]           async.c:188  UCX  DEBUG release async handler 0x55555676a680 [id=69 ref 0] uct_ib_async_event_handler()
-[1755302677.964959] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_6: PF sysfs path is '/sys/devices/pci0000:97/0000:97:01.0/0000:98:00.0/0000:99:00.0/0000:9a:00.0'
-[1755302677.964961] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG mlx5_6: bdf_name 0000:9a:00.0 sys_dev 9
-[1755302677.964968] [eos0519:3238722:0]       ib_device.c:498  UCX  DEBUG mlx5_6: vendor_id 0x15b3 device_id 4129
-[1755302677.965448] [eos0519:3238722:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_6: cross gvmi alias mkey is supported
-[1755302677.965449] [eos0519:3238722:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_6: mkey_by_name_reserve is not supported
-[1755302677.965450] [eos0519:3238722:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_6: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
-[1755302677.965559] [eos0519:3238722:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_6: ODP is disabled because version 1 is not supported for DevX QP
-[1755302677.965680] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x5555568224e0 [id=69 ref 1] uct_ib_async_event_handler() to hash
-[1755302677.965684] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 69 events 0x1 mode thread_spinlock
-[1755302677.965685] [eos0519:3238722:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_6' (InfiniBand channel adapter) with 1 ports
-[1755302677.965689] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_6: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
-[1755302677.965691] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_6: rocm GPUDirect RDMA is not detected by checking /dev/kfd
-[1755302677.965695] [eos0519:3238722:0]           ib_md.c:1202 UCX  DEBUG mlx5_6: dmabuf is supported
-[1755302677.965696] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
-[1755302677.965870] [eos0519:3238722:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_6: opened DEVX md log_max_qp=17
-[1755302677.966265] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_6: KSM dm memory registration status "Success" range 0x7fffc6207000..0x7fffc6207020 iova 0x0 mkey_index 0x0
-[1755302677.966541] [eos0519:3238722:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_6: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc6207000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
-[1755302677.966542] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_6: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc6207000 atomic mkey_index 0x0
-[1755302677.966893] [eos0519:3238722:0]           ib_md.c:1161 UCX  DEBUG mlx5_6: relaxed order memory access is disabled
-[1755302677.967116] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_6: KSM flush-mr memory registration status "Success" range 0x55555676b000..0x55555676b008 iova 0x0 mkey_index 0x0
-[1755302677.967129] [eos0519:3238722:0]          uct_md.c:96   UCX  DEBUG failed to query gga_mlx5 resources: No such device
-[1755302677.967130] [eos0519:3238722:0]     ucp_context.c:1188 UCX  DEBUG No tl resources found for md mlx5_6
-[1755302677.967131] [eos0519:3238722:0]     ucp_context.c:1648 UCX  DEBUG closing md mlx5_6 because it has no selected transport resources
-[1755302677.967134] [eos0519:3238722:0]    ib_mlx5dv_md.c:2496 UCX  DEBUG mlx5_6: md=0x55555681f320 md->flags=0x3fb3f7f flush_rkey=0x30300
-[1755302677.967375] [eos0519:3238722:0]           mpool.c:194  UCX  DEBUG mpool devx dbrec destroyed
-[1755302677.967376] [eos0519:3238722:0]       ib_device.c:616  UCX  DEBUG destroying ib device mlx5_6
-[1755302677.967377] [eos0519:3238722:0]           async.c:173  UCX  DEBUG removed async handler 0x5555568224e0 [id=69 ref 1] uct_ib_async_event_handler() from hash
-[1755302677.967378] [eos0519:3238722:0]           async.c:576  UCX  DEBUG removing async handler 0x5555568224e0 [id=69 ref 1] uct_ib_async_event_handler()
-[1755302677.967380] [eos0519:3238722:0]           async.c:188  UCX  DEBUG release async handler 0x5555568224e0 [id=69 ref 0] uct_ib_async_event_handler()
-[1755302677.972070] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_9: PF sysfs path is '/sys/devices/pci0000:bd/0000:bd:01.0/0000:be:00.0/0000:bf:00.0/0000:c0:00.0'
-[1755302677.972072] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG mlx5_9: bdf_name 0000:c0:00.0 sys_dev 11
-[1755302677.972080] [eos0519:3238722:0]       ib_device.c:498  UCX  DEBUG mlx5_9: vendor_id 0x15b3 device_id 4129
-[1755302677.972563] [eos0519:3238722:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_9: cross gvmi alias mkey is supported
-[1755302677.972564] [eos0519:3238722:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_9: mkey_by_name_reserve is not supported
-[1755302677.972565] [eos0519:3238722:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_9: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
-[1755302677.972676] [eos0519:3238722:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_9: ODP is disabled because version 1 is not supported for DevX QP
-[1755302677.972794] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x55555681f940 [id=69 ref 1] uct_ib_async_event_handler() to hash
-[1755302677.972798] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 69 events 0x1 mode thread_spinlock
-[1755302677.972798] [eos0519:3238722:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_9' (InfiniBand channel adapter) with 1 ports
-[1755302677.972801] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_9: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
-[1755302677.972803] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_9: rocm GPUDirect RDMA is not detected by checking /dev/kfd
-[1755302677.972806] [eos0519:3238722:0]           ib_md.c:1202 UCX  DEBUG mlx5_9: dmabuf is supported
-[1755302677.972807] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
-[1755302677.972975] [eos0519:3238722:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_9: opened DEVX md log_max_qp=17
-[1755302677.973358] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_9: KSM dm memory registration status "Success" range 0x7fffc6207000..0x7fffc6207020 iova 0x0 mkey_index 0x0
-[1755302677.973636] [eos0519:3238722:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_9: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc6207000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
-[1755302677.973637] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_9: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc6207000 atomic mkey_index 0x0
-[1755302677.973987] [eos0519:3238722:0]           ib_md.c:1161 UCX  DEBUG mlx5_9: relaxed order memory access is disabled
-[1755302677.974213] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_9: KSM flush-mr memory registration status "Success" range 0x55555676b000..0x55555676b008 iova 0x0 mkey_index 0x0
-[1755302677.974227] [eos0519:3238722:0]          uct_md.c:96   UCX  DEBUG failed to query gga_mlx5 resources: No such device
-[1755302677.974228] [eos0519:3238722:0]     ucp_context.c:1188 UCX  DEBUG No tl resources found for md mlx5_9
-[1755302677.974229] [eos0519:3238722:0]     ucp_context.c:1648 UCX  DEBUG closing md mlx5_9 because it has no selected transport resources
-[1755302677.974232] [eos0519:3238722:0]    ib_mlx5dv_md.c:2496 UCX  DEBUG mlx5_9: md=0x55555681fcc0 md->flags=0x3fb3f7f flush_rkey=0x31800
-[1755302677.974480] [eos0519:3238722:0]           mpool.c:194  UCX  DEBUG mpool devx dbrec destroyed
-[1755302677.974488] [eos0519:3238722:0]       ib_device.c:616  UCX  DEBUG destroying ib device mlx5_9
-[1755302677.974489] [eos0519:3238722:0]           async.c:173  UCX  DEBUG removed async handler 0x55555681f940 [id=69 ref 1] uct_ib_async_event_handler() from hash
-[1755302677.974490] [eos0519:3238722:0]           async.c:576  UCX  DEBUG removing async handler 0x55555681f940 [id=69 ref 1] uct_ib_async_event_handler()
-[1755302677.974492] [eos0519:3238722:0]           async.c:188  UCX  DEBUG release async handler 0x55555681f940 [id=69 ref 0] uct_ib_async_event_handler()
-[1755302677.979291] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_10: PF sysfs path is '/sys/devices/pci0000:cb/0000:cb:01.0/0000:cc:00.0/0000:cd:00.0/0000:ce:00.0'
-[1755302677.979293] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG mlx5_10: bdf_name 0000:ce:00.0 sys_dev 12
-[1755302677.979301] [eos0519:3238722:0]       ib_device.c:498  UCX  DEBUG mlx5_10: vendor_id 0x15b3 device_id 4129
-[1755302677.979788] [eos0519:3238722:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_10: cross gvmi alias mkey is supported
-[1755302677.979789] [eos0519:3238722:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_10: mkey_by_name_reserve is not supported
-[1755302677.979790] [eos0519:3238722:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_10: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
-[1755302677.979901] [eos0519:3238722:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_10: ODP is disabled because version 1 is not supported for DevX QP
-[1755302677.980019] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x5555568224e0 [id=69 ref 1] uct_ib_async_event_handler() to hash
-[1755302677.980023] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 69 events 0x1 mode thread_spinlock
-[1755302677.980024] [eos0519:3238722:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_10' (InfiniBand channel adapter) with 1 ports
-[1755302677.980026] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_10: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
-[1755302677.980028] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_10: rocm GPUDirect RDMA is not detected by checking /dev/kfd
-[1755302677.980031] [eos0519:3238722:0]           ib_md.c:1202 UCX  DEBUG mlx5_10: dmabuf is supported
-[1755302677.980032] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
-[1755302677.980205] [eos0519:3238722:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_10: opened DEVX md log_max_qp=17
-[1755302677.980598] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_10: KSM dm memory registration status "Success" range 0x7fffc6207000..0x7fffc6207020 iova 0x0 mkey_index 0x0
-[1755302677.980875] [eos0519:3238722:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_10: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc6207000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
-[1755302677.980876] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_10: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc6207000 atomic mkey_index 0x0
-[1755302677.981226] [eos0519:3238722:0]           ib_md.c:1161 UCX  DEBUG mlx5_10: relaxed order memory access is disabled
-[1755302677.981451] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_10: KSM flush-mr memory registration status "Success" range 0x55555676b000..0x55555676b008 iova 0x0 mkey_index 0x0
-[1755302677.981465] [eos0519:3238722:0]          uct_md.c:96   UCX  DEBUG failed to query gga_mlx5 resources: No such device
-[1755302677.981466] [eos0519:3238722:0]     ucp_context.c:1188 UCX  DEBUG No tl resources found for md mlx5_10
-[1755302677.981467] [eos0519:3238722:0]     ucp_context.c:1648 UCX  DEBUG closing md mlx5_10 because it has no selected transport resources
-[1755302677.981470] [eos0519:3238722:0]    ib_mlx5dv_md.c:2496 UCX  DEBUG mlx5_10: md=0x55555681fbd0 md->flags=0x3fb3f7f flush_rkey=0x31500
-[1755302677.981713] [eos0519:3238722:0]           mpool.c:194  UCX  DEBUG mpool devx dbrec destroyed
-[1755302677.981714] [eos0519:3238722:0]       ib_device.c:616  UCX  DEBUG destroying ib device mlx5_10
-[1755302677.981715] [eos0519:3238722:0]           async.c:173  UCX  DEBUG removed async handler 0x5555568224e0 [id=69 ref 1] uct_ib_async_event_handler() from hash
-[1755302677.981716] [eos0519:3238722:0]           async.c:576  UCX  DEBUG removing async handler 0x5555568224e0 [id=69 ref 1] uct_ib_async_event_handler()
-[1755302677.981718] [eos0519:3238722:0]           async.c:188  UCX  DEBUG release async handler 0x5555568224e0 [id=69 ref 0] uct_ib_async_event_handler()
-[1755302677.986444] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_11: PF sysfs path is '/sys/devices/pci0000:d9/0000:d9:01.0/0000:da:00.0/0000:db:00.0/0000:dc:00.0'
-[1755302677.986446] [eos0519:3238722:0]            topo.c:552  UCX  DEBUG mlx5_11: bdf_name 0000:dc:00.0 sys_dev 13
-[1755302677.986454] [eos0519:3238722:0]       ib_device.c:498  UCX  DEBUG mlx5_11: vendor_id 0x15b3 device_id 4129
-[1755302677.986934] [eos0519:3238722:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_11: cross gvmi alias mkey is supported
-[1755302677.986935] [eos0519:3238722:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_11: mkey_by_name_reserve is not supported
-[1755302677.986936] [eos0519:3238722:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_11: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
-[1755302677.987050] [eos0519:3238722:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_11: ODP is disabled because version 1 is not supported for DevX QP
-[1755302677.987171] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x5555568201f0 [id=69 ref 1] uct_ib_async_event_handler() to hash
-[1755302677.987174] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 69 events 0x1 mode thread_spinlock
-[1755302677.987175] [eos0519:3238722:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_11' (InfiniBand channel adapter) with 1 ports
-[1755302677.987178] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_11: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
-[1755302677.987180] [eos0519:3238722:0]           ib_md.c:1177 UCX  DEBUG mlx5_11: rocm GPUDirect RDMA is not detected by checking /dev/kfd
-[1755302677.987183] [eos0519:3238722:0]           ib_md.c:1202 UCX  DEBUG mlx5_11: dmabuf is supported
-[1755302677.987185] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
-[1755302677.987359] [eos0519:3238722:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_11: opened DEVX md log_max_qp=17
-[1755302677.987752] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_11: KSM dm memory registration status "Success" range 0x7fffc6207000..0x7fffc6207020 iova 0x0 mkey_index 0x0
-[1755302677.988024] [eos0519:3238722:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_11: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc6207000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
-[1755302677.988025] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_11: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc6207000 atomic mkey_index 0x0
-[1755302677.988370] [eos0519:3238722:0]           ib_md.c:1161 UCX  DEBUG mlx5_11: relaxed order memory access is disabled
-[1755302677.988587] [eos0519:3238722:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_11: KSM flush-mr memory registration status "Success" range 0x55555676b000..0x55555676b008 iova 0x0 mkey_index 0x0
-[1755302677.988623] [eos0519:3238722:0]          uct_md.c:96   UCX  DEBUG failed to query gga_mlx5 resources: No such device
-[1755302677.988624] [eos0519:3238722:0]     ucp_context.c:1188 UCX  DEBUG No tl resources found for md mlx5_11
-[1755302677.988624] [eos0519:3238722:0]     ucp_context.c:1648 UCX  DEBUG closing md mlx5_11 because it has no selected transport resources
-[1755302677.988635] [eos0519:3238722:0]    ib_mlx5dv_md.c:2496 UCX  DEBUG mlx5_11: md=0x55555681fbd0 md->flags=0x3fb3f7f flush_rkey=0x32c00
-[1755302677.988875] [eos0519:3238722:0]           mpool.c:194  UCX  DEBUG mpool devx dbrec destroyed
-[1755302677.988876] [eos0519:3238722:0]       ib_device.c:616  UCX  DEBUG destroying ib device mlx5_11
-[1755302677.988877] [eos0519:3238722:0]           async.c:173  UCX  DEBUG removed async handler 0x5555568201f0 [id=69 ref 1] uct_ib_async_event_handler() from hash
-[1755302677.988878] [eos0519:3238722:0]           async.c:576  UCX  DEBUG removing async handler 0x5555568201f0 [id=69 ref 1] uct_ib_async_event_handler()
-[1755302677.988880] [eos0519:3238722:0]           async.c:188  UCX  DEBUG release async handler 0x5555568201f0 [id=69 ref 0] uct_ib_async_event_handler()
-[1755302677.989258] [eos0519:3238722:0]     ucp_context.c:1713 UCX  DEBUG register host memory on: self, tcp, cuda_cpy, mlx5_0, mlx5_3, mlx5_4, mlx5_5, mlx5_6, mlx5_9, mlx5_10, mlx5_11, cma
-[1755302677.989260] [eos0519:3238722:0]     ucp_context.c:1713 UCX  DEBUG register cuda memory on: cuda_cpy, cuda_ipc, gdr_copy, mlx5_0, mlx5_3, mlx5_4, mlx5_5, mlx5_6, mlx5_9, mlx5_10, mlx5_11
-[1755302677.989261] [eos0519:3238722:0]     ucp_context.c:1713 UCX  DEBUG register cuda-managed memory on: cuda_cpy
-[1755302677.989261] [eos0519:3238722:0]     ucp_context.c:1701 UCX  DEBUG no memory domain supports registering rocm memory
-[1755302677.989262] [eos0519:3238722:0]     ucp_context.c:1701 UCX  DEBUG no memory domain supports registering rocm-managed memory
-[1755302677.989263] [eos0519:3238722:0]     ucp_context.c:1701 UCX  DEBUG no memory domain supports registering rdma memory
-[1755302677.989263] [eos0519:3238722:0]     ucp_context.c:1701 UCX  DEBUG no memory domain supports registering ze-host memory
-[1755302677.989264] [eos0519:3238722:0]     ucp_context.c:1701 UCX  DEBUG no memory domain supports registering ze-device memory
-[1755302677.989265] [eos0519:3238722:0]     ucp_context.c:1701 UCX  DEBUG no memory domain supports registering ze-managed memory
-[1755302677.989289] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool rcache_mp: align 8, maxelems 4294967295, elemsize 144
-[1755302677.989355] [eos0519:3238722:0]     ucp_context.c:2332 UCX  DEBUG created ucp context ucp_context_0 0x5555565c3b50 [16 mds 60 tls] features 0x1 tl bitmap 0xfffffffffffffff 0x0
-[1755302677.991319] [eos0519:3238722:0]      ucp_worker.c:2510 UCX  DIAG  multi-threaded worker is requested, but library is built without multi-thread support
-[1755302677.991348] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool self_msg_desc: align 64, maxelems 4294967295, elemsize 8200
-[1755302677.991350] [eos0519:3238722:0]            self.c:245  UCX  DEBUG created self iface id 0x7d60627e66b4808c send_size 8192
-[1755302677.991358] [eos0519:3238722:0]      ucp_worker.c:1436 UCX  DEBUG created interface[0]=0x5555569f9380 using self/memory on worker 0x5555569d6080
-[1755302677.991375] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
-[1755302677.991376] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
-[1755302677.994724] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x55555677dec0 [id=69 ref 1] uct_tcp_iface_connect_handler() to hash
-[1755302677.994733] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 69 events 0x5 mode thread_spinlock
-[1755302677.994741] [eos0519:3238722:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x5555569fa100: listening for connections (fd=69) on 169.254.0.18:40329 netif bmc-redfish0
-[1755302677.994761] [eos0519:3238722:0]         tcp_net.c:61   UCX  DEBUG speed of bmc-redfish0 is UNKNOWN, assuming 100 Mbps
-[1755302677.994826] [eos0519:3238722:0]            topo.c:895  UCX  DEBUG /sys/class/net/bmc-redfish0/lower_enxea2983fa0d10: sysfs path undetected
-[1755302677.994827] [eos0519:3238722:0]            topo.c:848  UCX  DEBUG bmc-redfish0: pci bandwidth undetected, using maximal value
-[1755302677.994862] [eos0519:3238722:0]      ucp_worker.c:1436 UCX  DEBUG created interface[1]=0x5555569fa100 using tcp/bmc-redfish0 on worker 0x5555569d6080
-[1755302677.994881] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
-[1755302677.994882] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
-[1755302677.995374] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x555556b8ec60 [id=71 ref 1] uct_tcp_iface_connect_handler() to hash
-[1755302677.995380] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 71 events 0x5 mode thread_spinlock
-[1755302677.995383] [eos0519:3238722:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x55555673bc60: listening for connections (fd=71) on 10.52.54.8:55553 netif eth3
-[1755302677.995636] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/eth3: PF sysfs path is '/sys/devices/pci0000:80/0000:80:05.0/0000:82:00.1'
-[1755302677.997248] [eos0519:3238722:0]      ucp_worker.c:1436 UCX  DEBUG created interface[2]=0x55555673bc60 using tcp/eth3 on worker 0x5555569d6080
-[1755302677.997264] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
-[1755302677.997265] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
-[1755302677.997751] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x555556b8ece0 [id=73 ref 1] uct_tcp_iface_connect_handler() to hash
-[1755302677.997756] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 73 events 0x5 mode thread_spinlock
-[1755302677.997758] [eos0519:3238722:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x55555673c3e0: listening for connections (fd=73) on 172.16.130.21:54861 netif ibp154s0
-[1755302677.997973] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp154s0: PF sysfs path is '/sys/devices/pci0000:97/0000:97:01.0/0000:98:00.0/0000:99:00.0/0000:9a:00.0'
-[1755302677.998030] [eos0519:3238722:0]      ucp_worker.c:1436 UCX  DEBUG created interface[3]=0x55555673c3e0 using tcp/ibp154s0 on worker 0x5555569d6080
-[1755302677.998044] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
-[1755302677.998045] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
-[1755302677.998518] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x555556b8eca0 [id=75 ref 1] uct_tcp_iface_connect_handler() to hash
-[1755302677.998523] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 75 events 0x5 mode thread_spinlock
-[1755302677.998525] [eos0519:3238722:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x55555673a240: listening for connections (fd=75) on 172.16.18.213:41077 netif ibp170s0f0
-[1755302677.998639] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp170s0f0: PF sysfs path is '/sys/devices/pci0000:a5/0000:a5:01.0/0000:a6:00.0/0000:a7:00.0/0000:a8:00.0/0000:a9:00.0/0000:aa:00.0'
-[1755302677.998688] [eos0519:3238722:0]      ucp_worker.c:1436 UCX  DEBUG created interface[4]=0x55555673a240 using tcp/ibp170s0f0 on worker 0x5555569d6080
-[1755302677.998701] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
-[1755302677.998702] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
-[1755302677.999175] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x555556b8ed20 [id=77 ref 1] uct_tcp_iface_connect_handler() to hash
-[1755302677.999180] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 77 events 0x5 mode thread_spinlock
-[1755302677.999193] [eos0519:3238722:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x55555673a9c0: listening for connections (fd=77) on 172.16.146.21:54993 netif ibp192s0
-[1755302677.999303] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp192s0: PF sysfs path is '/sys/devices/pci0000:bd/0000:bd:01.0/0000:be:00.0/0000:bf:00.0/0000:c0:00.0'
-[1755302677.999356] [eos0519:3238722:0]      ucp_worker.c:1436 UCX  DEBUG created interface[5]=0x55555673a9c0 using tcp/ibp192s0 on worker 0x5555569d6080
-[1755302677.999369] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
-[1755302677.999370] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
-[1755302677.999848] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x555556b8ed60 [id=79 ref 1] uct_tcp_iface_connect_handler() to hash
-[1755302677.999854] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 79 events 0x5 mode thread_spinlock
-[1755302677.999855] [eos0519:3238722:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x55555673b140: listening for connections (fd=79) on 172.16.162.21:37797 netif ibp206s0
-[1755302677.999958] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp206s0: PF sysfs path is '/sys/devices/pci0000:cb/0000:cb:01.0/0000:cc:00.0/0000:cd:00.0/0000:ce:00.0'
-[1755302678.000010] [eos0519:3238722:0]      ucp_worker.c:1436 UCX  DEBUG created interface[6]=0x55555673b140 using tcp/ibp206s0 on worker 0x5555569d6080
-[1755302678.000023] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
-[1755302678.000024] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
-[1755302678.000489] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x555556b90930 [id=81 ref 1] uct_tcp_iface_connect_handler() to hash
-[1755302678.000494] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 81 events 0x5 mode thread_spinlock
-[1755302678.000496] [eos0519:3238722:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x55555673d440: listening for connections (fd=81) on 172.16.178.21:36559 netif ibp220s0
-[1755302678.000697] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp220s0: PF sysfs path is '/sys/devices/pci0000:d9/0000:d9:01.0/0000:da:00.0/0000:db:00.0/0000:dc:00.0'
-[1755302678.000749] [eos0519:3238722:0]      ucp_worker.c:1436 UCX  DEBUG created interface[7]=0x55555673d440 using tcp/ibp220s0 on worker 0x5555569d6080
-[1755302678.000761] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
-[1755302678.000762] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
-[1755302678.001232] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x55555677b390 [id=83 ref 1] uct_tcp_iface_connect_handler() to hash
-[1755302678.001238] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 83 events 0x5 mode thread_spinlock
-[1755302678.001239] [eos0519:3238722:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x55555673de30: listening for connections (fd=83) on 172.16.66.21:34015 netif ibp24s0
-[1755302678.001347] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp24s0: PF sysfs path is '/sys/devices/pci0000:15/0000:15:01.0/0000:16:00.0/0000:17:00.0/0000:18:00.0'
-[1755302678.001403] [eos0519:3238722:0]      ucp_worker.c:1436 UCX  DEBUG created interface[8]=0x55555673de30 using tcp/ibp24s0 on worker 0x5555569d6080
-[1755302678.001416] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
-[1755302678.001417] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
-[1755302678.001886] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x555556905920 [id=85 ref 1] uct_tcp_iface_connect_handler() to hash
-[1755302678.001892] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 85 events 0x5 mode thread_spinlock
-[1755302678.001894] [eos0519:3238722:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x555556b898e0: listening for connections (fd=85) on 172.16.2.213:46445 netif ibp41s0f0
-[1755302678.002107] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp41s0f0: PF sysfs path is '/sys/devices/pci0000:24/0000:24:01.0/0000:25:00.0/0000:26:00.0/0000:27:00.0/0000:28:00.0/0000:29:00.0'
-[1755302678.002155] [eos0519:3238722:0]      ucp_worker.c:1436 UCX  DEBUG created interface[9]=0x555556b898e0 using tcp/ibp41s0f0 on worker 0x5555569d6080
-[1755302678.002167] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
-[1755302678.002168] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
-[1755302678.002637] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x5555569058b0 [id=87 ref 1] uct_tcp_iface_connect_handler() to hash
-[1755302678.002643] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 87 events 0x5 mode thread_spinlock
-[1755302678.002644] [eos0519:3238722:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x555556b8a2d0: listening for connections (fd=87) on 172.16.82.21:48843 netif ibp64s0
-[1755302678.002847] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp64s0: PF sysfs path is '/sys/devices/pci0000:3d/0000:3d:01.0/0000:3e:00.0/0000:3f:00.0/0000:40:00.0'
-[1755302678.002897] [eos0519:3238722:0]      ucp_worker.c:1436 UCX  DEBUG created interface[10]=0x555556b8a2d0 using tcp/ibp64s0 on worker 0x5555569d6080
-[1755302678.002909] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
-[1755302678.002910] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
-[1755302678.003384] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x555556907420 [id=89 ref 1] uct_tcp_iface_connect_handler() to hash
-[1755302678.003389] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 89 events 0x5 mode thread_spinlock
-[1755302678.003390] [eos0519:3238722:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x555556b8eda0: listening for connections (fd=89) on 172.16.98.21:40873 netif ibp79s0
-[1755302678.003595] [eos0519:3238722:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp79s0: PF sysfs path is '/sys/devices/pci0000:4c/0000:4c:01.0/0000:4d:00.0/0000:4e:00.0/0000:4f:00.0'
-[1755302678.003646] [eos0519:3238722:0]      ucp_worker.c:1436 UCX  DEBUG created interface[11]=0x555556b8eda0 using tcp/ibp79s0 on worker 0x5555569d6080
-[1755302678.003658] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
-[1755302678.003659] [eos0519:3238722:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
-[1755302678.004127] [eos0519:3238722:0]           async.c:248  UCX  DEBUG added async handler 0x555556901060 [id=91 ref 1] uct_tcp_iface_connect_handler() to hash
-[1755302678.004133] [eos0519:3238722:0]           async.c:522  UCX  DEBUG listening to async event fd 91 events 0x5 mode thread_spinlock
-[1755302678.004134] [eos0519:3238722:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x555556b8f790: listening for connections (fd=91) on 172.16.114.21:37293 netif ibp94s0
-[1755302678.004237] [eos0519:3238722:0]          
+[1755303542.431888] [eos0519:3257040:0]           debug.c:1158 UCX  DEBUG using signal stack 0x7ffff7b92000 size 141824
+[1755303542.434914] [eos0519:3257040:0]             cpu.c:339  UCX  DEBUG measured tsc frequency 2001.765 MHz after 0.12 ms
+[1755303542.434931] [eos0519:3257040:0]            init.c:121  UCX  DEBUG /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0 loaded at 0x7ffff7e30000
+[1755303542.434945] [eos0519:3257040:0]            init.c:122  UCX  DEBUG cmd line: /project/coreai_devtech_all/shixunw/miniconda3/envs/legate/bin/python3.13 /project/coreai_devtech_all/shixunw/miniconda3/envs/legate/bin/legate --gpus 8 --fbmem 50000 /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py 
+[1755303542.434951] [eos0519:3257040:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1755303542.434960] [eos0519:3257040:0]          module.c:280  UCX  ERROR loading modules for ucs
+[1755303542.434962] [eos0519:3257040:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
+[1755303542.435098] [eos0519:3257040:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b334e0]
+[1755303543.488445] [eos0519:3257060:0]           debug.c:1158 UCX  DEBUG using signal stack 0x7ffff7b8f000 size 141824
+[1755303543.490627] [eos0519:3257060:0]             cpu.c:339  UCX  DEBUG measured tsc frequency 1994.247 MHz after 0.07 ms
+[1755303543.490640] [eos0519:3257060:0]            init.c:121  UCX  DEBUG /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0 loaded at 0x7ffff7e30000
+[1755303543.490652] [eos0519:3257060:0]            init.c:122  UCX  DEBUG cmd line: /usr/bin/env bash /project/coreai_devtech_all/shixunw/miniconda3/envs/legate/share/legate/libexec/legate-bind.sh --launcher auto -- python /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py 
+[1755303543.490658] [eos0519:3257060:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1755303543.490666] [eos0519:3257060:0]          module.c:280  UCX  ERROR loading modules for ucs
+[1755303543.490668] [eos0519:3257060:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
+[1755303543.490796] [eos0519:3257060:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x5555555644e0]
+[1755303543.533219] [eos0519:3257060:0]           debug.c:1158 UCX  DEBUG using signal stack 0x7ffff7b5a000 size 141824
+[1755303543.557665] [eos0519:3257060:0]             cpu.c:339  UCX  DEBUG measured tsc frequency 1874.444 MHz after 0.01 ms
+[1755303543.557682] [eos0519:3257060:0]            init.c:121  UCX  DEBUG /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0 loaded at 0x7ffff7e30000
+[1755303543.557693] [eos0519:3257060:0]            init.c:122  UCX  DEBUG cmd line: bash /project/coreai_devtech_all/shixunw/miniconda3/envs/legate/share/legate/libexec/legate-bind.sh --launcher auto -- python /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py 
+[1755303543.557700] [eos0519:3257060:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1755303543.557709] [eos0519:3257060:0]          module.c:280  UCX  ERROR loading modules for ucs
+[1755303543.557711] [eos0519:3257060:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
+[1755303543.557850] [eos0519:3257060:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x5555556b9560]
+[1755303543.557905] [eos0519:3257060:f]        vfs_fuse.c:420  UCX  DEBUG connecting vfs socket 4 to daemon on '/run/user/0/ucx/vfs.sock'
+[1755303543.557915] [eos0519:3257060:f]        vfs_fuse.c:428  UCX  DEBUG failed to connect to vfs socket '/run/user/0/ucx/vfs.sock': No such file or directory
+[1755303543.557931] [eos0519:3257060:f]        vfs_sock.c:50   UCX  DIAG  failed to create directory '/run/user/0/ucx': No such file or directory
+[1755303543.557932] [eos0519:3257060:f]        vfs_fuse.c:436  UCX  DIAG  failed to watch on '/run/user/0/ucx/vfs.sock': Input/output error, VFS will be disabled
+[1755303543.604402] [eos0519:3257060:0]           debug.c:1158 UCX  DEBUG using signal stack 0x7ffff7b92000 size 141824
+[1755303543.607392] [eos0519:3257060:0]             cpu.c:339  UCX  DEBUG measured tsc frequency 2001.731 MHz after 0.10 ms
+[1755303543.607408] [eos0519:3257060:0]            init.c:121  UCX  DEBUG /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0 loaded at 0x7ffff7e30000
+[1755303543.607417] [eos0519:3257060:0]            init.c:122  UCX  DEBUG cmd line: python /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py 
+[1755303543.607424] [eos0519:3257060:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1755303543.607431] [eos0519:3257060:0]          module.c:280  UCX  ERROR loading modules for ucs
+[1755303543.607433] [eos0519:3257060:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
+[1755303543.607573] [eos0519:3257060:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b334e0]
+[1755303543.607622] [eos0519:3257060:f]        vfs_fuse.c:420  UCX  DEBUG connecting vfs socket 4 to daemon on '/run/user/0/ucx/vfs.sock'
+[1755303543.607626] [eos0519:3257060:f]        vfs_fuse.c:428  UCX  DEBUG failed to connect to vfs socket '/run/user/0/ucx/vfs.sock': No such file or directory
+[1755303543.607659] [eos0519:3257060:f]        vfs_sock.c:50   UCX  DIAG  failed to create directory '/run/user/0/ucx': No such file or directory
+[1755303543.607661] [eos0519:3257060:f]        vfs_fuse.c:436  UCX  DIAG  failed to watch on '/run/user/0/ucx/vfs.sock': Input/output error, VFS will be disabled
+[1755303545.265738] [eos0519:3257060:0]            time.c:22   UCX  DEBUG arch clock frequency: 2001730769.23 Hz
+[1755303545.265779] [eos0519:3257060:0]     ucp_context.c:2257 UCX  INFO  Version 1.18.0 (loaded from /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucp.so.0)
+[1755303545.265784] [eos0519:3257060:0]     ucp_context.c:2016 UCX  DEBUG estimated number of endpoints is 8
+[1755303545.265785] [eos0519:3257060:0]     ucp_context.c:2023 UCX  DEBUG estimated number of endpoints per node is 8
+[1755303545.265787] [eos0519:3257060:0]     ucp_context.c:2033 UCX  DEBUG estimated bcopy bandwidth is 7340032000.000000
+[1755303545.265793] [eos0519:3257060:0]     ucp_context.c:2092 UCX  DEBUG allocation method[0] is md 'sysv'
+[1755303545.265794] [eos0519:3257060:0]     ucp_context.c:2092 UCX  DEBUG allocation method[1] is md 'posix'
+[1755303545.265799] [eos0519:3257060:0]     ucp_context.c:2104 UCX  DEBUG allocation method[2] is 'thp'
+[1755303545.265800] [eos0519:3257060:0]     ucp_context.c:2092 UCX  DEBUG allocation method[3] is md '*'
+[1755303545.265800] [eos0519:3257060:0]     ucp_context.c:2104 UCX  DEBUG allocation method[4] is 'mmap'
+[1755303545.265801] [eos0519:3257060:0]     ucp_context.c:2104 UCX  DEBUG allocation method[5] is 'heap'
+[1755303545.265809] [eos0519:3257060:0]          module.c:280  UCX  ERROR loading modules for uct
+[1755303545.265818] [eos0519:3257060:0]          module.c:242  UCX  ERROR loading module 'cuda' with mode 0x1
+[1755303549.972809] [eos0519:3257060:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda.so.0.0.0 [0x5555565c4070]
+[1755303549.972825] [eos0519:3257060:0]          module.c:192  UCX  ERROR calling 'ucs_module_global_init' in '/opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda.so.0.0.0': [0x7fffc6483470]
+[1755303549.972834] [eos0519:3257060:0]          module.c:280  UCX  ERROR loading modules for uct_cuda
+[1755303549.972838] [eos0519:3257060:0]          module.c:242  UCX  ERROR loading module 'gdrcopy' with mode 0x1
+[1755303549.973009] [eos0519:3257060:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0 [0x5555565cc890]
+[1755303549.973014] [eos0519:3257060:0]          module.c:165  UCX  ERROR ignoring 'ucs_module_global_init' (0x7fffc6483470) from libuct_cuda.so.0 (0x7fffc647b000), expected in libuct_cuda_gdrcopy.so.0 (7fffc6167000)
+[1755303549.973016] [eos0519:3257060:0]          module.c:242  UCX  ERROR loading module 'ib' with mode 0x1
+[1755303549.977691] [eos0519:3257060:0]          module.c:280  UCX  ERROR loading modules for uct_ib
+[1755303549.977695] [eos0519:3257060:0]          module.c:242  UCX  ERROR loading module 'mlx5' with mode 0x1
+[1755303549.978579] [eos0519:3257060:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_ib_mlx5.so.0.0.0 [0x5555565cf810]
+[1755303549.978589] [eos0519:3257060:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_ib.so.0.0.0 [0x5555565cd590]
+[1755303549.978592] [eos0519:3257060:0]          module.c:242  UCX  ERROR loading module 'rdmacm' with mode 0x1
+[1755303549.979426] [eos0519:3257060:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_rdmacm.so.0.0.0 [0x5555565d0a50]
+[1755303549.979428] [eos0519:3257060:0]          module.c:242  UCX  ERROR loading module 'cma' with mode 0x1
+[1755303549.979490] [eos0519:3257060:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cma.so.0.0.0 [0x5555565d1bd0]
+[1755303549.979549] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 0 for bus id 1b:00.0
+[1755303549.979566] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 1 for bus id 43:00.0
+[1755303549.979581] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 2 for bus id 52:00.0
+[1755303549.979597] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 3 for bus id 61:00.0
+[1755303549.979612] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 4 for bus id 9d:00.0
+[1755303549.979626] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 5 for bus id c3:00.0
+[1755303549.979641] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 6 for bus id d1:00.0
+[1755303549.979656] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 7 for bus id df:00.0
+[1755303549.982126] [eos0519:3257060:0]            topo.c:895  UCX  DEBUG /sys/class/net/bmc-redfish0/lower_enxea2983fa0d10: sysfs path undetected
+[1755303549.982128] [eos0519:3257060:0]            topo.c:556  UCX  DEBUG bmc-redfish0: system device unknown
+[1755303549.999459] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/eth3: PF sysfs path is '/sys/devices/pci0000:80/0000:80:05.0/0000:82:00.1'
+[1755303549.999491] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 8 for bus id 82:00.1
+[1755303549.999492] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG eth3: bdf_name 0000:82:00.1 sys_dev 8
+[1755303550.001232] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp154s0: PF sysfs path is '/sys/devices/pci0000:97/0000:97:01.0/0000:98:00.0/0000:99:00.0/0000:9a:00.0'
+[1755303550.001249] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 9 for bus id 9a:00.0
+[1755303550.001250] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG ibp154s0: bdf_name 0000:9a:00.0 sys_dev 9
+[1755303550.002968] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp170s0f0: PF sysfs path is '/sys/devices/pci0000:a5/0000:a5:01.0/0000:a6:00.0/0000:a7:00.0/0000:a8:00.0/0000:a9:00.0/0000:aa:00.0'
+[1755303550.002985] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 10 for bus id aa:00.0
+[1755303550.002986] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG ibp170s0f0: bdf_name 0000:aa:00.0 sys_dev 10
+[1755303550.004565] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp192s0: PF sysfs path is '/sys/devices/pci0000:bd/0000:bd:01.0/0000:be:00.0/0000:bf:00.0/0000:c0:00.0'
+[1755303550.004583] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 11 for bus id c0:00.0
+[1755303550.004585] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG ibp192s0: bdf_name 0000:c0:00.0 sys_dev 11
+[1755303550.006276] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp206s0: PF sysfs path is '/sys/devices/pci0000:cb/0000:cb:01.0/0000:cc:00.0/0000:cd:00.0/0000:ce:00.0'
+[1755303550.006307] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 12 for bus id ce:00.0
+[1755303550.006308] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG ibp206s0: bdf_name 0000:ce:00.0 sys_dev 12
+[1755303550.008114] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp220s0: PF sysfs path is '/sys/devices/pci0000:d9/0000:d9:01.0/0000:da:00.0/0000:db:00.0/0000:dc:00.0'
+[1755303550.008129] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 13 for bus id dc:00.0
+[1755303550.008130] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG ibp220s0: bdf_name 0000:dc:00.0 sys_dev 13
+[1755303550.009762] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp24s0: PF sysfs path is '/sys/devices/pci0000:15/0000:15:01.0/0000:16:00.0/0000:17:00.0/0000:18:00.0'
+[1755303550.009781] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 14 for bus id 18:00.0
+[1755303550.009782] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG ibp24s0: bdf_name 0000:18:00.0 sys_dev 14
+[1755303550.011434] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp41s0f0: PF sysfs path is '/sys/devices/pci0000:24/0000:24:01.0/0000:25:00.0/0000:26:00.0/0000:27:00.0/0000:28:00.0/0000:29:00.0'
+[1755303550.011452] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 15 for bus id 29:00.0
+[1755303550.011454] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG ibp41s0f0: bdf_name 0000:29:00.0 sys_dev 15
+[1755303550.013173] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp64s0: PF sysfs path is '/sys/devices/pci0000:3d/0000:3d:01.0/0000:3e:00.0/0000:3f:00.0/0000:40:00.0'
+[1755303550.013194] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 16 for bus id 40:00.0
+[1755303550.013196] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG ibp64s0: bdf_name 0000:40:00.0 sys_dev 16
+[1755303550.014421] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp79s0: PF sysfs path is '/sys/devices/pci0000:4c/0000:4c:01.0/0000:4d:00.0/0000:4e:00.0/0000:4f:00.0'
+[1755303550.014438] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 17 for bus id 4f:00.0
+[1755303550.014440] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG ibp79s0: bdf_name 0000:4f:00.0 sys_dev 17
+[1755303550.015704] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp94s0: PF sysfs path is '/sys/devices/pci0000:5b/0000:5b:01.0/0000:5c:00.0/0000:5d:00.0/0000:5e:00.0'
+[1755303550.015727] [eos0519:3257060:0]            topo.c:298  UCX  DEBUG added sys_dev 18 for bus id 5e:00.0
+[1755303550.015728] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG ibp94s0: bdf_name 0000:5e:00.0 sys_dev 18
+[1755303550.016908] [eos0519:3257060:0]            topo.c:895  UCX  DEBUG /sys/class/net/lo: sysfs path undetected
+[1755303550.016910] [eos0519:3257060:0]            topo.c:556  UCX  DEBUG lo: system device unknown
+[1755303550.016993] [eos0519:3257060:0]    cuda_copy_md.c:104  UCX  DEBUG dmabuf is supported on cuda device 0
+[1755303550.017012] [eos0519:3257060:0]      cuda_iface.c:52   UCX  DEBUG set cuda sys_device to `unknown` as no context is currently active
+[1755303550.584257] [eos0519:3257060:0]     cuda_ipc_md.c:449  UCX  DEBUG fabric_info: state=3 status=0 uuid=00000000:00000000:00000000:00000000
+[1755303550.593740] [eos0519:3257060:0]      cuda_iface.c:52   UCX  DEBUG set cuda sys_device to `unknown` as no context is currently active
+[1755303550.593787] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool rcache_mp: align 8, maxelems 4294967295, elemsize 144
+[1755303550.598653] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x55555671ba70 [id=47 ref 1] ucs_rcache_invalidate_handler() to hash
+[1755303550.598731] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 47 events 0x1 mode thread_spinlock
+[1755303550.598762] [eos0519:3257060:0]          module.c:280  UCX  ERROR loading modules for ucm
+[1755303550.598775] [eos0519:3257060:0]          module.c:242  UCX  ERROR loading module 'cuda' with mode 0x1001
+[1755303550.598925] [eos0519:3257060:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucm_cuda.so.0.0.0 [0x55555673a9c0]
+[1755303550.664082] [eos0519:3257060:0]      cuda_iface.c:52   UCX  DEBUG set cuda sys_device to `unknown` as no context is currently active
+[1755303550.668824] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_0: PF sysfs path is '/sys/devices/pci0000:15/0000:15:01.0/0000:16:00.0/0000:17:00.0/0000:18:00.0'
+[1755303550.668829] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG mlx5_0: bdf_name 0000:18:00.0 sys_dev 14
+[1755303550.668842] [eos0519:3257060:0]       ib_device.c:498  UCX  DEBUG mlx5_0: vendor_id 0x15b3 device_id 4129
+[1755303550.669305] [eos0519:3257060:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_0: cross gvmi alias mkey is supported
+[1755303550.669307] [eos0519:3257060:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_0: mkey_by_name_reserve is not supported
+[1755303550.669308] [eos0519:3257060:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_0: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
+[1755303550.669414] [eos0519:3257060:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_0: ODP is disabled because version 1 is not supported for DevX QP
+[1755303550.672685] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556737720 [id=53 ref 1] uct_ib_async_event_handler() to hash
+[1755303550.672694] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 53 events 0x1 mode thread_spinlock
+[1755303550.672701] [eos0519:3257060:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_0' (InfiniBand channel adapter) with 1 ports
+[1755303550.672709] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_0: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
+[1755303550.672713] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_0: rocm GPUDirect RDMA is not detected by checking /dev/kfd
+[1755303550.672724] [eos0519:3257060:0]           ib_md.c:1202 UCX  DEBUG mlx5_0: dmabuf is supported
+[1755303550.672728] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
+[1755303550.672881] [eos0519:3257060:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_0: opened DEVX md log_max_qp=17
+[1755303550.673273] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_0: KSM dm memory registration status "Success" range 0x7ffff4000000..0x7ffff4000020 iova 0x0 mkey_index 0x0
+[1755303550.673528] [eos0519:3257060:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_0: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7ffff4000000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
+[1755303550.673530] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_0: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7ffff4000000 atomic mkey_index 0x0
+[1755303550.673878] [eos0519:3257060:0]           ib_md.c:1161 UCX  DEBUG mlx5_0: relaxed order memory access is disabled
+[1755303550.674076] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_0: KSM flush-mr memory registration status "Success" range 0x5555568ff000..0x5555568ff008 iova 0x0 mkey_index 0x0
+[1755303550.674077] [eos0519:3257060:0]           ib_md.c:1031 UCX  DEBUG mlx5_0: md open by 'uct_ib_mlx5_devx_md_ops' is successful
+[1755303550.704325] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_3: PF sysfs path is '/sys/devices/pci0000:3d/0000:3d:01.0/0000:3e:00.0/0000:3f:00.0/0000:40:00.0'
+[1755303550.704330] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG mlx5_3: bdf_name 0000:40:00.0 sys_dev 16
+[1755303550.704340] [eos0519:3257060:0]       ib_device.c:498  UCX  DEBUG mlx5_3: vendor_id 0x15b3 device_id 4129
+[1755303550.704810] [eos0519:3257060:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_3: cross gvmi alias mkey is supported
+[1755303550.704811] [eos0519:3257060:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_3: mkey_by_name_reserve is not supported
+[1755303550.704812] [eos0519:3257060:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_3: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
+[1755303550.704951] [eos0519:3257060:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_3: ODP is disabled because version 1 is not supported for DevX QP
+[1755303550.705073] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x5555569313a0 [id=55 ref 1] uct_ib_async_event_handler() to hash
+[1755303550.705081] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 55 events 0x1 mode thread_spinlock
+[1755303550.705082] [eos0519:3257060:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_3' (InfiniBand channel adapter) with 1 ports
+[1755303550.705089] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_3: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
+[1755303550.705092] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_3: rocm GPUDirect RDMA is not detected by checking /dev/kfd
+[1755303550.705096] [eos0519:3257060:0]           ib_md.c:1202 UCX  DEBUG mlx5_3: dmabuf is supported
+[1755303550.705098] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
+[1755303550.705269] [eos0519:3257060:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_3: opened DEVX md log_max_qp=17
+[1755303550.705679] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_3: KSM dm memory registration status "Success" range 0x7fffc6404000..0x7fffc6404020 iova 0x0 mkey_index 0x0
+[1755303550.705963] [eos0519:3257060:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_3: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc6404000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
+[1755303550.705965] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_3: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc6404000 atomic mkey_index 0x0
+[1755303550.706340] [eos0519:3257060:0]           ib_md.c:1161 UCX  DEBUG mlx5_3: relaxed order memory access is disabled
+[1755303550.706597] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_3: KSM flush-mr memory registration status "Success" range 0x555556821000..0x555556821008 iova 0x0 mkey_index 0x0
+[1755303550.706598] [eos0519:3257060:0]           ib_md.c:1031 UCX  DEBUG mlx5_3: md open by 'uct_ib_mlx5_devx_md_ops' is successful
+[1755303550.737223] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_4: PF sysfs path is '/sys/devices/pci0000:4c/0000:4c:01.0/0000:4d:00.0/0000:4e:00.0/0000:4f:00.0'
+[1755303550.737228] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG mlx5_4: bdf_name 0000:4f:00.0 sys_dev 17
+[1755303550.737238] [eos0519:3257060:0]       ib_device.c:498  UCX  DEBUG mlx5_4: vendor_id 0x15b3 device_id 4129
+[1755303550.737857] [eos0519:3257060:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_4: cross gvmi alias mkey is supported
+[1755303550.737858] [eos0519:3257060:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_4: mkey_by_name_reserve is not supported
+[1755303550.737858] [eos0519:3257060:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_4: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
+[1755303550.738036] [eos0519:3257060:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_4: ODP is disabled because version 1 is not supported for DevX QP
+[1755303550.738245] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556586e70 [id=57 ref 1] uct_ib_async_event_handler() to hash
+[1755303550.738251] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 57 events 0x1 mode thread_spinlock
+[1755303550.738252] [eos0519:3257060:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_4' (InfiniBand channel adapter) with 1 ports
+[1755303550.738258] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_4: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
+[1755303550.738261] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_4: rocm GPUDirect RDMA is not detected by checking /dev/kfd
+[1755303550.738265] [eos0519:3257060:0]           ib_md.c:1202 UCX  DEBUG mlx5_4: dmabuf is supported
+[1755303550.738267] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
+[1755303550.738466] [eos0519:3257060:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_4: opened DEVX md log_max_qp=17
+[1755303550.738909] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_4: KSM dm memory registration status "Success" range 0x7fffc5d0a000..0x7fffc5d0a020 iova 0x0 mkey_index 0x0
+[1755303550.739310] [eos0519:3257060:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_4: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc5d0a000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
+[1755303550.739311] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_4: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc5d0a000 atomic mkey_index 0x0
+[1755303550.739781] [eos0519:3257060:0]           ib_md.c:1161 UCX  DEBUG mlx5_4: relaxed order memory access is disabled
+[1755303550.740043] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_4: KSM flush-mr memory registration status "Success" range 0x555556823000..0x555556823008 iova 0x0 mkey_index 0x0
+[1755303550.740044] [eos0519:3257060:0]           ib_md.c:1031 UCX  DEBUG mlx5_4: md open by 'uct_ib_mlx5_devx_md_ops' is successful
+[1755303550.771582] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_5: PF sysfs path is '/sys/devices/pci0000:5b/0000:5b:01.0/0000:5c:00.0/0000:5d:00.0/0000:5e:00.0'
+[1755303550.771585] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG mlx5_5: bdf_name 0000:5e:00.0 sys_dev 18
+[1755303550.771592] [eos0519:3257060:0]       ib_device.c:498  UCX  DEBUG mlx5_5: vendor_id 0x15b3 device_id 4129
+[1755303550.772279] [eos0519:3257060:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_5: cross gvmi alias mkey is supported
+[1755303550.772280] [eos0519:3257060:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_5: mkey_by_name_reserve is not supported
+[1755303550.772280] [eos0519:3257060:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_5: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
+[1755303550.772423] [eos0519:3257060:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_5: ODP is disabled because version 1 is not supported for DevX QP
+[1755303550.772673] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556a02010 [id=59 ref 1] uct_ib_async_event_handler() to hash
+[1755303550.772677] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 59 events 0x1 mode thread_spinlock
+[1755303550.772678] [eos0519:3257060:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_5' (InfiniBand channel adapter) with 1 ports
+[1755303550.772684] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_5: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
+[1755303550.772690] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_5: rocm GPUDirect RDMA is not detected by checking /dev/kfd
+[1755303550.772695] [eos0519:3257060:0]           ib_md.c:1202 UCX  DEBUG mlx5_5: dmabuf is supported
+[1755303550.772696] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
+[1755303550.772884] [eos0519:3257060:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_5: opened DEVX md log_max_qp=17
+[1755303550.773308] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_5: KSM dm memory registration status "Success" range 0x7fffc5d05000..0x7fffc5d05020 iova 0x0 mkey_index 0x0
+[1755303550.773648] [eos0519:3257060:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_5: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc5d05000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
+[1755303550.773649] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_5: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc5d05000 atomic mkey_index 0x0
+[1755303550.774082] [eos0519:3257060:0]           ib_md.c:1161 UCX  DEBUG mlx5_5: relaxed order memory access is disabled
+[1755303550.774332] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_5: KSM flush-mr memory registration status "Success" range 0x5555569ff000..0x5555569ff008 iova 0x0 mkey_index 0x0
+[1755303550.774333] [eos0519:3257060:0]           ib_md.c:1031 UCX  DEBUG mlx5_5: md open by 'uct_ib_mlx5_devx_md_ops' is successful
+[1755303550.806785] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_6: PF sysfs path is '/sys/devices/pci0000:97/0000:97:01.0/0000:98:00.0/0000:99:00.0/0000:9a:00.0'
+[1755303550.806788] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG mlx5_6: bdf_name 0000:9a:00.0 sys_dev 9
+[1755303550.806798] [eos0519:3257060:0]       ib_device.c:498  UCX  DEBUG mlx5_6: vendor_id 0x15b3 device_id 4129
+[1755303550.807290] [eos0519:3257060:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_6: cross gvmi alias mkey is supported
+[1755303550.807291] [eos0519:3257060:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_6: mkey_by_name_reserve is not supported
+[1755303550.807292] [eos0519:3257060:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_6: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
+[1755303550.807419] [eos0519:3257060:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_6: ODP is disabled because version 1 is not supported for DevX QP
+[1755303550.807554] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x55555681ff90 [id=61 ref 1] uct_ib_async_event_handler() to hash
+[1755303550.807559] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 61 events 0x1 mode thread_spinlock
+[1755303550.807560] [eos0519:3257060:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_6' (InfiniBand channel adapter) with 1 ports
+[1755303550.807564] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_6: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
+[1755303550.807567] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_6: rocm GPUDirect RDMA is not detected by checking /dev/kfd
+[1755303550.807570] [eos0519:3257060:0]           ib_md.c:1202 UCX  DEBUG mlx5_6: dmabuf is supported
+[1755303550.807571] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
+[1755303550.807766] [eos0519:3257060:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_6: opened DEVX md log_max_qp=17
+[1755303550.808203] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_6: KSM dm memory registration status "Success" range 0x7fffc5d00000..0x7fffc5d00020 iova 0x0 mkey_index 0x0
+[1755303550.808610] [eos0519:3257060:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_6: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc5d00000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
+[1755303550.808612] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_6: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc5d00000 atomic mkey_index 0x0
+[1755303550.809048] [eos0519:3257060:0]           ib_md.c:1161 UCX  DEBUG mlx5_6: relaxed order memory access is disabled
+[1755303550.809294] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_6: KSM flush-mr memory registration status "Success" range 0x555556781000..0x555556781008 iova 0x0 mkey_index 0x0
+[1755303550.809294] [eos0519:3257060:0]           ib_md.c:1031 UCX  DEBUG mlx5_6: md open by 'uct_ib_mlx5_devx_md_ops' is successful
+[1755303550.838774] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_9: PF sysfs path is '/sys/devices/pci0000:bd/0000:bd:01.0/0000:be:00.0/0000:bf:00.0/0000:c0:00.0'
+[1755303550.838778] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG mlx5_9: bdf_name 0000:c0:00.0 sys_dev 11
+[1755303550.838785] [eos0519:3257060:0]       ib_device.c:498  UCX  DEBUG mlx5_9: vendor_id 0x15b3 device_id 4129
+[1755303550.839279] [eos0519:3257060:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_9: cross gvmi alias mkey is supported
+[1755303550.839280] [eos0519:3257060:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_9: mkey_by_name_reserve is not supported
+[1755303550.839281] [eos0519:3257060:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_9: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
+[1755303550.839443] [eos0519:3257060:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_9: ODP is disabled because version 1 is not supported for DevX QP
+[1755303550.839624] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x5555568fe8a0 [id=63 ref 1] uct_ib_async_event_handler() to hash
+[1755303550.839628] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 63 events 0x1 mode thread_spinlock
+[1755303550.839629] [eos0519:3257060:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_9' (InfiniBand channel adapter) with 1 ports
+[1755303550.839634] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_9: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
+[1755303550.839637] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_9: rocm GPUDirect RDMA is not detected by checking /dev/kfd
+[1755303550.839640] [eos0519:3257060:0]           ib_md.c:1202 UCX  DEBUG mlx5_9: dmabuf is supported
+[1755303550.839642] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
+[1755303550.839825] [eos0519:3257060:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_9: opened DEVX md log_max_qp=17
+[1755303550.840233] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_9: KSM dm memory registration status "Success" range 0x7fffc5cfb000..0x7fffc5cfb020 iova 0x0 mkey_index 0x0
+[1755303550.840636] [eos0519:3257060:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_9: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc5cfb000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
+[1755303550.840638] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_9: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc5cfb000 atomic mkey_index 0x0
+[1755303550.841037] [eos0519:3257060:0]           ib_md.c:1161 UCX  DEBUG mlx5_9: relaxed order memory access is disabled
+[1755303550.841373] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_9: KSM flush-mr memory registration status "Success" range 0x555556a28000..0x555556a28008 iova 0x0 mkey_index 0x0
+[1755303550.841374] [eos0519:3257060:0]           ib_md.c:1031 UCX  DEBUG mlx5_9: md open by 'uct_ib_mlx5_devx_md_ops' is successful
+[1755303550.848220] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_10: PF sysfs path is '/sys/devices/pci0000:cb/0000:cb:01.0/0000:cc:00.0/0000:cd:00.0/0000:ce:00.0'
+[1755303550.848223] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG mlx5_10: bdf_name 0000:ce:00.0 sys_dev 12
+[1755303550.848230] [eos0519:3257060:0]       ib_device.c:498  UCX  DEBUG mlx5_10: vendor_id 0x15b3 device_id 4129
+[1755303550.848771] [eos0519:3257060:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_10: cross gvmi alias mkey is supported
+[1755303550.848772] [eos0519:3257060:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_10: mkey_by_name_reserve is not supported
+[1755303550.848773] [eos0519:3257060:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_10: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
+[1755303550.848910] [eos0519:3257060:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_10: ODP is disabled because version 1 is not supported for DevX QP
+[1755303550.849098] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556780e20 [id=65 ref 1] uct_ib_async_event_handler() to hash
+[1755303550.849103] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 65 events 0x1 mode thread_spinlock
+[1755303550.849104] [eos0519:3257060:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_10' (InfiniBand channel adapter) with 1 ports
+[1755303550.849108] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_10: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
+[1755303550.849111] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_10: rocm GPUDirect RDMA is not detected by checking /dev/kfd
+[1755303550.849114] [eos0519:3257060:0]           ib_md.c:1202 UCX  DEBUG mlx5_10: dmabuf is supported
+[1755303550.849115] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
+[1755303550.849293] [eos0519:3257060:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_10: opened DEVX md log_max_qp=17
+[1755303550.849760] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_10: KSM dm memory registration status "Success" range 0x7fffc5cf6000..0x7fffc5cf6020 iova 0x0 mkey_index 0x0
+[1755303550.850220] [eos0519:3257060:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_10: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc5cf6000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
+[1755303550.850222] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_10: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc5cf6000 atomic mkey_index 0x0
+[1755303550.850601] [eos0519:3257060:0]           ib_md.c:1161 UCX  DEBUG mlx5_10: relaxed order memory access is disabled
+[1755303550.850859] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_10: KSM flush-mr memory registration status "Success" range 0x555556a2a000..0x555556a2a008 iova 0x0 mkey_index 0x0
+[1755303550.850860] [eos0519:3257060:0]           ib_md.c:1031 UCX  DEBUG mlx5_10: md open by 'uct_ib_mlx5_devx_md_ops' is successful
+[1755303550.881965] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_11: PF sysfs path is '/sys/devices/pci0000:d9/0000:d9:01.0/0000:da:00.0/0000:db:00.0/0000:dc:00.0'
+[1755303550.881968] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG mlx5_11: bdf_name 0000:dc:00.0 sys_dev 13
+[1755303550.881976] [eos0519:3257060:0]       ib_device.c:498  UCX  DEBUG mlx5_11: vendor_id 0x15b3 device_id 4129
+[1755303550.882621] [eos0519:3257060:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_11: cross gvmi alias mkey is supported
+[1755303550.882622] [eos0519:3257060:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_11: mkey_by_name_reserve is not supported
+[1755303550.882622] [eos0519:3257060:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_11: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
+[1755303550.882816] [eos0519:3257060:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_11: ODP is disabled because version 1 is not supported for DevX QP
+[1755303550.882996] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556a2d010 [id=67 ref 1] uct_ib_async_event_handler() to hash
+[1755303550.883001] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 67 events 0x1 mode thread_spinlock
+[1755303550.883002] [eos0519:3257060:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_11' (InfiniBand channel adapter) with 1 ports
+[1755303550.883007] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_11: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
+[1755303550.883010] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_11: rocm GPUDirect RDMA is not detected by checking /dev/kfd
+[1755303550.883013] [eos0519:3257060:0]           ib_md.c:1202 UCX  DEBUG mlx5_11: dmabuf is supported
+[1755303550.883015] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
+[1755303550.883185] [eos0519:3257060:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_11: opened DEVX md log_max_qp=17
+[1755303550.883647] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_11: KSM dm memory registration status "Success" range 0x7fffc5cf1000..0x7fffc5cf1020 iova 0x0 mkey_index 0x0
+[1755303550.884135] [eos0519:3257060:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_11: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc5cf1000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
+[1755303550.884137] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_11: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc5cf1000 atomic mkey_index 0x0
+[1755303550.884525] [eos0519:3257060:0]           ib_md.c:1161 UCX  DEBUG mlx5_11: relaxed order memory access is disabled
+[1755303550.884825] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_11: KSM flush-mr memory registration status "Success" range 0x55555676f000..0x55555676f008 iova 0x0 mkey_index 0x0
+[1755303550.884826] [eos0519:3257060:0]           ib_md.c:1031 UCX  DEBUG mlx5_11: md open by 'uct_ib_mlx5_devx_md_ops' is successful
+[1755303550.892185] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_0: PF sysfs path is '/sys/devices/pci0000:15/0000:15:01.0/0000:16:00.0/0000:17:00.0/0000:18:00.0'
+[1755303550.892188] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG mlx5_0: bdf_name 0000:18:00.0 sys_dev 14
+[1755303550.892199] [eos0519:3257060:0]       ib_device.c:498  UCX  DEBUG mlx5_0: vendor_id 0x15b3 device_id 4129
+[1755303550.892810] [eos0519:3257060:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_0: cross gvmi alias mkey is supported
+[1755303550.892811] [eos0519:3257060:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_0: mkey_by_name_reserve is not supported
+[1755303550.892812] [eos0519:3257060:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_0: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
+[1755303550.892989] [eos0519:3257060:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_0: ODP is disabled because version 1 is not supported for DevX QP
+[1755303550.893206] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556935010 [id=69 ref 1] uct_ib_async_event_handler() to hash
+[1755303550.893213] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 69 events 0x1 mode thread_spinlock
+[1755303550.893214] [eos0519:3257060:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_0' (InfiniBand channel adapter) with 1 ports
+[1755303550.893224] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_0: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
+[1755303550.893227] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_0: rocm GPUDirect RDMA is not detected by checking /dev/kfd
+[1755303550.893230] [eos0519:3257060:0]           ib_md.c:1202 UCX  DEBUG mlx5_0: dmabuf is supported
+[1755303550.893231] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
+[1755303550.893387] [eos0519:3257060:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_0: opened DEVX md log_max_qp=17
+[1755303550.893798] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_0: KSM dm memory registration status "Success" range 0x7fffc5cec000..0x7fffc5cec020 iova 0x0 mkey_index 0x0
+[1755303550.894148] [eos0519:3257060:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_0: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc5cec000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
+[1755303550.894149] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_0: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc5cec000 atomic mkey_index 0x0
+[1755303550.894653] [eos0519:3257060:0]           ib_md.c:1161 UCX  DEBUG mlx5_0: relaxed order memory access is disabled
+[1755303550.894876] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_0: KSM flush-mr memory registration status "Success" range 0x555556932000..0x555556932008 iova 0x0 mkey_index 0x0
+[1755303550.894916] [eos0519:3257060:0]          uct_md.c:96   UCX  DEBUG failed to query gga_mlx5 resources: No such device
+[1755303550.894917] [eos0519:3257060:0]     ucp_context.c:1188 UCX  DEBUG No tl resources found for md mlx5_0
+[1755303550.894918] [eos0519:3257060:0]     ucp_context.c:1648 UCX  DEBUG closing md mlx5_0 because it has no selected transport resources
+[1755303550.894923] [eos0519:3257060:0]    ib_mlx5dv_md.c:2496 UCX  DEBUG mlx5_0: md=0x555556770df0 md->flags=0x3fb3f7f flush_rkey=0x9400
+[1755303550.895232] [eos0519:3257060:0]           mpool.c:194  UCX  DEBUG mpool devx dbrec destroyed
+[1755303550.895240] [eos0519:3257060:0]       ib_device.c:616  UCX  DEBUG destroying ib device mlx5_0
+[1755303550.895243] [eos0519:3257060:0]           async.c:173  UCX  DEBUG removed async handler 0x555556935010 [id=69 ref 1] uct_ib_async_event_handler() from hash
+[1755303550.895244] [eos0519:3257060:0]           async.c:576  UCX  DEBUG removing async handler 0x555556935010 [id=69 ref 1] uct_ib_async_event_handler()
+[1755303550.895247] [eos0519:3257060:0]           async.c:188  UCX  DEBUG release async handler 0x555556935010 [id=69 ref 0] uct_ib_async_event_handler()
+[1755303550.900687] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_3: PF sysfs path is '/sys/devices/pci0000:3d/0000:3d:01.0/0000:3e:00.0/0000:3f:00.0/0000:40:00.0'
+[1755303550.900690] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG mlx5_3: bdf_name 0000:40:00.0 sys_dev 16
+[1755303550.900698] [eos0519:3257060:0]       ib_device.c:498  UCX  DEBUG mlx5_3: vendor_id 0x15b3 device_id 4129
+[1755303550.901237] [eos0519:3257060:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_3: cross gvmi alias mkey is supported
+[1755303550.901238] [eos0519:3257060:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_3: mkey_by_name_reserve is not supported
+[1755303550.901239] [eos0519:3257060:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_3: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
+[1755303550.901427] [eos0519:3257060:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_3: ODP is disabled because version 1 is not supported for DevX QP
+[1755303550.901599] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x5555568fce60 [id=69 ref 1] uct_ib_async_event_handler() to hash
+[1755303550.901604] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 69 events 0x1 mode thread_spinlock
+[1755303550.901605] [eos0519:3257060:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_3' (InfiniBand channel adapter) with 1 ports
+[1755303550.901609] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_3: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
+[1755303550.901612] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_3: rocm GPUDirect RDMA is not detected by checking /dev/kfd
+[1755303550.901615] [eos0519:3257060:0]           ib_md.c:1202 UCX  DEBUG mlx5_3: dmabuf is supported
+[1755303550.901616] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
+[1755303550.901787] [eos0519:3257060:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_3: opened DEVX md log_max_qp=17
+[1755303550.902234] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_3: KSM dm memory registration status "Success" range 0x7fffc5cec000..0x7fffc5cec020 iova 0x0 mkey_index 0x0
+[1755303550.902624] [eos0519:3257060:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_3: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc5cec000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
+[1755303550.902625] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_3: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc5cec000 atomic mkey_index 0x0
+[1755303550.903043] [eos0519:3257060:0]           ib_md.c:1161 UCX  DEBUG mlx5_3: relaxed order memory access is disabled
+[1755303550.903279] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_3: KSM flush-mr memory registration status "Success" range 0x555556932000..0x555556932008 iova 0x0 mkey_index 0x0
+[1755303550.903294] [eos0519:3257060:0]          uct_md.c:96   UCX  DEBUG failed to query gga_mlx5 resources: No such device
+[1755303550.903295] [eos0519:3257060:0]     ucp_context.c:1188 UCX  DEBUG No tl resources found for md mlx5_3
+[1755303550.903295] [eos0519:3257060:0]     ucp_context.c:1648 UCX  DEBUG closing md mlx5_3 because it has no selected transport resources
+[1755303550.903299] [eos0519:3257060:0]    ib_mlx5dv_md.c:2496 UCX  DEBUG mlx5_3: md=0x55555676eac0 md->flags=0x3fb3f7f flush_rkey=0x36100
+[1755303550.903864] [eos0519:3257060:0]           mpool.c:194  UCX  DEBUG mpool devx dbrec destroyed
+[1755303550.903865] [eos0519:3257060:0]       ib_device.c:616  UCX  DEBUG destroying ib device mlx5_3
+[1755303550.903867] [eos0519:3257060:0]           async.c:173  UCX  DEBUG removed async handler 0x5555568fce60 [id=69 ref 1] uct_ib_async_event_handler() from hash
+[1755303550.903876] [eos0519:3257060:0]           async.c:576  UCX  DEBUG removing async handler 0x5555568fce60 [id=69 ref 1] uct_ib_async_event_handler()
+[1755303550.903878] [eos0519:3257060:0]           async.c:188  UCX  DEBUG release async handler 0x5555568fce60 [id=69 ref 0] uct_ib_async_event_handler()
+[1755303550.909062] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_4: PF sysfs path is '/sys/devices/pci0000:4c/0000:4c:01.0/0000:4d:00.0/0000:4e:00.0/0000:4f:00.0'
+[1755303550.909064] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG mlx5_4: bdf_name 0000:4f:00.0 sys_dev 17
+[1755303550.909071] [eos0519:3257060:0]       ib_device.c:498  UCX  DEBUG mlx5_4: vendor_id 0x15b3 device_id 4129
+[1755303550.909637] [eos0519:3257060:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_4: cross gvmi alias mkey is supported
+[1755303550.909638] [eos0519:3257060:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_4: mkey_by_name_reserve is not supported
+[1755303550.909639] [eos0519:3257060:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_4: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
+[1755303550.909803] [eos0519:3257060:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_4: ODP is disabled because version 1 is not supported for DevX QP
+[1755303550.909989] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x55555671a440 [id=69 ref 1] uct_ib_async_event_handler() to hash
+[1755303550.909999] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 69 events 0x1 mode thread_spinlock
+[1755303550.910000] [eos0519:3257060:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_4' (InfiniBand channel adapter) with 1 ports
+[1755303550.910011] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_4: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
+[1755303550.910016] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_4: rocm GPUDirect RDMA is not detected by checking /dev/kfd
+[1755303550.910019] [eos0519:3257060:0]           ib_md.c:1202 UCX  DEBUG mlx5_4: dmabuf is supported
+[1755303550.910020] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
+[1755303550.910278] [eos0519:3257060:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_4: opened DEVX md log_max_qp=17
+[1755303550.910669] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_4: KSM dm memory registration status "Success" range 0x7fffc5cec000..0x7fffc5cec020 iova 0x0 mkey_index 0x0
+[1755303550.911037] [eos0519:3257060:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_4: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc5cec000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
+[1755303550.911039] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_4: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc5cec000 atomic mkey_index 0x0
+[1755303550.911396] [eos0519:3257060:0]           ib_md.c:1161 UCX  DEBUG mlx5_4: relaxed order memory access is disabled
+[1755303550.911623] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_4: KSM flush-mr memory registration status "Success" range 0x555556932000..0x555556932008 iova 0x0 mkey_index 0x0
+[1755303550.911640] [eos0519:3257060:0]          uct_md.c:96   UCX  DEBUG failed to query gga_mlx5 resources: No such device
+[1755303550.911641] [eos0519:3257060:0]     ucp_context.c:1188 UCX  DEBUG No tl resources found for md mlx5_4
+[1755303550.911642] [eos0519:3257060:0]     ucp_context.c:1648 UCX  DEBUG closing md mlx5_4 because it has no selected transport resources
+[1755303550.911646] [eos0519:3257060:0]    ib_mlx5dv_md.c:2496 UCX  DEBUG mlx5_4: md=0x555556a29360 md->flags=0x3fb3f7f flush_rkey=0x35100
+[1755303550.911937] [eos0519:3257060:0]           mpool.c:194  UCX  DEBUG mpool devx dbrec destroyed
+[1755303550.911939] [eos0519:3257060:0]       ib_device.c:616  UCX  DEBUG destroying ib device mlx5_4
+[1755303550.911940] [eos0519:3257060:0]           async.c:173  UCX  DEBUG removed async handler 0x55555671a440 [id=69 ref 1] uct_ib_async_event_handler() from hash
+[1755303550.911942] [eos0519:3257060:0]           async.c:576  UCX  DEBUG removing async handler 0x55555671a440 [id=69 ref 1] uct_ib_async_event_handler()
+[1755303550.911944] [eos0519:3257060:0]           async.c:188  UCX  DEBUG release async handler 0x55555671a440 [id=69 ref 0] uct_ib_async_event_handler()
+[1755303550.935511] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_5: PF sysfs path is '/sys/devices/pci0000:5b/0000:5b:01.0/0000:5c:00.0/0000:5d:00.0/0000:5e:00.0'
+[1755303550.935514] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG mlx5_5: bdf_name 0000:5e:00.0 sys_dev 18
+[1755303550.935522] [eos0519:3257060:0]       ib_device.c:498  UCX  DEBUG mlx5_5: vendor_id 0x15b3 device_id 4129
+[1755303550.935991] [eos0519:3257060:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_5: cross gvmi alias mkey is supported
+[1755303550.935992] [eos0519:3257060:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_5: mkey_by_name_reserve is not supported
+[1755303550.935993] [eos0519:3257060:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_5: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
+[1755303550.936116] [eos0519:3257060:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_5: ODP is disabled because version 1 is not supported for DevX QP
+[1755303550.936246] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556a2d250 [id=69 ref 1] uct_ib_async_event_handler() to hash
+[1755303550.936251] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 69 events 0x1 mode thread_spinlock
+[1755303550.936252] [eos0519:3257060:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_5' (InfiniBand channel adapter) with 1 ports
+[1755303550.936256] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_5: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
+[1755303550.936259] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_5: rocm GPUDirect RDMA is not detected by checking /dev/kfd
+[1755303550.936263] [eos0519:3257060:0]           ib_md.c:1202 UCX  DEBUG mlx5_5: dmabuf is supported
+[1755303550.936264] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
+[1755303550.936443] [eos0519:3257060:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_5: opened DEVX md log_max_qp=17
+[1755303550.936843] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_5: KSM dm memory registration status "Success" range 0x7fffc5cec000..0x7fffc5cec020 iova 0x0 mkey_index 0x0
+[1755303550.937133] [eos0519:3257060:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_5: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc5cec000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
+[1755303550.937134] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_5: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc5cec000 atomic mkey_index 0x0
+[1755303550.937490] [eos0519:3257060:0]           ib_md.c:1161 UCX  DEBUG mlx5_5: relaxed order memory access is disabled
+[1755303550.937715] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_5: KSM flush-mr memory registration status "Success" range 0x555556932000..0x555556932008 iova 0x0 mkey_index 0x0
+[1755303550.937731] [eos0519:3257060:0]          uct_md.c:96   UCX  DEBUG failed to query gga_mlx5 resources: No such device
+[1755303550.937732] [eos0519:3257060:0]     ucp_context.c:1188 UCX  DEBUG No tl resources found for md mlx5_5
+[1755303550.937733] [eos0519:3257060:0]     ucp_context.c:1648 UCX  DEBUG closing md mlx5_5 because it has no selected transport resources
+[1755303550.937736] [eos0519:3257060:0]    ib_mlx5dv_md.c:2496 UCX  DEBUG mlx5_5: md=0x555556a2d500 md->flags=0x3fb3f7f flush_rkey=0x34800
+[1755303550.937978] [eos0519:3257060:0]           mpool.c:194  UCX  DEBUG mpool devx dbrec destroyed
+[1755303550.937979] [eos0519:3257060:0]       ib_device.c:616  UCX  DEBUG destroying ib device mlx5_5
+[1755303550.937994] [eos0519:3257060:0]           async.c:173  UCX  DEBUG removed async handler 0x555556a2d250 [id=69 ref 1] uct_ib_async_event_handler() from hash
+[1755303550.937994] [eos0519:3257060:0]           async.c:576  UCX  DEBUG removing async handler 0x555556a2d250 [id=69 ref 1] uct_ib_async_event_handler()
+[1755303550.937996] [eos0519:3257060:0]           async.c:188  UCX  DEBUG release async handler 0x555556a2d250 [id=69 ref 0] uct_ib_async_event_handler()
+[1755303550.942823] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_6: PF sysfs path is '/sys/devices/pci0000:97/0000:97:01.0/0000:98:00.0/0000:99:00.0/0000:9a:00.0'
+[1755303550.942825] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG mlx5_6: bdf_name 0000:9a:00.0 sys_dev 9
+[1755303550.942833] [eos0519:3257060:0]       ib_device.c:498  UCX  DEBUG mlx5_6: vendor_id 0x15b3 device_id 4129
+[1755303550.943316] [eos0519:3257060:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_6: cross gvmi alias mkey is supported
+[1755303550.943317] [eos0519:3257060:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_6: mkey_by_name_reserve is not supported
+[1755303550.943318] [eos0519:3257060:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_6: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
+[1755303550.943432] [eos0519:3257060:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_6: ODP is disabled because version 1 is not supported for DevX QP
+[1755303550.943546] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556931ed0 [id=69 ref 1] uct_ib_async_event_handler() to hash
+[1755303550.943550] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 69 events 0x1 mode thread_spinlock
+[1755303550.943551] [eos0519:3257060:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_6' (InfiniBand channel adapter) with 1 ports
+[1755303550.943555] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_6: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
+[1755303550.943558] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_6: rocm GPUDirect RDMA is not detected by checking /dev/kfd
+[1755303550.943561] [eos0519:3257060:0]           ib_md.c:1202 UCX  DEBUG mlx5_6: dmabuf is supported
+[1755303550.943562] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
+[1755303550.943735] [eos0519:3257060:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_6: opened DEVX md log_max_qp=17
+[1755303550.944131] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_6: KSM dm memory registration status "Success" range 0x7fffc5cec000..0x7fffc5cec020 iova 0x0 mkey_index 0x0
+[1755303550.944413] [eos0519:3257060:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_6: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc5cec000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
+[1755303550.944414] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_6: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc5cec000 atomic mkey_index 0x0
+[1755303550.944760] [eos0519:3257060:0]           ib_md.c:1161 UCX  DEBUG mlx5_6: relaxed order memory access is disabled
+[1755303550.944981] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_6: KSM flush-mr memory registration status "Success" range 0x555556932000..0x555556932008 iova 0x0 mkey_index 0x0
+[1755303550.944996] [eos0519:3257060:0]          uct_md.c:96   UCX  DEBUG failed to query gga_mlx5 resources: No such device
+[1755303550.944997] [eos0519:3257060:0]     ucp_context.c:1188 UCX  DEBUG No tl resources found for md mlx5_6
+[1755303550.944998] [eos0519:3257060:0]     ucp_context.c:1648 UCX  DEBUG closing md mlx5_6 because it has no selected transport resources
+[1755303550.945001] [eos0519:3257060:0]    ib_mlx5dv_md.c:2496 UCX  DEBUG mlx5_6: md=0x555556a2d4e0 md->flags=0x3fb3f7f flush_rkey=0x31e00
+[1755303550.945245] [eos0519:3257060:0]           mpool.c:194  UCX  DEBUG mpool devx dbrec destroyed
+[1755303550.945246] [eos0519:3257060:0]       ib_device.c:616  UCX  DEBUG destroying ib device mlx5_6
+[1755303550.945248] [eos0519:3257060:0]           async.c:173  UCX  DEBUG removed async handler 0x555556931ed0 [id=69 ref 1] uct_ib_async_event_handler() from hash
+[1755303550.945249] [eos0519:3257060:0]           async.c:576  UCX  DEBUG removing async handler 0x555556931ed0 [id=69 ref 1] uct_ib_async_event_handler()
+[1755303550.945250] [eos0519:3257060:0]           async.c:188  UCX  DEBUG release async handler 0x555556931ed0 [id=69 ref 0] uct_ib_async_event_handler()
+[1755303550.950014] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_9: PF sysfs path is '/sys/devices/pci0000:bd/0000:bd:01.0/0000:be:00.0/0000:bf:00.0/0000:c0:00.0'
+[1755303550.950017] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG mlx5_9: bdf_name 0000:c0:00.0 sys_dev 11
+[1755303550.950030] [eos0519:3257060:0]       ib_device.c:498  UCX  DEBUG mlx5_9: vendor_id 0x15b3 device_id 4129
+[1755303550.950496] [eos0519:3257060:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_9: cross gvmi alias mkey is supported
+[1755303550.950497] [eos0519:3257060:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_9: mkey_by_name_reserve is not supported
+[1755303550.950498] [eos0519:3257060:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_9: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
+[1755303550.950603] [eos0519:3257060:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_9: ODP is disabled because version 1 is not supported for DevX QP
+[1755303550.950726] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x5555568fce60 [id=69 ref 1] uct_ib_async_event_handler() to hash
+[1755303550.950730] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 69 events 0x1 mode thread_spinlock
+[1755303550.950731] [eos0519:3257060:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_9' (InfiniBand channel adapter) with 1 ports
+[1755303550.950734] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_9: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
+[1755303550.950737] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_9: rocm GPUDirect RDMA is not detected by checking /dev/kfd
+[1755303550.950740] [eos0519:3257060:0]           ib_md.c:1202 UCX  DEBUG mlx5_9: dmabuf is supported
+[1755303550.950741] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
+[1755303550.950916] [eos0519:3257060:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_9: opened DEVX md log_max_qp=17
+[1755303550.951306] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_9: KSM dm memory registration status "Success" range 0x7fffc5cec000..0x7fffc5cec020 iova 0x0 mkey_index 0x0
+[1755303550.951595] [eos0519:3257060:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_9: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc5cec000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
+[1755303550.951596] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_9: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc5cec000 atomic mkey_index 0x0
+[1755303550.951940] [eos0519:3257060:0]           ib_md.c:1161 UCX  DEBUG mlx5_9: relaxed order memory access is disabled
+[1755303550.952160] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_9: KSM flush-mr memory registration status "Success" range 0x555556932000..0x555556932008 iova 0x0 mkey_index 0x0
+[1755303550.952174] [eos0519:3257060:0]          uct_md.c:96   UCX  DEBUG failed to query gga_mlx5 resources: No such device
+[1755303550.952175] [eos0519:3257060:0]     ucp_context.c:1188 UCX  DEBUG No tl resources found for md mlx5_9
+[1755303550.952176] [eos0519:3257060:0]     ucp_context.c:1648 UCX  DEBUG closing md mlx5_9 because it has no selected transport resources
+[1755303550.952179] [eos0519:3257060:0]    ib_mlx5dv_md.c:2496 UCX  DEBUG mlx5_9: md=0x555556a2daa0 md->flags=0x3fb3f7f flush_rkey=0x33900
+[1755303550.952412] [eos0519:3257060:0]           mpool.c:194  UCX  DEBUG mpool devx dbrec destroyed
+[1755303550.952420] [eos0519:3257060:0]       ib_device.c:616  UCX  DEBUG destroying ib device mlx5_9
+[1755303550.952422] [eos0519:3257060:0]           async.c:173  UCX  DEBUG removed async handler 0x5555568fce60 [id=69 ref 1] uct_ib_async_event_handler() from hash
+[1755303550.952423] [eos0519:3257060:0]           async.c:576  UCX  DEBUG removing async handler 0x5555568fce60 [id=69 ref 1] uct_ib_async_event_handler()
+[1755303550.952424] [eos0519:3257060:0]           async.c:188  UCX  DEBUG release async handler 0x5555568fce60 [id=69 ref 0] uct_ib_async_event_handler()
+[1755303550.957011] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_10: PF sysfs path is '/sys/devices/pci0000:cb/0000:cb:01.0/0000:cc:00.0/0000:cd:00.0/0000:ce:00.0'
+[1755303550.957016] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG mlx5_10: bdf_name 0000:ce:00.0 sys_dev 12
+[1755303550.957034] [eos0519:3257060:0]       ib_device.c:498  UCX  DEBUG mlx5_10: vendor_id 0x15b3 device_id 4129
+[1755303550.957503] [eos0519:3257060:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_10: cross gvmi alias mkey is supported
+[1755303550.957504] [eos0519:3257060:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_10: mkey_by_name_reserve is not supported
+[1755303550.957504] [eos0519:3257060:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_10: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
+[1755303550.957609] [eos0519:3257060:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_10: ODP is disabled because version 1 is not supported for DevX QP
+[1755303550.957731] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x5555567711b0 [id=69 ref 1] uct_ib_async_event_handler() to hash
+[1755303550.957740] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 69 events 0x1 mode thread_spinlock
+[1755303550.957741] [eos0519:3257060:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_10' (InfiniBand channel adapter) with 1 ports
+[1755303550.957746] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_10: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
+[1755303550.957749] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_10: rocm GPUDirect RDMA is not detected by checking /dev/kfd
+[1755303550.957751] [eos0519:3257060:0]           ib_md.c:1202 UCX  DEBUG mlx5_10: dmabuf is supported
+[1755303550.957753] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
+[1755303550.957922] [eos0519:3257060:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_10: opened DEVX md log_max_qp=17
+[1755303550.958302] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_10: KSM dm memory registration status "Success" range 0x7fffc5cec000..0x7fffc5cec020 iova 0x0 mkey_index 0x0
+[1755303550.958577] [eos0519:3257060:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_10: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc5cec000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
+[1755303550.958578] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_10: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc5cec000 atomic mkey_index 0x0
+[1755303550.958926] [eos0519:3257060:0]           ib_md.c:1161 UCX  DEBUG mlx5_10: relaxed order memory access is disabled
+[1755303550.959144] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_10: KSM flush-mr memory registration status "Success" range 0x555556932000..0x555556932008 iova 0x0 mkey_index 0x0
+[1755303550.959159] [eos0519:3257060:0]          uct_md.c:96   UCX  DEBUG failed to query gga_mlx5 resources: No such device
+[1755303550.959160] [eos0519:3257060:0]     ucp_context.c:1188 UCX  DEBUG No tl resources found for md mlx5_10
+[1755303550.959161] [eos0519:3257060:0]     ucp_context.c:1648 UCX  DEBUG closing md mlx5_10 because it has no selected transport resources
+[1755303550.959164] [eos0519:3257060:0]    ib_mlx5dv_md.c:2496 UCX  DEBUG mlx5_10: md=0x555556a2dc60 md->flags=0x3fb3f7f flush_rkey=0x31500
+[1755303550.959401] [eos0519:3257060:0]           mpool.c:194  UCX  DEBUG mpool devx dbrec destroyed
+[1755303550.959402] [eos0519:3257060:0]       ib_device.c:616  UCX  DEBUG destroying ib device mlx5_10
+[1755303550.959403] [eos0519:3257060:0]           async.c:173  UCX  DEBUG removed async handler 0x5555567711b0 [id=69 ref 1] uct_ib_async_event_handler() from hash
+[1755303550.959404] [eos0519:3257060:0]           async.c:576  UCX  DEBUG removing async handler 0x5555567711b0 [id=69 ref 1] uct_ib_async_event_handler()
+[1755303550.959406] [eos0519:3257060:0]           async.c:188  UCX  DEBUG release async handler 0x5555567711b0 [id=69 ref 0] uct_ib_async_event_handler()
+[1755303550.963974] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_11: PF sysfs path is '/sys/devices/pci0000:d9/0000:d9:01.0/0000:da:00.0/0000:db:00.0/0000:dc:00.0'
+[1755303550.963976] [eos0519:3257060:0]            topo.c:552  UCX  DEBUG mlx5_11: bdf_name 0000:dc:00.0 sys_dev 13
+[1755303550.963983] [eos0519:3257060:0]       ib_device.c:498  UCX  DEBUG mlx5_11: vendor_id 0x15b3 device_id 4129
+[1755303550.964439] [eos0519:3257060:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_11: cross gvmi alias mkey is supported
+[1755303550.964439] [eos0519:3257060:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_11: mkey_by_name_reserve is not supported
+[1755303550.964440] [eos0519:3257060:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_11: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
+[1755303550.964551] [eos0519:3257060:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_11: ODP is disabled because version 1 is not supported for DevX QP
+[1755303550.964675] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x5555568fb740 [id=69 ref 1] uct_ib_async_event_handler() to hash
+[1755303550.964679] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 69 events 0x1 mode thread_spinlock
+[1755303550.964680] [eos0519:3257060:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_11' (InfiniBand channel adapter) with 1 ports
+[1755303550.964687] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_11: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
+[1755303550.964690] [eos0519:3257060:0]           ib_md.c:1177 UCX  DEBUG mlx5_11: rocm GPUDirect RDMA is not detected by checking /dev/kfd
+[1755303550.964692] [eos0519:3257060:0]           ib_md.c:1202 UCX  DEBUG mlx5_11: dmabuf is supported
+[1755303550.964693] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
+[1755303550.964866] [eos0519:3257060:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_11: opened DEVX md log_max_qp=17
+[1755303550.965254] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_11: KSM dm memory registration status "Success" range 0x7fffc5cec000..0x7fffc5cec020 iova 0x0 mkey_index 0x0
+[1755303550.965538] [eos0519:3257060:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_11: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffc5cec000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
+[1755303550.965539] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_11: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffc5cec000 atomic mkey_index 0x0
+[1755303550.965894] [eos0519:3257060:0]           ib_md.c:1161 UCX  DEBUG mlx5_11: relaxed order memory access is disabled
+[1755303550.966126] [eos0519:3257060:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_11: KSM flush-mr memory registration status "Success" range 0x555556932000..0x555556932008 iova 0x0 mkey_index 0x0
+[1755303550.966162] [eos0519:3257060:0]          uct_md.c:96   UCX  DEBUG failed to query gga_mlx5 resources: No such device
+[1755303550.966163] [eos0519:3257060:0]     ucp_context.c:1188 UCX  DEBUG No tl resources found for md mlx5_11
+[1755303550.966164] [eos0519:3257060:0]     ucp_context.c:1648 UCX  DEBUG closing md mlx5_11 because it has no selected transport resources
+[1755303550.966175] [eos0519:3257060:0]    ib_mlx5dv_md.c:2496 UCX  DEBUG mlx5_11: md=0x555556a2d770 md->flags=0x3fb3f7f flush_rkey=0x2c400
+[1755303550.966416] [eos0519:3257060:0]           mpool.c:194  UCX  DEBUG mpool devx dbrec destroyed
+[1755303550.966417] [eos0519:3257060:0]       ib_device.c:616  UCX  DEBUG destroying ib device mlx5_11
+[1755303550.966418] [eos0519:3257060:0]           async.c:173  UCX  DEBUG removed async handler 0x5555568fb740 [id=69 ref 1] uct_ib_async_event_handler() from hash
+[1755303550.966419] [eos0519:3257060:0]           async.c:576  UCX  DEBUG removing async handler 0x5555568fb740 [id=69 ref 1] uct_ib_async_event_handler()
+[1755303550.966421] [eos0519:3257060:0]           async.c:188  UCX  DEBUG release async handler 0x5555568fb740 [id=69 ref 0] uct_ib_async_event_handler()
+[1755303550.966819] [eos0519:3257060:0]     ucp_context.c:1713 UCX  DEBUG register host memory on: self, tcp, cuda_cpy, mlx5_0, mlx5_3, mlx5_4, mlx5_5, mlx5_6, mlx5_9, mlx5_10, mlx5_11, cma
+[1755303550.966821] [eos0519:3257060:0]     ucp_context.c:1713 UCX  DEBUG register cuda memory on: cuda_cpy, cuda_ipc, gdr_copy, mlx5_0, mlx5_3, mlx5_4, mlx5_5, mlx5_6, mlx5_9, mlx5_10, mlx5_11
+[1755303550.966822] [eos0519:3257060:0]     ucp_context.c:1713 UCX  DEBUG register cuda-managed memory on: cuda_cpy
+[1755303550.966822] [eos0519:3257060:0]     ucp_context.c:1701 UCX  DEBUG no memory domain supports registering rocm memory
+[1755303550.966823] [eos0519:3257060:0]     ucp_context.c:1701 UCX  DEBUG no memory domain supports registering rocm-managed memory
+[1755303550.966824] [eos0519:3257060:0]     ucp_context.c:1701 UCX  DEBUG no memory domain supports registering rdma memory
+[1755303550.966824] [eos0519:3257060:0]     ucp_context.c:1701 UCX  DEBUG no memory domain supports registering ze-host memory
+[1755303550.966825] [eos0519:3257060:0]     ucp_context.c:1701 UCX  DEBUG no memory domain supports registering ze-device memory
+[1755303550.966825] [eos0519:3257060:0]     ucp_context.c:1701 UCX  DEBUG no memory domain supports registering ze-managed memory
+[1755303550.966852] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool rcache_mp: align 8, maxelems 4294967295, elemsize 144
+[1755303550.966917] [eos0519:3257060:0]     ucp_context.c:2332 UCX  DEBUG created ucp context ucp_context_0 0x5555565c38f0 [16 mds 60 tls] features 0x1 tl bitmap 0xfffffffffffffff 0x0
+[1755303550.969023] [eos0519:3257060:0]      ucp_worker.c:2510 UCX  DIAG  multi-threaded worker is requested, but library is built without multi-thread support
+[1755303550.969067] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool self_msg_desc: align 64, maxelems 4294967295, elemsize 8200
+[1755303550.969069] [eos0519:3257060:0]            self.c:245  UCX  DEBUG created self iface id 0x6a915b61f26d101c send_size 8192
+[1755303550.969078] [eos0519:3257060:0]      ucp_worker.c:1436 UCX  DEBUG created interface[0]=0x55555690df00 using self/memory on worker 0x5555569d7780
+[1755303550.969100] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
+[1755303550.969102] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
+[1755303550.973532] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556904850 [id=69 ref 1] uct_tcp_iface_connect_handler() to hash
+[1755303550.973541] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 69 events 0x5 mode thread_spinlock
+[1755303550.973549] [eos0519:3257060:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x55555690ec80: listening for connections (fd=69) on 169.254.0.18:46689 netif bmc-redfish0
+[1755303550.973572] [eos0519:3257060:0]         tcp_net.c:61   UCX  DEBUG speed of bmc-redfish0 is UNKNOWN, assuming 100 Mbps
+[1755303550.973638] [eos0519:3257060:0]            topo.c:895  UCX  DEBUG /sys/class/net/bmc-redfish0/lower_enxea2983fa0d10: sysfs path undetected
+[1755303550.973640] [eos0519:3257060:0]            topo.c:848  UCX  DEBUG bmc-redfish0: pci bandwidth undetected, using maximal value
+[1755303550.973675] [eos0519:3257060:0]      ucp_worker.c:1436 UCX  DEBUG created interface[1]=0x55555690ec80 using tcp/bmc-redfish0 on worker 0x5555569d7780
+[1755303550.973695] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
+[1755303550.973697] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
+[1755303550.974181] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556b8fed0 [id=71 ref 1] uct_tcp_iface_connect_handler() to hash
+[1755303550.974187] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 71 events 0x5 mode thread_spinlock
+[1755303550.974190] [eos0519:3257060:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x55555681e990: listening for connections (fd=71) on 10.52.54.8:52675 netif eth3
+[1755303550.974442] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/eth3: PF sysfs path is '/sys/devices/pci0000:80/0000:80:05.0/0000:82:00.1'
+[1755303550.976207] [eos0519:3257060:0]      ucp_worker.c:1436 UCX  DEBUG created interface[2]=0x55555681e990 using tcp/eth3 on worker 0x5555569d7780
+[1755303550.976224] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
+[1755303550.976225] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
+[1755303550.977024] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556b8ff50 [id=73 ref 1] uct_tcp_iface_connect_handler() to hash
+[1755303550.977030] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 73 events 0x5 mode thread_spinlock
+[1755303550.977032] [eos0519:3257060:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x55555690f500: listening for connections (fd=73) on 172.16.130.21:48233 netif ibp154s0
+[1755303550.977359] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp154s0: PF sysfs path is '/sys/devices/pci0000:97/0000:97:01.0/0000:98:00.0/0000:99:00.0/0000:9a:00.0'
+[1755303550.977418] [eos0519:3257060:0]      ucp_worker.c:1436 UCX  DEBUG created interface[3]=0x55555690f500 using tcp/ibp154s0 on worker 0x5555569d7780
+[1755303550.977432] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
+[1755303550.977433] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
+[1755303550.978612] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556b8ff10 [id=75 ref 1] uct_tcp_iface_connect_handler() to hash
+[1755303550.978618] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 75 events 0x5 mode thread_spinlock
+[1755303550.978620] [eos0519:3257060:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x55555690fc80: listening for connections (fd=75) on 172.16.18.213:60637 netif ibp170s0f0
+[1755303550.978851] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp170s0f0: PF sysfs path is '/sys/devices/pci0000:a5/0000:a5:01.0/0000:a6:00.0/0000:a7:00.0/0000:a8:00.0/0000:a9:00.0/0000:aa:00.0'
+[1755303550.978901] [eos0519:3257060:0]      ucp_worker.c:1436 UCX  DEBUG created interface[4]=0x55555690fc80 using tcp/ibp170s0f0 on worker 0x5555569d7780
+[1755303550.978913] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
+[1755303550.978914] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
+[1755303550.980373] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556b8ff90 [id=77 ref 1] uct_tcp_iface_connect_handler() to hash
+[1755303550.980378] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 77 events 0x5 mode thread_spinlock
+[1755303550.980394] [eos0519:3257060:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x55555673f160: listening for connections (fd=77) on 172.16.146.21:51885 netif ibp192s0
+[1755303550.980706] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp192s0: PF sysfs path is '/sys/devices/pci0000:bd/0000:bd:01.0/0000:be:00.0/0000:bf:00.0/0000:c0:00.0'
+[1755303550.980760] [eos0519:3257060:0]      ucp_worker.c:1436 UCX  DEBUG created interface[5]=0x55555673f160 using tcp/ibp192s0 on worker 0x5555569d7780
+[1755303550.980773] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
+[1755303550.980774] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
+[1755303550.982585] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556b8ffd0 [id=79 ref 1] uct_tcp_iface_connect_handler() to hash
+[1755303550.982590] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 79 events 0x5 mode thread_spinlock
+[1755303550.982592] [eos0519:3257060:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x55555673f8e0: listening for connections (fd=79) on 172.16.162.21:38853 netif ibp206s0
+[1755303550.982817] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp206s0: PF sysfs path is '/sys/devices/pci0000:cb/0000:cb:01.0/0000:cc:00.0/0000:cd:00.0/0000:ce:00.0'
+[1755303550.982877] [eos0519:3257060:0]      ucp_worker.c:1436 UCX  DEBUG created interface[6]=0x55555673f8e0 using tcp/ibp206s0 on worker 0x5555569d7780
+[1755303550.982889] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
+[1755303550.982890] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
+[1755303550.984797] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556b91ba0 [id=81 ref 1] uct_tcp_iface_connect_handler() to hash
+[1755303550.984802] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 81 events 0x5 mode thread_spinlock
+[1755303550.984805] [eos0519:3257060:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x5555567405e0: listening for connections (fd=81) on 172.16.178.21:47197 netif ibp220s0
+[1755303550.985059] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp220s0: PF sysfs path is '/sys/devices/pci0000:d9/0000:d9:01.0/0000:da:00.0/0000:db:00.0/0000:dc:00.0'
+[1755303550.985117] [eos0519:3257060:0]      ucp_worker.c:1436 UCX  DEBUG created interface[7]=0x5555567405e0 using tcp/ibp220s0 on worker 0x5555569d7780
+[1755303550.985129] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
+[1755303550.985130] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
+[1755303550.987101] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556775590 [id=83 ref 1] uct_tcp_iface_connect_handler() to hash
+[1755303550.987106] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 83 events 0x5 mode thread_spinlock
+[1755303550.987108] [eos0519:3257060:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x555556740f70: listening for connections (fd=83) on 172.16.66.21:47639 netif ibp24s0
+[1755303550.987435] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp24s0: PF sysfs path is '/sys/devices/pci0000:15/0000:15:01.0/0000:16:00.0/0000:17:00.0/0000:18:00.0'
+[1755303550.987509] [eos0519:3257060:0]      ucp_worker.c:1436 UCX  DEBUG created interface[8]=0x555556740f70 using tcp/ibp24s0 on worker 0x5555569d7780
+[1755303550.987521] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
+[1755303550.987522] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
+[1755303550.989283] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556432fd0 [id=85 ref 1] uct_tcp_iface_connect_handler() to hash
+[1755303550.989290] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 85 events 0x5 mode thread_spinlock
+[1755303550.989292] [eos0519:3257060:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x555556b8ab50: listening for connections (fd=85) on 172.16.2.213:47735 netif ibp41s0f0
+[1755303550.989611] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp41s0f0: PF sysfs path is '/sys/devices/pci0000:24/0000:24:01.0/0000:25:00.0/0000:26:00.0/0000:27:00.0/0000:28:00.0/0000:29:00.0'
+[1755303550.989659] [eos0519:3257060:0]      ucp_worker.c:1436 UCX  DEBUG created interface[9]=0x555556b8ab50 using tcp/ibp41s0f0 on worker 0x5555569d7780
+[1755303550.989671] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
+[1755303550.989672] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
+[1755303550.991743] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x55555690ac10 [id=87 ref 1] uct_tcp_iface_connect_handler() to hash
+[1755303550.991749] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 87 events 0x5 mode thread_spinlock
+[1755303550.991751] [eos0519:3257060:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x555556b8b2d0: listening for connections (fd=87) on 172.16.82.21:41233 netif ibp64s0
+[1755303550.991865] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp64s0: PF sysfs path is '/sys/devices/pci0000:3d/0000:3d:01.0/0000:3e:00.0/0000:3f:00.0/0000:40:00.0'
+[1755303550.991920] [eos0519:3257060:0]      ucp_worker.c:1436 UCX  DEBUG created interface[10]=0x555556b8b2d0 using tcp/ibp64s0 on worker 0x5555569d7780
+[1755303550.991932] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
+[1755303550.991933] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
+[1755303550.994321] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556904930 [id=89 ref 1] uct_tcp_iface_connect_handler() to hash
+[1755303550.994326] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 89 events 0x5 mode thread_spinlock
+[1755303550.994328] [eos0519:3257060:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x555556b8bcc0: listening for connections (fd=89) on 172.16.98.21:60803 netif ibp79s0
+[1755303550.994560] [eos0519:3257060:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp79s0: PF sysfs path is '/sys/devices/pci0000:4c/0000:4c:01.0/0000:4d:00.0/0000:4e:00.0/0000:4f:00.0'
+[1755303550.994611] [eos0519:3257060:0]      ucp_worker.c:1436 UCX  DEBUG created interface[11]=0x555556b8bcc0 using tcp/ibp79s0 on worker 0x5555569d7780
+[1755303550.994622] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_tx_buf_mp: align 64, maxelems 4294967295, elemsize 8205
+[1755303550.994623] [eos0519:3257060:0]           mpool.c:138  UCX  DEBUG mpool uct_tcp_iface_rx_buf_mp: align 64, maxelems 4294967295, elemsize 131090
+[1755303550.996892] [eos0519:3257060:0]           async.c:248  UCX  DEBUG added async handler 0x555556903dd0 [id=91 ref 1] uct_tcp_iface_connect_handler() to hash
+[1755303550.996897] [eos0519:3257060:0]           async.c:522  UCX  DEBUG listening to async event fd 91 events 0x5 mode thread_spinlock
+[1755303550.996899] [eos0519:3257060:0]       tcp_iface.c:596  UCX  DEBUG tcp_iface 0x555556b90280: listening for connections (fd=91) on 172.16.114.21:58091 netif ibp94s0
+[1755303550.997142] [eos0519:3257060:0]          

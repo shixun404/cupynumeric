@@ -22,7 +22,8 @@ conda activate legate
 # export OMPI_MCA_pml=ob1
 # export OMPI_MCA_coll=^ucc
 # export OMPI_MCA_coll_base_verbose=1
-
+export OMPI_MCA_pml=^ucx
+export OMPI_MCA_coll=^hcoll
 
 # export OMPI_MCA_btl_base_verbose=100  # 最详细的 BTL 调试
 # export OMPI_MCA_mca_base_component_show_load_errors=1  # 显示组件加载错误

@@ -112,3 +112,4 @@ value will be ignored.
 [eos0214:3048745] *** End of error message ***
 slurmstepd: error: *** STEP 3459946.11 ON eos0214 CANCELLED AT 2025-08-16T00:01:24 ***
 slurmstepd: error:  mpi/pmix_v4: _errhandler: eos0214 [0]: pmixp_client_v2.c:211: Error handler invoked: status = -61, source = [slurm.pmix.3459946.11:2]
+slurmstepd: error:  mpi/pmix_v4: _errhandler: eos0214 [0]: pmixp_client_v2.c:211: Error handler invoked: status = -61, source = [slurm.pmix.3459946.11:6]

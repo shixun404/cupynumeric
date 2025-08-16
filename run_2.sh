@@ -103,4 +103,4 @@ export UCX_NET_DEVICES=all
 export UCX_VFS_ENABLE=n
 # --- Run the application ---
 echo "--- Starting Legate Application ---"
-legate --gpus 1 --fbmem 2000 /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py
+legate --gpus 1 --fbmem 10000 /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py

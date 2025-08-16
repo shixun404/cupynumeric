@@ -17,15 +17,15 @@ conda activate legate
 # export CONDA_ENV_DIR="/project/coreai_devtech_all/shixunw/miniconda3/envs/legate"
 # export PATH="$CONDA_ENV_DIR/bin:$PATH"
 # 在 run_2.sh 中添加
-export OMPI_MCA_btl_tcp_if_include=eth0  # 或者你的网络接口名
-export OMPI_MCA_btl=tcp,self,vader
-export OMPI_MCA_pml=ob1
-export OMPI_MCA_coll=^ucc
-export OMPI_MCA_coll_base_verbose=1
+# export OMPI_MCA_btl_tcp_if_include=eth0  # 或者你的网络接口名
+# export OMPI_MCA_btl=tcp,self,vader
+# export OMPI_MCA_pml=ob1
+# export OMPI_MCA_coll=^ucc
+# export OMPI_MCA_coll_base_verbose=1
 
 
-export OMPI_MCA_btl_base_verbose=100  # 最详细的 BTL 调试
-export OMPI_MCA_mca_base_component_show_load_errors=1  # 显示组件加载错误
+# export OMPI_MCA_btl_base_verbose=100  # 最详细的 BTL 调试
+# export OMPI_MCA_mca_base_component_show_load_errors=1  # 显示组件加载错误
 export HOME=/project/coreai_devtech_all/shixunw;
 export MPI_HOME=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ompi;
 export HPC_SDK_ROOT=/opt/nvidia/hpc_sdk/Linux_x86_64/25.3;

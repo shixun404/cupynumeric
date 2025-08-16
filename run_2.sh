@@ -14,8 +14,8 @@ fi
 unset __conda_setup
 conda activate legate
 
-export CONDA_ENV_DIR="/project/coreai_devtech_all/shixunw/miniconda3/envs/legate"
-export PATH="$CONDA_ENV_DIR/bin:$PATH"
+# export CONDA_ENV_DIR="/project/coreai_devtech_all/shixunw/miniconda3/envs/legate"
+# export PATH="$CONDA_ENV_DIR/bin:$PATH"
 export HOME=/project/coreai_devtech_all/shixunw;
 export MPI_HOME=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ompi;
 export HPC_SDK_ROOT=/opt/nvidia/hpc_sdk/Linux_x86_64/25.3;
@@ -32,8 +32,7 @@ export HDF5_DIR=/root/hdf5-1.14.3/config/cmake;
 export CMAKE_PREFIX_PATH=$HDF5_ROOT:$CMAKE_PREFIX_PATH;
 export LD_LIBRARY_PATH=$HDF5_ROOT/lib:$LD_LIBRARY_PATH;
 export LD_LIBRARY_PATH=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ucc/lib:$LD_LIBRARY_PATH;
-export LD_LIBRARY_PATH=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/latest/ucc/lib:$LD_LIBRARY_PATH;
-export LD_LIBRARY_PATH=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/latest/ucx/lib:$LD_LIBRARY_PATH;
+export LD_LIBRARY_PATH=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib:$LD_LIBRARY_PATH;
 export LD_LIBRARY_PATH=$HPC_SDK_ROOT/compilers/lib:$LD_LIBRARY_PATH;
 export LD_LIBRARY_PATH=$MPI_HOME/lib:$LD_LIBRARY_PATH;
 export LD_LIBRARY_PATH=$HPC_SDK_ROOT/compilers/lib:$LD_LIBRARY_PATH;
@@ -80,7 +79,7 @@ export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 # export UCX_VFS_ENABLE=n
 export UCX_IB_MLX5_DEVX=n
 # Force TCP transport and disable problematic ones
-export UCX_TLS=rc,dc,sm,self,cuda_copy
+# export UCX_TLS=rc,dc,sm,self,cuda_copy
 export UCX_NET_DEVICES=all
 # Disable VFS to prevent warnings
 export UCX_VFS_ENABLE=n

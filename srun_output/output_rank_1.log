@@ -1,37 +1,37 @@
 --- Starting Legate Application ---
-[1755332176.733711] [eos0024:1779613:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
-[1755332176.735003] [eos0024:1779613:0]          module.c:280  UCX  ERROR loading modules for ucs
-[1755332176.735006] [eos0024:1779613:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
-[1755332176.735106] [eos0024:1779613:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b33400]
-[1755332176.882457] [eos0024:1779621:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
-[1755332176.882477] [eos0024:1779621:0]          module.c:280  UCX  ERROR loading modules for ucs
-[1755332176.882479] [eos0024:1779621:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
-[1755332176.882562] [eos0024:1779621:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555564400]
-[1755332176.946423] [eos0024:1779621:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
-[1755332176.947335] [eos0024:1779621:0]          module.c:280  UCX  ERROR loading modules for ucs
-[1755332176.947338] [eos0024:1779621:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
-[1755332176.947431] [eos0024:1779621:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x5555556b9480]
-[1755332177.010472] [eos0024:1779621:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
-[1755332177.011223] [eos0024:1779621:0]          module.c:280  UCX  ERROR loading modules for ucs
-[1755332177.011226] [eos0024:1779621:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
-[1755332177.011304] [eos0024:1779621:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b33400]
-[1755332177.239212] [eos0024:1779621:0]          module.c:280  UCX  ERROR loading modules for uct
-[1755332177.239224] [eos0024:1779621:0]          module.c:242  UCX  ERROR loading module 'cuda' with mode 0x1
-[1755332182.246605] [eos0024:1779621:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda.so.0.0.0 [0x5555563c80e0]
-[1755332182.246623] [eos0024:1779621:0]          module.c:192  UCX  ERROR calling 'ucs_module_global_init' in '/opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda.so.0.0.0': [0x7fffcab0b470]
-[1755332182.246629] [eos0024:1779621:0]          module.c:280  UCX  ERROR loading modules for uct_cuda
-[1755332182.246633] [eos0024:1779621:0]          module.c:242  UCX  ERROR loading module 'gdrcopy' with mode 0x1
-[1755332182.246801] [eos0024:1779621:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0 [0x5555562fdf30]
-[1755332182.246805] [eos0024:1779621:0]          module.c:165  UCX  ERROR ignoring 'ucs_module_global_init' (0x7fffcab0b470) from libuct_cuda.so.0 (0x7fffcab03000), expected in libuct_cuda_gdrcopy.so.0 (7fffcaa0a000)
-[1755332182.246807] [eos0024:1779621:0]          module.c:242  UCX  ERROR loading module 'ib' with mode 0x1
-[1755332182.247427] [eos0024:1779621:0]          module.c:280  UCX  ERROR loading modules for uct_ib
-[1755332182.247430] [eos0024:1779621:0]          module.c:242  UCX  ERROR loading module 'mlx5' with mode 0x1
-[1755332182.247683] [eos0024:1779621:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_ib_mlx5.so.0.0.0 [0x555556300d80]
-[1755332182.247696] [eos0024:1779621:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_ib.so.0.0.0 [0x5555562febc0]
-[1755332182.247699] [eos0024:1779621:0]          module.c:242  UCX  ERROR loading module 'rdmacm' with mode 0x1
-[1755332182.247880] [eos0024:1779621:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_rdmacm.so.0.0.0 [0x555556301f40]
-[1755332182.247883] [eos0024:1779621:0]          module.c:242  UCX  ERROR loading module 'cma' with mode 0x1
-[1755332182.247939] [eos0024:1779621:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cma.so.0.0.0 [0x555556303080]
-[1755332182.556061] [eos0024:1779621:0]          module.c:280  UCX  ERROR loading modules for ucm
-[1755332182.556070] [eos0024:1779621:0]          module.c:242  UCX  ERROR loading module 'cuda' with mode 0x1001
-[1755332182.556213] [eos0024:1779621:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucm_cuda.so.0.0.0 [0x55555653e720]
+[1755332679.114439] [eos0024:1799736:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1755332679.115175] [eos0024:1799736:0]          module.c:280  UCX  ERROR loading modules for ucs
+[1755332679.115178] [eos0024:1799736:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
+[1755332679.115260] [eos0024:1799736:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b33420]
+[1755332679.238549] [eos0024:1799747:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1755332679.238564] [eos0024:1799747:0]          module.c:280  UCX  ERROR loading modules for ucs
+[1755332679.238566] [eos0024:1799747:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
+[1755332679.238625] [eos0024:1799747:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555564420]
+[1755332679.282818] [eos0024:1799747:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1755332679.283684] [eos0024:1799747:0]          module.c:280  UCX  ERROR loading modules for ucs
+[1755332679.283687] [eos0024:1799747:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
+[1755332679.283768] [eos0024:1799747:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x5555556b94a0]
+[1755332679.346431] [eos0024:1799747:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1755332679.347211] [eos0024:1799747:0]          module.c:280  UCX  ERROR loading modules for ucs
+[1755332679.347214] [eos0024:1799747:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
+[1755332679.347293] [eos0024:1799747:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b33420]
+[1755332679.673240] [eos0024:1799747:0]          module.c:280  UCX  ERROR loading modules for uct
+[1755332679.673251] [eos0024:1799747:0]          module.c:242  UCX  ERROR loading module 'cuda' with mode 0x1
+[1755332684.436255] [eos0024:1799747:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda.so.0.0.0 [0x5555563135b0]
+[1755332684.436271] [eos0024:1799747:0]          module.c:192  UCX  ERROR calling 'ucs_module_global_init' in '/opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda.so.0.0.0': [0x7fffcab0b470]
+[1755332684.436278] [eos0024:1799747:0]          module.c:280  UCX  ERROR loading modules for uct_cuda
+[1755332684.436281] [eos0024:1799747:0]          module.c:242  UCX  ERROR loading module 'gdrcopy' with mode 0x1
+[1755332684.436453] [eos0024:1799747:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0 [0x55555631d940]
+[1755332684.436457] [eos0024:1799747:0]          module.c:165  UCX  ERROR ignoring 'ucs_module_global_init' (0x7fffcab0b470) from libuct_cuda.so.0 (0x7fffcab03000), expected in libuct_cuda_gdrcopy.so.0 (7fffcaa0a000)
+[1755332684.436459] [eos0024:1799747:0]          module.c:242  UCX  ERROR loading module 'ib' with mode 0x1
+[1755332684.437176] [eos0024:1799747:0]          module.c:280  UCX  ERROR loading modules for uct_ib
+[1755332684.437179] [eos0024:1799747:0]          module.c:242  UCX  ERROR loading module 'mlx5' with mode 0x1
+[1755332684.437480] [eos0024:1799747:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_ib_mlx5.so.0.0.0 [0x5555563208e0]
+[1755332684.437494] [eos0024:1799747:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_ib.so.0.0.0 [0x55555631e640]
+[1755332684.437496] [eos0024:1799747:0]          module.c:242  UCX  ERROR loading module 'rdmacm' with mode 0x1
+[1755332684.437694] [eos0024:1799747:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_rdmacm.so.0.0.0 [0x555556321bb0]
+[1755332684.437696] [eos0024:1799747:0]          module.c:242  UCX  ERROR loading module 'cma' with mode 0x1
+[1755332684.437754] [eos0024:1799747:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cma.so.0.0.0 [0x555556322c80]
+[1755332684.952625] [eos0024:1799747:0]          module.c:280  UCX  ERROR loading modules for ucm
+[1755332684.952634] [eos0024:1799747:0]          module.c:242  UCX  ERROR loading module 'cuda' with mode 0x1001
+[1755332684.952779] [eos0024:1799747:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucm_cuda.so.0.0.0 [0x555556569200]

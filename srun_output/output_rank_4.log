@@ -1,113 +1,58 @@
 --- Starting Legate Application ---
-[1755329637.984296] [eos0373:256540:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
-[1755329637.985099] [eos0373:256540:0]          module.c:280  UCX  ERROR loading modules for ucs
-[1755329637.985103] [eos0373:256540:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
-[1755329637.985192] [eos0373:256540:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b33400]
-[1755329638.115041] [eos0373:256622:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
-[1755329638.115054] [eos0373:256622:0]          module.c:280  UCX  ERROR loading modules for ucs
-[1755329638.115057] [eos0373:256622:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
-[1755329638.115117] [eos0373:256622:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555564400]
-[1755329638.159364] [eos0373:256622:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
-[1755329638.160485] [eos0373:256622:0]          module.c:280  UCX  ERROR loading modules for ucs
-[1755329638.160488] [eos0373:256622:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
-[1755329638.160571] [eos0373:256622:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x5555556b9480]
-[1755329638.224516] [eos0373:256622:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
-[1755329638.225733] [eos0373:256622:0]          module.c:280  UCX  ERROR loading modules for ucs
-[1755329638.225736] [eos0373:256622:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
-[1755329638.225824] [eos0373:256622:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b33400]
-[eos0373.eos.clusters.nvidia.com:256622] mca_base_component_repository_open: unable to open mca_reachable_netlink: libnl-3.so.200: cannot open shared object file: No such file or directory (ignored)
-[eos0373.eos.clusters.nvidia.com:256622] mca: base: components_register: registering framework btl components
-[eos0373.eos.clusters.nvidia.com:256622] mca: base: components_register: found loaded component vader
-[eos0373.eos.clusters.nvidia.com:256622] mca: base: components_register: component vader register function successful
-[eos0373.eos.clusters.nvidia.com:256622] mca: base: components_register: found loaded component tcp
-[eos0373.eos.clusters.nvidia.com:256622] mca: base: components_register: component tcp register function successful
-[eos0373.eos.clusters.nvidia.com:256622] mca: base: components_register: found loaded component self
-[eos0373.eos.clusters.nvidia.com:256622] mca: base: components_register: component self register function successful
-[eos0373.eos.clusters.nvidia.com:256622] mca: base: components_open: opening btl components
-[eos0373.eos.clusters.nvidia.com:256622] mca: base: components_open: found loaded component vader
-[eos0373.eos.clusters.nvidia.com:256622] mca: base: components_open: component vader open function successful
-[eos0373.eos.clusters.nvidia.com:256622] mca: base: components_open: found loaded component tcp
-[eos0373.eos.clusters.nvidia.com:256622] mca: base: components_open: component tcp open function successful
-[eos0373.eos.clusters.nvidia.com:256622] mca: base: components_open: found loaded component self
-[eos0373.eos.clusters.nvidia.com:256622] mca: base: components_open: component self open function successful
-[eos0373.eos.clusters.nvidia.com:256622] select: initializing btl component vader
-[eos0373.eos.clusters.nvidia.com:256622] select: init of component vader returned success
-[eos0373.eos.clusters.nvidia.com:256622] select: initializing btl component tcp
-[eos0373.eos.clusters.nvidia.com:256622] btl: tcp: Using interface: eth0 
+[1755332176.770440] [eos0024:1779617:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1755332176.771238] [eos0024:1779617:0]          module.c:280  UCX  ERROR loading modules for ucs
+[1755332176.771240] [eos0024:1779617:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
+[1755332176.771318] [eos0024:1779617:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b33400]
+[1755332176.914445] [eos0024:1779625:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1755332176.914466] [eos0024:1779625:0]          module.c:280  UCX  ERROR loading modules for ucs
+[1755332176.914468] [eos0024:1779625:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
+[1755332176.914554] [eos0024:1779625:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555564400]
+[1755332176.959203] [eos0024:1779625:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1755332176.960287] [eos0024:1779625:0]          module.c:280  UCX  ERROR loading modules for ucs
+[1755332176.960288] [eos0024:1779625:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
+[1755332176.960355] [eos0024:1779625:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x5555556b9480]
+[1755332177.027256] [eos0024:1779625:0]          module.c:72   UCX  ERROR ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1755332177.028007] [eos0024:1779625:0]          module.c:280  UCX  ERROR loading modules for ucs
+[1755332177.028010] [eos0024:1779625:0]          module.c:242  UCX  ERROR loading module 'fuse' with mode 0x101
+[1755332177.028103] [eos0024:1779625:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b33400]
+[1755332177.266651] [eos0024:1779625:0]          module.c:280  UCX  ERROR loading modules for uct
+[1755332177.266662] [eos0024:1779625:0]          module.c:242  UCX  ERROR loading module 'cuda' with mode 0x1
+[1755332182.194754] [eos0024:1779625:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda.so.0.0.0 [0x5555563c80e0]
+[1755332182.194771] [eos0024:1779625:0]          module.c:192  UCX  ERROR calling 'ucs_module_global_init' in '/opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda.so.0.0.0': [0x7fffcab0b470]
+[1755332182.194783] [eos0024:1779625:0]          module.c:280  UCX  ERROR loading modules for uct_cuda
+[1755332182.194787] [eos0024:1779625:0]          module.c:242  UCX  ERROR loading module 'gdrcopy' with mode 0x1
+[1755332182.194949] [eos0024:1779625:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0 [0x5555562fdf30]
+[1755332182.194954] [eos0024:1779625:0]          module.c:165  UCX  ERROR ignoring 'ucs_module_global_init' (0x7fffcab0b470) from libuct_cuda.so.0 (0x7fffcab03000), expected in libuct_cuda_gdrcopy.so.0 (7fffcaa0a000)
+[1755332182.194957] [eos0024:1779625:0]          module.c:242  UCX  ERROR loading module 'ib' with mode 0x1
+[1755332182.195595] [eos0024:1779625:0]          module.c:280  UCX  ERROR loading modules for uct_ib
+[1755332182.195598] [eos0024:1779625:0]          module.c:242  UCX  ERROR loading module 'mlx5' with mode 0x1
+[1755332182.195857] [eos0024:1779625:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_ib_mlx5.so.0.0.0 [0x555556300d80]
+[1755332182.195870] [eos0024:1779625:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_ib.so.0.0.0 [0x5555562febc0]
+[1755332182.195872] [eos0024:1779625:0]          module.c:242  UCX  ERROR loading module 'rdmacm' with mode 0x1
+[1755332182.196051] [eos0024:1779625:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_rdmacm.so.0.0.0 [0x555556301f40]
+[1755332182.196053] [eos0024:1779625:0]          module.c:242  UCX  ERROR loading module 'cma' with mode 0x1
+[1755332182.196108] [eos0024:1779625:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cma.so.0.0.0 [0x555556303080]
+[1755332182.553446] [eos0024:1779625:0]          module.c:280  UCX  ERROR loading modules for ucm
+[1755332182.553456] [eos0024:1779625:0]          module.c:242  UCX  ERROR loading module 'cuda' with mode 0x1001
+[1755332182.553586] [eos0024:1779625:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucm_cuda.so.0.0.0 [0x55555653e720]
 --------------------------------------------------------------------------
-WARNING: An invalid value was given for btl_tcp_if_include.  This
-value will be ignored.
+MPI_INIT has failed because at least one MPI process is unreachable
+from another.  This *usually* means that an underlying communication
+plugin -- such as a BTL or an MTL -- has either not loaded or not
+allowed itself to be used.  Your MPI job will now abort.
 
-  Local host: eos0373
-  Value:      eth0
-  Message:    Unknown interface name
+You may wish to try to narrow down the problem;
+
+ * Check the output of ompi_info to see which BTL/MTL plugins are
+   available.
+ * Run your application with MPI_THREAD_SINGLE.
+ * Set the MCA parameter btl_base_verbose to 100 (or mtl_base_verbose,
+   if using MTL-based communications) to see exactly which
+   communication plugins were considered and/or discarded.
 --------------------------------------------------------------------------
-[eos0373.eos.clusters.nvidia.com:256622] select: init of component tcp returned failure
-[eos0373.eos.clusters.nvidia.com:256622] mca: base: close: component tcp closed
-[eos0373.eos.clusters.nvidia.com:256622] mca: base: close: unloading component tcp
-[eos0373.eos.clusters.nvidia.com:256622] select: initializing btl component self
-[eos0373.eos.clusters.nvidia.com:256622] select: init of component self returned success
-[eos0373.eos.clusters.nvidia.com:256622] mca_base_component_repository_open: unable to open mca_coll_hcoll: libhcoll.so.1: cannot open shared object file: No such file or directory (ignored)
-[1755329638.450356] [eos0373:256622:0]          module.c:280  UCX  ERROR loading modules for uct
-[1755329638.450364] [eos0373:256622:0]          module.c:242  UCX  ERROR loading module 'cuda' with mode 0x1
-[1755329643.330536] [eos0373:256622:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda.so.0.0.0 [0x555556317040]
-[1755329643.330552] [eos0373:256622:0]          module.c:192  UCX  ERROR calling 'ucs_module_global_init' in '/opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda.so.0.0.0': [0x7fffcab0b470]
-[1755329643.330560] [eos0373:256622:0]          module.c:280  UCX  ERROR loading modules for uct_cuda
-[1755329643.330563] [eos0373:256622:0]          module.c:242  UCX  ERROR loading module 'gdrcopy' with mode 0x1
-[1755329643.330741] [eos0373:256622:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0 [0x555556321700]
-[1755329643.330745] [eos0373:256622:0]          module.c:165  UCX  ERROR ignoring 'ucs_module_global_init' (0x7fffcab0b470) from libuct_cuda.so.0 (0x7fffcab03000), expected in libuct_cuda_gdrcopy.so.0 (7fffcaa0a000)
-[1755329643.330748] [eos0373:256622:0]          module.c:242  UCX  ERROR loading module 'ib' with mode 0x1
-[1755329643.331512] [eos0373:256622:0]          module.c:280  UCX  ERROR loading modules for uct_ib
-[1755329643.331515] [eos0373:256622:0]          module.c:242  UCX  ERROR loading module 'mlx5' with mode 0x1
-[1755329643.331840] [eos0373:256622:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_ib_mlx5.so.0.0.0 [0x555556324780]
-[1755329643.331849] [eos0373:256622:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_ib.so.0.0.0 [0x555556322400]
-[1755329643.331852] [eos0373:256622:0]          module.c:242  UCX  ERROR loading module 'rdmacm' with mode 0x1
-[1755329643.332054] [eos0373:256622:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_rdmacm.so.0.0.0 [0x555556325a20]
-[1755329643.332056] [eos0373:256622:0]          module.c:242  UCX  ERROR loading module 'cma' with mode 0x1
-[1755329643.332115] [eos0373:256622:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cma.so.0.0.0 [0x555556326af0]
-[1755329643.948145] [eos0373:256622:0]          module.c:280  UCX  ERROR loading modules for ucm
-[1755329643.948155] [eos0373:256622:0]          module.c:242  UCX  ERROR loading module 'cuda' with mode 0x1001
-[1755329643.948308] [eos0373:256622:0]          module.c:183  UCX  ERROR loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucm_cuda.so.0.0.0 [0x55555656d520]
-[eos0373.eos.clusters.nvidia.com:256622] mca: bml: Using vader btl for send to [[19649,9436],0] on node eos0373
-[eos0373.eos.clusters.nvidia.com:256622] mca: bml: Using vader btl for send to [[19649,9436],1] on node eos0373
-[eos0373.eos.clusters.nvidia.com:256622] mca: bml: Using vader btl for send to [[19649,9436],2] on node eos0373
-[eos0373.eos.clusters.nvidia.com:256622] mca: bml: Using vader btl for send to [[19649,9436],3] on node eos0373
-[eos0373.eos.clusters.nvidia.com:256622] mca: bml: Using vader btl for send to [[19649,9436],5] on node eos0373
-[eos0373.eos.clusters.nvidia.com:256622] mca: bml: Using vader btl for send to [[19649,9436],6] on node eos0373
-[eos0373.eos.clusters.nvidia.com:256622] mca: bml: Using vader btl for send to [[19649,9436],7] on node eos0373
-[eos0373.eos.clusters.nvidia.com:256622] mca: bml: Using self btl for send to [[19649,9436],4] on node eos0373
-[eos0373.eos.clusters.nvidia.com:256622] Error: ../../../../../ompi/mca/coll/ucc/coll_ucc_module.c:273 - mca_coll_ucc_init_ctx() UCC library doesn't support MPI_THREAD_MULTIPLE
-[eos0373:256622] *** Process received signal ***
-[eos0373:256622] Signal: Aborted (6)
-[eos0373:256622] Signal code:  (-6)
-[eos0373:256622] [ 0] /usr/lib/x86_64-linux-gnu/libc.so.6(+0x42520)[0x7ffff7619520]
-[eos0373:256622] [ 1] /usr/lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x12c)[0x7ffff766d9fc]
-[eos0373:256622] [ 2] /usr/lib/x86_64-linux-gnu/libc.so.6(raise+0x16)[0x7ffff7619476]
-[eos0373:256622] [ 3] /usr/lib/x86_64-linux-gnu/libc.so.6(abort+0xd3)[0x7ffff75ff7f3]
-[eos0373:256622] [ 4] /root/miniconda3/envs/legate/lib/python3.13/site-packages/legate/core/_lib/data/../../../../../../librealm-legate.so.1(+0x8ca8f6)[0x7fffcec3a8f6]
-[eos0373:256622] [ 5] /root/miniconda3/envs/legate/lib/python3.13/site-packages/legate/core/_lib/data/../../../../../../librealm-legate.so.1(+0x8caa21)[0x7fffcec3aa21]
-[eos0373:256622] [ 6] /root/miniconda3/envs/legate/lib/python3.13/site-packages/legate/core/_lib/data/../../../../../../librealm-legate.so.1(_ZN5Realm4Cuda10CudaModule15create_memoriesEPNS_11RuntimeImplE+0x91)[0x7fffcec40f11]
-[eos0373:256622] [ 7] /root/miniconda3/envs/legate/lib/python3.13/site-packages/legate/core/_lib/data/../../../../../../librealm-legate.so.1(+0x84a8ba)[0x7fffcebba8ba]
-[eos0373:256622] [ 8] /root/miniconda3/envs/legate/lib/python3.13/site-packages/legate/core/_lib/data/../../../../../../liblegion-legate.so.1(_ZN6Legion8Internal7Runtime5startEiPPcbbb+0x85)[0x7fffd19ec7b5]
-[eos0373:256622] [ 9] /root/miniconda3/envs/legate/lib/python3.13/site-packages/legate/core/_lib/data/../../../../../../liblegate.so.25.05.00(_ZN6legate6detail7Runtime5startEv+0x388)[0x7fffea96af28]
-[eos0373:256622] [10] /root/miniconda3/envs/legate/lib/python3.13/site-packages/legate/core/_lib/data/../../../../../../liblegate.so.25.05.00(_ZN6legate5startEv+0xd)[0x7fffea938dcd]
-[eos0373:256622] [11] /root/miniconda3/envs/legate/lib/python3.13/site-packages/legate/core/_lib/runtime/runtime.cpython-313-x86_64-linux-gnu.so(+0x3d475)[0x7fffcb5b2475]
-[eos0373:256622] [12] /root/miniconda3/envs/legate/lib/python3.13/site-packages/legate/core/_lib/runtime/runtime.cpython-313-x86_64-linux-gnu.so(+0x3e6c2)[0x7fffcb5b36c2]
-[eos0373:256622] [13] python(PyObject_Vectorcall+0x2e)[0x5555557060fe]
-[eos0373:256622] [14] python(+0x9ee73)[0x5555555f2e73]
-[eos0373:256622] [15] python(PyEval_EvalCode+0xa1)[0x5555557c9171]
-[eos0373:256622] [16] python(+0x291699)[0x5555557e5699]
-[eos0373:256622] [17] python(+0x1cb51b)[0x55555571f51b]
-[eos0373:256622] [18] python(+0x9ea1c)[0x5555555f2a1c]
-[eos0373:256622] [19] python(+0x1d31d4)[0x5555557271d4]
-[eos0373:256622] [20] python(PyObject_CallMethodObjArgs+0xec)[0x5555557599ac]
-[eos0373:256622] [21] python(PyImport_ImportModuleLevelObject+0x23c)[0x5555557588bc]
-[eos0373:256622] [22] python(+0x212816)[0x555555766816]
-[eos0373:256622] [23] python(+0x1cb51b)[0x55555571f51b]
-[eos0373:256622] [24] python(+0x9ea1c)[0x5555555f2a1c]
-[eos0373:256622] [25] python(+0x1d31d4)[0x5555557271d4]
-[eos0373:256622] [26] python(PyObject_CallMethodObjArgs+0xec)[0x5555557599ac]
-[eos0373:256622] [27] python(PyImport_ImportModuleLevelObject+0x23c)[0x5555557588bc]
-[eos0373:256622] [28] python(+0xa22c3)[0x5555555f62c3]
-[eos0373:256622] [29] python(PyEval_EvalCode+0xa1)[0x5555557c9171]
-[eos0373:256622] *** End of error message ***
+[eos0024:1779625] *** An error occurred in MPI_Init_thread
+[eos0024:1779625] *** reported by process [3060091244,4]
+[eos0024:1779625] *** on a NULL communicator
+[eos0024:1779625] *** Unknown error
+[eos0024:1779625] *** MPI_ERRORS_ARE_FATAL (processes in this communicator will now abort,
+[eos0024:1779625] ***    and potentially your MPI job)

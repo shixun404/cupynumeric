@@ -20,6 +20,8 @@ conda activate legate
 export OMPI_MCA_btl_tcp_if_include=eth0  # 或者你的网络接口名
 export OMPI_MCA_btl=tcp,self,vader
 export OMPI_MCA_pml=ob1
+export OMPI_MCA_coll_ucc_enable=0  # 禁用 UCC
+export OMPI_MCA_coll=^ucc          # 排除 UCC 组件
 export OMPI_MCA_btl_base_verbose=100  # 最详细的 BTL 调试
 export OMPI_MCA_mca_base_component_show_load_errors=1  # 显示组件加载错误
 export HOME=/project/coreai_devtech_all/shixunw;

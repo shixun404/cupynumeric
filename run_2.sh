@@ -27,6 +27,10 @@ export OMPI_MCA_coll=^hcoll
 export OMPI_MCA_btl=vader,self  # 只使用共享内存和自通信
 export OMPI_MCA_pml=ob1
 
+export LEGATE_DEBUG=1
+export REALM_BACKTRACE=1
+export LEGION_BACKTRACE=1
+
 export OMPI_MCA_btl_base_verbose=100  # 最详细的 BTL 调试
 # export OMPI_MCA_mca_base_component_show_load_errors=1  # 显示组件加载错误
 export HOME=/project/coreai_devtech_all/shixunw;

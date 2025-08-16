@@ -25,8 +25,8 @@ export OMPI_MCA_coll=^ucc          # 排除 UCC 组件
 export OMPI_MCA_btl_base_verbose=100  # 最详细的 BTL 调试
 export OMPI_MCA_mca_base_component_show_load_errors=1  # 显示组件加载错误
 # 在 run_2.sh 中添加
-export CUDA_LAUNCH_BLOCKING=1
-export REALM_CUDA_DEBUG=1  # 如果支持的话
+# export CUDA_LAUNCH_BLOCKING=1
+# export REALM_CUDA_DEBUG=1  # 如果支持的话
 
 
 

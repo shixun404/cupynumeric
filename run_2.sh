@@ -20,6 +20,17 @@ export HOME=/project/coreai_devtech_all/shixunw;
 export MPI_HOME=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ompi;
 export HPC_SDK_ROOT=/opt/nvidia/hpc_sdk/Linux_x86_64/25.3;
 export OPAL_PREFIX=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ompi;
+
+
+
+export HOME=/project/coreai_devtech_all/shixunw
+export HPC_SDK_ROOT=/opt/nvidia/hpc_sdk/Linux_x86_64/25.3
+
+# 关键：使用与 SLURM 兼容的 MPI 路径
+export MPI_HOME=$HPC_SDK_ROOT/comm_libs/mpi  # 而不是具体版本路径
+export OPAL_PREFIX=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ompi
+
+
 export UCX_HOME=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx
 export UCX_MODULE_DIR=$UCX_HOME/lib/ucx
 export UCX_LIB_DIR="$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib"
@@ -72,6 +83,8 @@ export RAPIDS_LIBUCX_PREFER_SYSTEM_LIBRARY=1;
 export OMPI_ALLOW_RUN_AS_ROOT=1
 export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
+
+
 # export OMPI_MCA_btl_base_verbose=100
 # NEW: Explicitly tell the UCX CUDA transport to avoid gdrcopy
 #export UCX_CUDA_TLS=ipc,cma
@@ -79,7 +92,7 @@ export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 # export UCX_VFS_ENABLE=n
 export UCX_IB_MLX5_DEVX=n
 # Force TCP transport and disable problematic ones
-# export UCX_TLS=rc,dc,sm,self,cuda_copy
+export UCX_TLS=rc,dc,sm,self,cuda_copy
 export UCX_NET_DEVICES=all
 # Disable VFS to prevent warnings
 export UCX_VFS_ENABLE=n

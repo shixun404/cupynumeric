@@ -14,25 +14,15 @@ fi
 unset __conda_setup
 conda activate legate
 
-# export CONDA_ENV_DIR="/project/coreai_devtech_all/shixunw/miniconda3/envs/legate"
-# export PATH="$CONDA_ENV_DIR/bin:$PATH"
-# 在 run_2.sh 中添加
-# export OMPI_MCA_btl_tcp_if_include=eth0  # 或者你的网络接口名
-# export OMPI_MCA_btl=tcp,self,vader
-# export OMPI_MCA_pml=ob1
-# export OMPI_MCA_coll=^ucc
-# export OMPI_MCA_coll_base_verbose=1
-export OMPI_MCA_pml=^ucx
-export OMPI_MCA_coll=^hcoll
-export OMPI_MCA_btl=vader,self  # 只使用共享内存和自通信
-export OMPI_MCA_pml=ob1
+export OMPI_MCA_btl=^openib
+export OMPI_MCA_pml=ucx
+export GASNET_IBV_PORTS=mlx5_0+mlx5_3+mlx5_4+mlx5_5+mlx5_6+mlx5_9+mlx5_10+mlx5_11
 
 export LEGATE_DEBUG=1
 export REALM_BACKTRACE=1
 export LEGION_BACKTRACE=1
 
 export OMPI_MCA_btl_base_verbose=100  # 最详细的 BTL 调试
-# export OMPI_MCA_mca_base_component_show_load_errors=1  # 显示组件加载错误
 export HOME=/project/coreai_devtech_all/shixunw;
 export MPI_HOME=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ompi;
 export HPC_SDK_ROOT=/opt/nvidia/hpc_sdk/Linux_x86_64/25.3;
@@ -88,19 +78,6 @@ export CPATH=$CUDNN_PATH/include:$CPATH;
 export RAPIDS_LIBUCX_PREFER_SYSTEM_LIBRARY=1;
 export OMPI_ALLOW_RUN_AS_ROOT=1
 export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
-
-# export OMPI_MCA_btl_base_verbose=100
-# NEW: Explicitly tell the UCX CUDA transport to avoid gdrcopy
-#export UCX_CUDA_TLS=ipc,cma
-# Disable the VFS feature to prevent non-fatal startup warnings
-# export UCX_VFS_ENABLE=n
-# export UCX_IB_MLX5_DEVX=n
-# Force TCP transport and disable problematic ones
-# export UCX_TLS=rc,dc,sm,self,cuda_copy
-# export UCX_TLS=tcp,sm,self,cuda_copy
-export UCX_NET_DEVICES=all
-# Disable VFS to prevent warnings
-export UCX_VFS_ENABLE=n
 # --- Run the application ---
 echo "--- Starting Legate Application ---"
 legate --gpus 1 --fbmem 10000 --launcher none /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py

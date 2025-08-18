@@ -80,4 +80,5 @@ export OMPI_ALLOW_RUN_AS_ROOT=1
 export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 # --- Run the application ---
 echo "--- Starting Legate Application ---"
-legate --gpus 1 --fbmem 10000 --launcher none /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py
+# legate --gpus 8 --fbmem 10000 --launcher none /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py
+legate --logdir /project/coreai_devtech_all/shixunw/result --launcher none --cpus 1 --sysmem 4000 --gpus 8 --fbmem 76000 --verbose --log-to-file --nodes 1 --ranks-per-node 1 /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py

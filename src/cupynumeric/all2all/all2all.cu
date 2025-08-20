@@ -48,33 +48,29 @@
  // CUDA STD includes
  #include <cuda/std/cstdint>
  #include <cuda/std/type_traits>
+//  #define LEGATE_MAX_DIM 1
  
  namespace cupynumeric {
  
  using namespace legate;
 
-//  static int get_index(Domain domain, DomainPoint index_point)
-//  {
-//    int domain_index = 0;
-//    auto hi          = domain.hi();
-//    auto lo          = domain.lo();
-//    for (int i = 0; i < domain.get_dim(); ++i) {
-//      if (i > 0) {
-//        domain_index *= hi[i] - lo[i] + 1;
-//      }
-//      domain_index += index_point[i];
-//    }
-//    return domain_index;
-//  }
+ template<int N>
+ __device__ size_t point_to_linear_index(const legate::Point<N>& point,
+                                        const legate::Point<N>& strides) {
+     size_t linear_index = 0;
+     for (int d = 0; d < N; d++) {
+         linear_index += point[d] * strides[d];
+     }
+     return linear_index;
+ }
 
-// Compute send histogram kernel for 2D (vectors)
+// Compute send histogram kernel for 1D (vectors)
 template<typename IndexType>
 __global__ void compute_send_histogram(const IndexType* indices, 
                                                  unsigned int* send_histo, size_t local_vector_count, size_t local_input_count) {
     size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < local_vector_count) {
         size_t target_gpu = indices[idx] / local_input_count;
-        // printf("idx: %d, indices[idx]: %d, target_gpu: %d\n", (int)idx, (int)indices[idx], (int)target_gpu);
         atomicAdd(&send_histo[target_gpu], 1);
     }
 }
@@ -94,7 +90,6 @@ __global__ void unpack_recv_data_kernel(DataType* data, const IndexType* request
                                           const DataType* recv_data) {
     size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < request_count) {
-        // printf("idx: %d, request_indices[idx]: %d\n", (int)idx, (int)request_indices[idx]);
         data[request_indices[idx]] = recv_data[idx];
     }
 }
@@ -138,7 +133,7 @@ size_t get_volume(auto rect){
  *   - Receive the data elements this rank requested from other ranks
  *   - Unpack received data into final output array
  */
-template<typename DataType, typename IndexType, int DIM>
+template<typename DataType, typename IndexType, int DIM_input, int DIM_output>
 void global_all2all(
   const DataType* input_ptr, 
   const IndexType* index_ptr, 
@@ -148,19 +143,30 @@ void global_all2all(
   auto output_rect,
   int rank_id, 
   int num_ranks,
+  // int * ,
   ncclComm_t* nccl_comm, 
   cudaStream_t stream
 ) {
   
-  size_t local_input_count = get_volume<DIM>(input_rect);
-  size_t local_index_count = get_volume<DIM>(index_rect);
-  size_t local_output_count = get_volume<DIM>(output_rect);
-  // printf("local_input_count: %zu\n", local_input_count);
-  // printf("local_index_count: %zu\n", local_index_count);
-  // printf("local_output_count: %zu\n", local_output_count);
+  size_t local_input_count = get_volume<DIM_input>(input_rect);
+  size_t local_index_count = get_volume<DIM_output>(index_rect);
+  size_t local_output_count = get_volume<DIM_output>(output_rect);
   
   size_t num_requests = local_index_count;
 
+  // ===== Round 0: Exchange rects =====
+  thrust::device_vector<IndexType> global_rects(num_ranks * DIM_input * 2, 0);
+
+  CHECK_NCCL(ncclGroupStart());
+  for(int i = 0; i < num_ranks; i++){
+    CHECK_NCCL(ncclSend(input_rect, sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
+    CHECK_NCCL(ncclRecv(global_rects.data() + i * DIM_input, sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
+  }
+  CHECK_NCCL(ncclGroupEnd());
+
+  
+  
+  
   // ===== Round 1: Exchange request size histograms =====
   thrust::device_vector<unsigned int> round1_send_histo(num_ranks, 0);  // How many requests to send to each rank
   thrust::device_vector<unsigned int> round1_send_offsets(num_ranks, 0); // Offsets for packing requests
@@ -291,8 +297,8 @@ void global_all2all(
 
 }
  
- template <Type::Code CODE, int32_t DIM>
- struct All2AllImplBody<VariantKind::CPU, CODE, DIM> {
+ template <Type::Code CODE, int32_t DIM_input, int32_t DIM_output>
+ struct All2AllImplBody<VariantKind::CPU, CODE, DIM_input, DIM_output> {
    using VAL = type_of<CODE>;
  
    void operator()(TaskContext& context,
@@ -310,8 +316,8 @@ void global_all2all(
  };
  
  #if LEGATE_DEFINED(LEGATE_USE_OPENMP)
- template <Type::Code CODE, int32_t DIM>
- struct All2AllImplBody<VariantKind::OMP, CODE, DIM> {
+ template <Type::Code CODE, int32_t DIM_input, int32_t DIM_output>
+ struct All2AllImplBody<VariantKind::OMP, CODE, DIM_input, DIM_output> {
    using VAL = type_of<CODE>;
  
    void operator()(TaskContext& context,
@@ -329,8 +335,8 @@ void global_all2all(
  };
  #endif
  
- template <Type::Code CODE, int32_t DIM>
-struct All2AllImplBody<VariantKind::GPU, CODE, DIM> {
+ template <Type::Code CODE, int32_t DIM_input, int32_t DIM_output>
+struct All2AllImplBody<VariantKind::GPU, CODE, DIM_input, DIM_output> {
   using VAL = type_of<CODE>;
   
   template <Type::Code INDEX_CODE>
@@ -344,25 +350,21 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM> {
     const std::vector<comm::Communicator>& comms)
   {
     using INDEX_VAL = type_of<INDEX_CODE>;
+    // auto input_dim = args.input.dim();
+
     
-    auto input_rect = input_array.shape<DIM>();
-    auto index_rect = index_array.shape<DIM>();
-    auto output_rect = output_array.shape<DIM>();
+    auto input_rect = input_array.shape<DIM_input>();
+    auto index_rect = index_array.shape<DIM_output>();
+    auto output_rect = output_array.shape<DIM_output>();
     
-    auto input = input_array.read_accessor<VAL, DIM>(input_rect);
-    auto index = index_array.read_accessor<INDEX_VAL, DIM>(index_rect);
-    auto output = output_array.read_write_accessor<VAL, DIM>(output_rect);
+    auto input = input_array.read_accessor<VAL, DIM_input>(input_rect);
+    auto index = index_array.read_accessor<INDEX_VAL, DIM_output>(index_rect);
+    auto output = output_array.read_write_accessor<VAL, DIM_output>(output_rect);
  
-     // we allow empty domains for distributed sorting
-    //  assert(input_rect.empty() || input.accessor.is_dense_row_major(input_rect));
-    //  assert(index_rect.empty() || index.accessor.is_dense_row_major(index_rect));
-    //  assert(output_rect.empty() || output.accessor.is_dense_row_major(output_rect));
-     
      auto stream = get_cached_stream();
  
      bool need_distributed_all2all = (num_ranks > 1) && is_index_space;
-     
-    //  printf("rank %d, num_ranks: %d, is_index_space: %d, need_distributed_all2all: %d\n", rank, num_ranks, is_index_space, need_distributed_all2all);
+   
      // For local all2all (single node or within a node)
      if (!need_distributed_all2all) {
      
@@ -373,23 +375,24 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM> {
        // Handle distributed all2all
        
        
-                const VAL* input_ptr = input.ptr(input_rect.lo);
+        const VAL* input_ptr = input.ptr(input_rect.lo);
          const INDEX_VAL* index_ptr = index.ptr(index_rect.lo);
          VAL* output_ptr = output.ptr(output_rect.lo);
        
 
-       global_all2all<VAL, INDEX_VAL, DIM>(
-           input_ptr,
-           index_ptr,
-           output_ptr,
-           input_rect,
-           index_rect,
-           output_rect,
-           rank,
-           num_ranks,
-           comms[0].get<ncclComm_t*>(),
-           stream
-       );
+      //  global_all2all<VAL, INDEX_VAL, DIM_input, DIM_output>(
+      //      input_ptr,
+      //      index_ptr,
+      //      output_ptr,
+      //      input_rect,
+      //      index_rect,
+      //      output_rect,
+      //      rank,
+      //      num_ranks,
+      //     //  input_dim,
+      //      comms[0].get<ncclComm_t*>(),
+      //      stream
+      //  );
       
      }
  
@@ -433,27 +436,49 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM> {
    }
  };
 
- template <VariantKind KIND>
- struct All2AllImpl {
-   template <Type::Code CODE, int DIM>
+
+ template <VariantKind KIND, int DIM_input, int DIM_output>
+ struct All2AllImpl_type {
+   template <Type::Code CODE>
    void operator()(All2AllArgs& args, TaskContext& context, 
      std::vector<comm::Communicator> comms) const
    {
-     using VAL = type_of<CODE>;
-     auto rect_input = args.input.shape<DIM>();
-     auto rect_index_array = args.index_array.shape<DIM>();
-     auto rect_output = args.output.shape<DIM>();
+
+     auto rect_input = args.input.shape<DIM_input>();
+     auto rect_index_array = args.index_array.shape<DIM_output>();
+     auto rect_output = args.output.shape<DIM_output>();
     
-     Pitches<DIM - 1> pitches;
-     size_t input_volume = pitches.flatten(rect_input);
-     size_t index_volume = pitches.flatten(rect_index_array);
-     size_t output_volume = pitches.flatten(rect_output);
+     Pitches<DIM_input - 1> pitches_input;
+     size_t input_volume = pitches_input.flatten(rect_input);
+     Pitches<DIM_output - 1> pitches_output;
+     size_t index_volume = pitches_output.flatten(rect_index_array);
+     size_t output_volume = pitches_output.flatten(rect_output);
      
      if (input_volume == 0 && index_volume == 0 && output_volume == 0) {
        return;
      }
- 
-     All2AllImplBody<KIND, CODE, DIM>()(
+     printf("DIM_input: %d, DIM_output: %d\n", DIM_input, DIM_output);
+     auto input_shape_span = context.scalar(0).values<int64_t>();
+     for (size_t i = 0; i < input_shape_span.size(); ++i) {
+      printf("input shape_span[%d]: %d\n", i, int(input_shape_span[i]));
+     }
+
+     auto index_shape_span = context.scalar(1).values<int64_t>();
+     for (size_t i = 0; i < index_shape_span.size(); ++i) {
+      printf("index shape_span[%d]: %d\n", i, int(index_shape_span[i]));
+     }
+     
+     for (int i = 0; i < DIM_input; i++) {  
+      auto hi          = rect_input.hi;
+     auto lo          = rect_input.lo;
+      printf("rect_input.hi()[%d]: %d, rect_input.lo()[%d]: %d\n", i, hi[i], i, lo[i]);
+     }
+     for (int i = 0; i < DIM_output; i++) {
+      auto hi          = rect_output.hi;
+      auto lo          = rect_output.lo;
+      printf("rect_output.hi()[%d]: %d, rect_output.lo()[%d]: %d\n", i, hi[i], i, lo[i]);
+     }
+     All2AllImplBody<KIND, CODE, DIM_input, DIM_output>()(
          context,
          args.input,
          args.index_array,
@@ -463,6 +488,17 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM> {
          args.num_ranks,
          comms
      );
+   }
+ };
+
+ template <VariantKind KIND>
+ struct All2AllImpl {
+   template <int DIM_input, int DIM_output>
+   void operator()(All2AllArgs& args, TaskContext& context, 
+     std::vector<comm::Communicator> comms) const
+   {
+    type_dispatch(
+      args.input.code(), All2AllImpl_type<KIND, DIM_input, DIM_output>{}, args, context, context.communicators());
    }
  };
  
@@ -476,6 +512,7 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM> {
        domain_index *= hi[i] - lo[i] + 1;
      }
      domain_index += index_point[i];
+     printf("domain.hi()[%d]: %d, domain.lo()[%d]: %d, index_point[%d]: %d\n", i, hi[i], i, lo[i], i, index_point[i]);
    }
    return domain_index;
  }
@@ -502,13 +539,13 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM> {
      rank_id,
      num_ranks
    };
-   auto dim = std::max(1, std::max(args.input.dim(), args.index_array.dim()));
-   dim = std::max(dim, args.output.dim());
-  //  printf("args.input.code(): %d\n", args.input.code());
-  //  printf("args.index_array.code(): %d\n", args.index_array.code());
-  //  printf("args.output.code(): %d\n", args.output.code());  
-   double_dispatch(
-     dim, args.input.code(), All2AllImpl<KIND>{}, args, context, context.communicators());
+  
+   auto dim_input = args.input.dim();
+   auto dim_output = args.output.dim();
+
+  
+  double_dispatch(
+    dim_input, dim_output, All2AllImpl<KIND>{}, args, context, context.communicators());
  }
  
  /*static*/ void All2AllTask::gpu_variant(TaskContext context)

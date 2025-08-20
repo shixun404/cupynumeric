@@ -37,7 +37,7 @@
  };
 
  
- template <VariantKind KIND, Type::Code CODE, int32_t DIM>
+ template <VariantKind KIND, Type::Code CODE, int32_t DIM_input, int32_t DIM_output>
  struct All2AllImplBody;
  
  class All2AllTask : public CuPyNumericTask<All2AllTask> {

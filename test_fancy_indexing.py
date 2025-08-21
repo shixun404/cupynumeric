@@ -46,7 +46,7 @@ def take_with_pairs(data, pairs):
 
 
 data_array = np.arange(N_ROWS * N_COLS, dtype=np.float32).reshape((N_ROWS, N_COLS))
-data_array = np.array([1, 2, 3, 4])
+data_array = np.array([1, 2, 3, 4], dtype=np.float32)
 # data_array = np.arange(N_ROWS * N_COLS, dtype=np.float32)
 # print("Data generated")
 print(data_array)

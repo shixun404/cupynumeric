@@ -488,7 +488,6 @@ class DeferredArray(NumPyThunk):
             p_in = task.add_input(a)
             task.add_constraint(align(p_out, p_in))
         task.execute()
-
         return output_arr
 
     def _copy_store(self, store: Any) -> DeferredArray:
@@ -941,6 +940,24 @@ class DeferredArray(NumPyThunk):
                 self,
             ) = self._create_indexing_array(key)
 
+            # print("=== INDEX ARRAY VALUES ===")
+            # try:
+            #     from cupynumeric.runtime import runtime
+            #     eager_array = runtime.to_eager_array(index_array)
+            #     numpy_values = eager_array.__numpy_array__()
+            #     print("numpy_values", numpy_values)
+            #     int64_data = numpy_values.view(dtype=np.int64)
+            #     points = int64_data.reshape(numpy_values.shape + (2,))
+            #     print(f"Index array shape: {numpy_values.shape}")
+            #     print(f"Point coordinates:")
+            #     for i in range(points.shape[0]):
+            #         for j in range(points.shape[1]):
+            #             for k in range(points.shape[2]):
+            #                 x, y = points[i, j, k]
+            #                 print(f"  [{i},{j},{k}]: Point({x}, {y})")
+            # except Exception as e:
+            #     print(f"Failed to parse index array: {e}")
+
             if copy_needed:
                 if rhs.base.has_scalar_storage:
                     rhs = rhs._convert_future_to_regionfield()
@@ -960,17 +977,11 @@ class DeferredArray(NumPyThunk):
                         self.base.type,
                         inputs=[self],
                     )
-                # print(index_array.base.code())
-                print(rhs)
-                print(rhs.base)
-                
-                print(index_array)
-                print(index_array.base)
-                
+           
                 # legate_runtime.issue_gather(
                 #     result.base, rhs.base, index_array.base  # type: ignore
                 # )
-                 # Add communicators if needed for distributed shuffle
+                # Add communicators if needed for distributed shuffle
                 
                 task = legate_runtime.create_auto_task(
                     self.library, CuPyNumericOpCode.ALL2ALL
@@ -978,6 +989,11 @@ class DeferredArray(NumPyThunk):
                 task.add_input(rhs.base)
                 task.add_input(index_array.base)
                 task.add_output(result.base)
+                # Add scalar arguments
+                task.add_scalar_arg(rhs.base.shape, (ty.int64,))   # total volume
+                task.add_scalar_arg(index_array.base.shape, (ty.int64,))   # total volume
+                task.add_scalar_arg(result.base.shape, (ty.int64,))   # total volume
+    
                 
                 if runtime.num_gpus > 1:
                     task.add_nccl_communicator()

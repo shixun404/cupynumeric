@@ -46,18 +46,20 @@ def take_with_pairs(data, pairs):
 
 
 data_array = np.arange(N_ROWS * N_COLS, dtype=np.float32).reshape((N_ROWS, N_COLS))
+data_array = np.array([1, 2, 3, 4])
 # data_array = np.arange(N_ROWS * N_COLS, dtype=np.float32)
 # print("Data generated")
 print(data_array)
 
 # print("Taking pairs")
 pair_list = [[i, i] for i in range(2)]
+pair_list = [[i, i] for i in range(4)]
 pairs_array = np.array(pair_list)
 print(pairs_array.shape)
 
 start_time = time()
 # result_array = take_with_pairs(data_array, pairs_array)
-result_array = data_array[[[0, 1], [2, 3]]]
+result_array = data_array[pair_list]
 duration = time() - start_time
 
 print(result_array.shape)

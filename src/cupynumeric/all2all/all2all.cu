@@ -170,9 +170,9 @@ void global_all2all(
   const DataType* input_ptr, 
   const legate::Point<DIM_input>* index_ptr, 
   DataType* output_ptr, 
-  auto input_rect,
-  auto index_rect,
-  auto output_rect,
+  const legate::Rect<DIM_input> input_rect,
+  const legate::Rect<DIM_output> index_rect,
+  const legate::Rect<DIM_output> output_rect,
   int rank_id, 
   int num_ranks,
   // int * ,
@@ -187,7 +187,7 @@ void global_all2all(
   size_t num_requests = local_index_count;
 
   // ===== Round 0: Exchange rects =====
-  thrust::device_vector<legate::Rect<DIM_input>> global_rects(num_ranks * DIM_input * 2, 0);
+  thrust::device_vector<int64_t> global_rects(num_ranks * DIM_input * 2, 0);
 
   // ===== Round 1: Exchange request size histograms =====
   thrust::device_vector<unsigned int> round1_send_histo(num_ranks, 0);  // How many requests to send to each rank
@@ -197,7 +197,7 @@ void global_all2all(
   thrust::device_vector<unsigned int> packing_counters(num_ranks, 0);   // Temporary counters for packing
   
   // ===== Round 2: Exchange request indices =====
-  thrust::device_vector<legate::Point<DIM_input>> round2_send_indices(num_requests, 0);    // Indices to send (packed by target rank)
+  thrust::device_vector<int64_t> round2_send_indices(num_requests * DIM_input, 0);    // Indices to send (packed by target rank)
   thrust::device_vector<unsigned int> round2_request_positions(num_requests, 0); // Position of each request in output
   
   // ===== Round 3: Exchange actual data =====
@@ -209,16 +209,18 @@ void global_all2all(
   // ===== Round 0: Exchange rects =====
   CHECK_NCCL(ncclGroupStart());
   for(int i = 0; i < num_ranks; i++){
-    CHECK_NCCL(ncclSend(input_rect, sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
-    CHECK_NCCL(ncclRecv(global_rects.data() + i * DIM_input, sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
+    CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(&input_rect), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
+    CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(global_rects.data() + i * DIM_input * 2), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
   }
   CHECK_NCCL(ncclGroupEnd());
   cudaStreamSynchronize(stream);
 
   if(rank_id == 0){
     for(int i = 0; i < num_ranks; i++){
+      legate::Rect<DIM_input> rect;
+      cudaMemcpy(&rect, thrust::raw_pointer_cast(global_rects.data() + i * DIM_input * 2), sizeof(input_rect), cudaMemcpyDeviceToHost);
       for(int j = 0; j < DIM_input; j++){
-        printf("global_rects[%d][%d]: %d, %d\n", i, j, global_rects[i].lo[j], global_rects[i].hi[j]);
+        printf("global_rects[%d][%d]: %d, %d\n", i, j, rect.lo[j], rect.hi[j]);
       }
     }
   }
@@ -226,17 +228,26 @@ void global_all2all(
   // ===== Round 1: Compute request size histogram =====
   compute_send_histogram<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, 
                 thrust::raw_pointer_cast(round1_send_histo.data()), 
-                thrust::raw_pointer_cast(global_rects.data()), 
+                (legate::Rect<DIM_input>*)thrust::raw_pointer_cast(global_rects.data()), 
                 num_ranks, local_index_count);
+  
+  printf("round1_send_histo: ");
+  for(size_t i = 0; i < num_ranks; i++){
+    unsigned int tmp = round1_send_histo[i];
+    printf("%u ", tmp);
+  }
+  printf("\n");
   
   thrust::exclusive_scan(round1_send_histo.begin(), round1_send_histo.end(), round1_send_offsets.begin());
   cudaStreamSynchronize(stream);
   
   // Pack request indices by target rank
   pack_request_indices_kernel<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, num_requests,  
-    thrust::raw_pointer_cast(round2_send_indices.data()), thrust::raw_pointer_cast(round1_send_offsets.data()),
-    thrust::raw_pointer_cast(round2_request_positions.data()), thrust::raw_pointer_cast(packing_counters.data()), 
-    thrust::raw_pointer_cast(global_rects.data()), num_ranks);
+    (legate::Point<DIM_input>*)thrust::raw_pointer_cast(round2_send_indices.data()), 
+    thrust::raw_pointer_cast(round1_send_offsets.data()),
+    thrust::raw_pointer_cast(round2_request_positions.data()), 
+    thrust::raw_pointer_cast(packing_counters.data()), 
+    (legate::Rect<DIM_input>*)thrust::raw_pointer_cast(global_rects.data()), num_ranks);
   cudaStreamSynchronize(stream);
 
   // ===== Round 1: All2All exchange request size histograms =====
@@ -253,7 +264,7 @@ void global_all2all(
   thrust::exclusive_scan(round1_recv_histo.begin(), round1_recv_histo.end(), round1_recv_offsets.begin());
 
   cudaStreamSynchronize(stream);
-  // ===== Round 2: All2All exchange request indices =====
+  // // ===== Round 2: All2All exchange request indices =====
   CHECK_NCCL(ncclGroupStart());
   for (size_t i = 0; i < num_ranks; ++i) {
       unsigned int indices_to_send_to_rank_i = round1_send_histo[i];
@@ -261,12 +272,12 @@ void global_all2all(
       unsigned int indices_to_recv_from_rank_i = round1_recv_histo[i];
       unsigned int recv_offset_for_rank_i = round1_recv_offsets[i];
       if (indices_to_send_to_rank_i > 0) {
-          CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(round2_send_indices.data()) + send_offset_for_rank_i,
+          CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(round2_send_indices.data()) + send_offset_for_rank_i * DIM_input,
             indices_to_send_to_rank_i * sizeof(legate::Point<DIM_input>), ncclInt8, i, *nccl_comm, stream));
       }
       
       if (indices_to_recv_from_rank_i > 0) {
-          CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(round2_recv_indices.data()) + recv_offset_for_rank_i,
+          CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(round2_recv_indices.data()) + recv_offset_for_rank_i * DIM_input,
                   indices_to_recv_from_rank_i * sizeof(legate::Point<DIM_input>), ncclInt8, i, *nccl_comm, stream));
       }
   }
@@ -275,7 +286,7 @@ void global_all2all(
 
   thrust::device_vector<DataType> round3_send_data(total_indices_to_receive);
   
-  pack_send_data_kernel<DataType, DIM_input><<<grid_size, block_size, 0, stream>>>(input_ptr, thrust::raw_pointer_cast(round2_recv_indices.data()),
+  pack_send_data_kernel<DataType, DIM_input><<<grid_size, block_size, 0, stream>>>(input_ptr, (legate::Point<DIM_input>*)thrust::raw_pointer_cast(round2_recv_indices.data()),
   total_indices_to_receive, thrust::raw_pointer_cast(round3_send_data.data()), input_rect);
   cudaStreamSynchronize(stream);
 
@@ -460,16 +471,36 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM_input, DIM_output> {
    }
  };
 
- template <VariantKind KIND>
- struct All2AllImpl {
-   template <int DIM_input, int DIM_output>
-   void operator()(All2AllArgs& args, TaskContext& context, 
-     std::vector<comm::Communicator> comms) const
-   {
-    type_dispatch(
-      args.input.code(), All2AllImpl_type<KIND, DIM_input, DIM_output>{}, args, context, context.communicators());
+//  template <VariantKind KIND>
+//  struct All2AllImpl {
+//    template <int DIM_input, int DIM_output>
+//    void operator()(All2AllArgs& args, TaskContext& context, 
+//      std::vector<comm::Communicator> comms) const
+//    {
+//     type_dispatch(
+//       args.input.code(), All2AllImpl_type<KIND, DIM_input, DIM_output>{}, args, context, context.communicators());
+//    }
+//  };
+
+template <VariantKind KIND>
+struct All2AllImpl {
+  template <int DIM_input, int DIM_output>
+  void operator()(All2AllArgs& args, TaskContext& context, 
+    std::vector<comm::Communicator> comms) const
+  {
+   // Custom type dispatch to only compile int64 type for faster compilation
+   auto input_code = args.input.code();
+   switch (input_code) {
+     case legate::Type::Code::FLOAT32:
+       All2AllImpl_type<KIND, DIM_input, DIM_output>{}.template operator()<legate::Type::Code::FLOAT32>(args, context, context.communicators());
+       break;
+     default:
+       printf("Unsupported data type code: %d. Only INT64 is supported for fast compilation.\n", (int)input_code);
+       assert(false && "Only INT64 data type is supported in this build");
+       break;
    }
- };
+  }
+};
  
  static int get_rank(Domain domain, DomainPoint index_point)
  {

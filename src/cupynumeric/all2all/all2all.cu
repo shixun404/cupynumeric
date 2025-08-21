@@ -437,27 +437,27 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM_input, DIM_output> {
      if (input_volume == 0 && index_volume == 0 && output_volume == 0) {
        return;
      }
-     printf("DIM_input: %d, DIM_output: %d\n", DIM_input, DIM_output);
-     auto input_shape_span = context.scalar(0).values<int64_t>();
-     for (size_t i = 0; i < input_shape_span.size(); ++i) {
-      printf("input shape_span[%d]: %d\n", i, int(input_shape_span[i]));
-     }
+    //  printf("DIM_input: %d, DIM_output: %d\n", DIM_input, DIM_output);
+    //  auto input_shape_span = context.scalar(0).values<int64_t>();
+    //  for (size_t i = 0; i < input_shape_span.size(); ++i) {
+    //   printf("input shape_span[%d]: %d\n", i, int(input_shape_span[i]));
+    //  }
 
-     auto index_shape_span = context.scalar(1).values<int64_t>();
-     for (size_t i = 0; i < index_shape_span.size(); ++i) {
-      printf("index shape_span[%d]: %d\n", i, int(index_shape_span[i]));
-     }
+    //  auto index_shape_span = context.scalar(1).values<int64_t>();
+    //  for (size_t i = 0; i < index_shape_span.size(); ++i) {
+    //   printf("index shape_span[%d]: %d\n", i, int(index_shape_span[i]));
+    //  }
      
      for (int i = 0; i < DIM_input; i++) {  
       auto hi          = rect_input.hi;
      auto lo          = rect_input.lo;
-      printf("rect_input.hi()[%d]: %d, rect_input.lo()[%d]: %d\n", i, hi[i], i, lo[i]);
+      printf("rank %d, rect_input.hi()[%d]: %d, rect_input.lo()[%d]: %d\n", args.rank_id, i, hi[i], i, lo[i]);
      }
-     for (int i = 0; i < DIM_output; i++) {
-      auto hi          = rect_output.hi;
-      auto lo          = rect_output.lo;
-      printf("rect_output.hi()[%d]: %d, rect_output.lo()[%d]: %d\n", i, hi[i], i, lo[i]);
-     }
+    //  for (int i = 0; i < DIM_output; i++) {
+    //   auto hi          = rect_output.hi;
+    //   auto lo          = rect_output.lo;
+    //   printf("rect_output.hi()[%d]: %d, rect_output.lo()[%d]: %d\n", i, hi[i], i, lo[i]);
+    //  }
      All2AllImplBody<KIND, CODE, DIM_input, DIM_output>()(
          context,
          args.input,
@@ -512,7 +512,7 @@ struct All2AllImpl {
        domain_index *= hi[i] - lo[i] + 1;
      }
      domain_index += index_point[i];
-     printf("domain.hi()[%d]: %d, domain.lo()[%d]: %d, index_point[%d]: %d\n", i, hi[i], i, lo[i], i, index_point[i]);
+    //  printf("domain.hi()[%d]: %d, domain.lo()[%d]: %d, index_point[%d]: %d\n", i, hi[i], i, lo[i], i, index_point[i]);
    }
    return domain_index;
  }

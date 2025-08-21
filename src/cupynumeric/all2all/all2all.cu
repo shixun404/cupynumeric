@@ -54,15 +54,6 @@
  
  using namespace legate;
 
- template<int N>
- __device__ size_t point_to_linear_index(const legate::Point<N>& point,
-                                        const legate::Point<N>& strides) {
-     size_t linear_index = 0;
-     for (int d = 0; d < N; d++) {
-         linear_index += point[d] * strides[d];
-     }
-     return linear_index;
- }
 
 // Compute send histogram kernel for 1D (vectors)
 template<int DIM_input>
@@ -223,6 +214,14 @@ void global_all2all(
   }
   CHECK_NCCL(ncclGroupEnd());
   cudaStreamSynchronize(stream);
+
+  if(rank_id == 0){
+    for(int i = 0; i < num_ranks; i++){
+      for(int j = 0; j < DIM_input; j++){
+        printf("global_rects[%d][%d]: %d, %d\n", i, j, global_rects[i].lo[j], global_rects[i].hi[j]);
+      }
+    }
+  }
   
   // ===== Round 1: Compute request size histogram =====
   compute_send_histogram<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, 
@@ -386,19 +385,19 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM_input, DIM_output> {
          VAL* output_ptr = output.ptr(output_rect.lo);
        
 
-      //  global_all2all<VAL, INDEX_VAL, DIM_input, DIM_output>(
-      //      input_ptr,
-      //      index_ptr,
-      //      output_ptr,
-      //      input_rect,
-      //      index_rect,
-      //      output_rect,
-      //      rank,
-      //      num_ranks,
-      //     //  input_dim,
-      //      comms[0].get<ncclComm_t*>(),
-      //      stream
-      //  );
+       global_all2all<VAL, DIM_input, DIM_output>(
+           input_ptr,
+           index_ptr,
+           output_ptr,
+           input_rect,
+           index_rect,
+           output_rect,
+           rank,
+           num_ranks,
+          //  input_dim,
+           comms[0].get<ncclComm_t*>(),
+           stream
+       );
       
      }
  

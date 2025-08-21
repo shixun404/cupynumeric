@@ -65,51 +65,28 @@
  }
 
 // Compute send histogram kernel for 1D (vectors)
-template<typename IndexType, int DIM_input>
-__global__ void compute_send_histogram(const legate::Point<DIM_input>* indices, 
-                                      unsigned int* send_histo, 
-                                      legate::Rect<DIM_input>* rect_buf, 
-                                      int num_ranks, 
-                                      int indices_len) {
+template<typename IndexType>
+__global__ void compute_send_histogram(const IndexType* indices, 
+                                                 unsigned int* send_histo, size_t local_vector_count, size_t local_input_count) {
     size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if(idx < indices_len){
-      int target_rank = 0;
-      int is_in_rect = 1;
-      legate::Point<DIM_input> point = indices[idx];
-      for(; target_rank < num_ranks; target_rank++){
-        is_in_rect = 1;
-        for(int d = 0; d < DIM_input; d++){
-          if(rect_buf[target_rank].lo[d] > point[d] || rect_buf[target_rank].hi[d] < point[d]){
-            is_in_rect = 0;
-            break;
-          }
-        }
-        if(is_in_rect){
-          break;
-        }
-      }
-      atomicAdd(&send_histo[target_rank], is_in_rect);
+    if (idx < local_vector_count) {
+        size_t target_gpu = indices[idx] / local_input_count;
+        atomicAdd(&send_histo[target_gpu], 1);
     }
 }
 
 // Pack send data kernel for 2D (vectors)
-template<typename DataType, int DIM_input>
-__global__ void pack_send_data_kernel(const DataType* data, legate::Point<DIM_input>* indices, size_t request_count,
-                                          DataType* send_data, legate::Rect<DIM_input> input_rect) {
+template<typename DataType, typename IndexType>
+__global__ void pack_send_data_kernel(const DataType* data, const IndexType* indices, size_t request_count,
+                                          DataType* send_data, int rank_id, int local_input_count) {
     size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < request_count) {
-      legate::Point<DIM_input> point = indices[idx];
-      data_idx = 0;
-      for(int d = 0; d < DIM_input - 1; d++){
-        data_idx += point[d] * (input_rect.hi[d + 1] - input_rect.lo[d + 1] + 1);
-      }
-      data_idx += point[DIM_input - 1];
-      send_data[idx] = data[data_idx];
+        send_data[idx] = data[indices[idx] - rank_id * local_input_count];
     }
 }
 
-template<typename DataType, int DIM_input>
-__global__ void unpack_recv_data_kernel(DataType* data, legate::Point<DIM_input>* request_indices, size_t request_count,
+template<typename DataType, typename IndexType>
+__global__ void unpack_recv_data_kernel(DataType* data, const IndexType* request_indices, size_t request_count,
                                           const DataType* recv_data) {
     size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < request_count) {
@@ -118,37 +95,19 @@ __global__ void unpack_recv_data_kernel(DataType* data, legate::Point<DIM_input>
 }
  
 
-template<int DIM_input>
-__global__ void pack_request_indices_kernel(const legate::Point<DIM_input>* indices, size_t vector_count,
-                                          legate::Point<DIM_input>* send_indices, unsigned int* send_offsets, unsigned int* request_indices,
-                                          unsigned int* counters, legate::Rect<DIM_input> rect_buf, int num_ranks) {
+template<typename IndexType>
+__global__ void pack_request_indices_kernel(const IndexType* indices, size_t vector_count,
+                                          IndexType* send_indices, unsigned int* send_offsets, unsigned int* request_indices,
+                                          unsigned int* counters, size_t local_input_count) {
     size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < vector_count) {
-        
-      for(int i = 0; i < num_ranks; i++){
-        int target_rank = 0;
-        int is_in_rect = 1;
-        legate::Point<DIM_input> point = indices[idx];
-        for(; target_rank < num_ranks; target_rank++){
-          is_in_rect = 1;
-          for(int d = 0; d < DIM_input; d++){
-            if(rect_buf[target_rank].lo[d] > point[d] || rect_buf[target_rank].hi[d] < point[d]){
-              is_in_rect = 0;
-              break;
-            }
-          }
-          if(is_in_rect){
-            break;
-          }
-        }
-        size_t pos = atomicAdd(&counters[target_rank], 1);
-        size_t offset = send_offsets[target_rank] + pos;
+        size_t target_gpu = indices[idx] / local_input_count;
+        size_t pos = atomicAdd(&counters[target_gpu], 1);
+        size_t offset = send_offsets[target_gpu] + pos;
         send_indices[offset] = indices[idx];
         request_indices[offset] = idx;
-      }
     }
 }
-
 template<int DIM>
 size_t get_volume(auto rect){
   size_t volume = 1;
@@ -174,10 +133,10 @@ size_t get_volume(auto rect){
  *   - Receive the data elements this rank requested from other ranks
  *   - Unpack received data into final output array
  */
-template<typename DataType, int DIM_input, int DIM_output>
+template<typename DataType, typename IndexType, int DIM_input, int DIM_output>
 void global_all2all(
   const DataType* input_ptr, 
-  const legate::Point<DIM_input>* index_ptr, 
+  const IndexType* index_ptr, 
   DataType* output_ptr, 
   auto input_rect,
   auto index_rect,
@@ -216,7 +175,7 @@ void global_all2all(
   thrust::device_vector<unsigned int> packing_counters(num_ranks, 0);   // Temporary counters for packing
   
   // ===== Round 2: Exchange request indices =====
-  thrust::device_vector<legate::Point<DIM_input>> round2_send_indices(num_requests, 0);    // Indices to send (packed by target rank)
+  thrust::device_vector<IndexType> round2_send_indices(num_requests, 0);    // Indices to send (packed by target rank)
   thrust::device_vector<unsigned int> round2_request_positions(num_requests, 0); // Position of each request in output
   
   // ===== Round 3: Exchange actual data =====
@@ -226,10 +185,7 @@ void global_all2all(
   const size_t grid_size = (local_index_count + block_size - 1) / block_size;
   
   // ===== Round 1: Compute request size histogram =====
-  compute_send_histogram<<<grid_size, block_size, 0, stream>>>(index_ptr, 
-                thrust::raw_pointer_cast(round1_send_histo.data()), 
-                thrust::raw_pointer_cast(global_rects.data()), 
-                num_ranks, local_index_count);
+  compute_send_histogram<<<grid_size, block_size, 0, stream>>>(index_ptr, thrust::raw_pointer_cast(round1_send_histo.data()), local_index_count, local_input_count);
 
   // printf("round1_send_histo: ");
   // for(size_t i = 0; i < num_ranks; i++){
@@ -251,8 +207,7 @@ void global_all2all(
   // Pack request indices by target rank
   pack_request_indices_kernel<<<grid_size, block_size, 0, stream>>>(index_ptr, num_requests,  
     thrust::raw_pointer_cast(round2_send_indices.data()), thrust::raw_pointer_cast(round1_send_offsets.data()),
-    thrust::raw_pointer_cast(round2_request_positions.data()), thrust::raw_pointer_cast(packing_counters.data()), 
-    thrust::raw_pointer_cast(global_rects.data()), num_ranks);
+    thrust::raw_pointer_cast(round2_request_positions.data()), thrust::raw_pointer_cast(packing_counters.data()), local_input_count);
 
     // printf("round2_send_indices: ");
     // for(size_t i = 0; i < num_requests; i++){
@@ -384,16 +339,17 @@ void global_all2all(
 struct All2AllImplBody<VariantKind::GPU, CODE, DIM_input, DIM_output> {
   using VAL = type_of<CODE>;
   
-   void operator()(TaskContext& context,
-     const legate::PhysicalStore& input_array,
-     const legate::PhysicalStore& index_array,
-     const legate::PhysicalStore& output_array,
-     const bool is_index_space,
-     const size_t rank,
-     const size_t num_ranks,
-     const std::vector<comm::Communicator>& comms)
-   {
-    using INDEX_VAL = legate::Point<DIM_input>;
+  template <Type::Code INDEX_CODE>
+  void execute_with_index_type(TaskContext& context,
+    const legate::PhysicalStore& input_array,
+    const legate::PhysicalStore& index_array,
+    const legate::PhysicalStore& output_array,
+    const bool is_index_space,
+    const size_t rank,
+    const size_t num_ranks,
+    const std::vector<comm::Communicator>& comms)
+  {
+    using INDEX_VAL = type_of<INDEX_CODE>;
     // auto input_dim = args.input.dim();
 
     
@@ -441,6 +397,42 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM_input, DIM_output> {
      }
  
      CUPYNUMERIC_CHECK_CUDA_STREAM(stream);
+   }
+   
+   void operator()(TaskContext& context,
+     const legate::PhysicalStore& input_array,
+     const legate::PhysicalStore& index_array,
+     const legate::PhysicalStore& output_array,
+     const bool is_index_space,
+     const size_t rank,
+     const size_t num_ranks,
+     const std::vector<comm::Communicator>& comms)
+   {
+     // Dispatch based on index array type
+     auto index_code = index_array.code();
+     switch (index_code) {
+       case legate::Type::Code::INT32:
+         execute_with_index_type<legate::Type::Code::INT32>(context, input_array, index_array, output_array, is_index_space, rank, num_ranks, comms);
+         break;
+       case legate::Type::Code::INT64:
+         execute_with_index_type<legate::Type::Code::INT64>(context, input_array, index_array, output_array, is_index_space, rank, num_ranks, comms);
+         break;
+       case legate::Type::Code::UINT32:
+         execute_with_index_type<legate::Type::Code::UINT32>(context, input_array, index_array, output_array, is_index_space, rank, num_ranks, comms);
+         break;
+       case legate::Type::Code::UINT64:
+         execute_with_index_type<legate::Type::Code::UINT64>(context, input_array, index_array, output_array, is_index_space, rank, num_ranks, comms);
+         break;
+       case legate::Type::Code::FIXED_ARRAY:
+         // Point<1> (struct int64[1]) can be treated as INT64
+         // Note: STRUCT has value 18, not 17 as might be expected
+         execute_with_index_type<legate::Type::Code::INT64>(context, input_array, index_array, output_array, is_index_space, rank, num_ranks, comms);
+         break;
+       default:
+         printf("Unsupported index type code: %d\n", (int)index_code);
+         assert(false && "Unsupported index type");
+         break;
+     }
    }
  };
 

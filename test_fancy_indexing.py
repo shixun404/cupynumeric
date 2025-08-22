@@ -3,7 +3,7 @@ from legate.timing import time
 
 
 N_ROWS = 1_000_000
-N_COLS = 128
+N_COLS = 64
 # N_ROWS = 1_000_000
 # N_COLS = 32
 

@@ -216,13 +216,13 @@ void global_all2all(
   cudaStreamSynchronize(stream);
 
   // if(rank_id == 0){
-    for(int i = 0; i < num_ranks; i++){
-      legate::Rect<DIM_input> rect;
-      cudaMemcpy(&rect, thrust::raw_pointer_cast(global_rects.data() + i * DIM_input * 2), sizeof(input_rect), cudaMemcpyDeviceToHost);
-      for(int j = 0; j < DIM_input; j++){
-        printf("rank %d, global_rects[%d][%d]: %d, %d\n", rank_id, i, j, rect.lo[j], rect.hi[j]);
-      }
-    }
+    // for(int i = 0; i < num_ranks; i++){
+    //   legate::Rect<DIM_input> rect;
+    //   cudaMemcpy(&rect, thrust::raw_pointer_cast(global_rects.data() + i * DIM_input * 2), sizeof(input_rect), cudaMemcpyDeviceToHost);
+    //   for(int j = 0; j < DIM_input; j++){
+    //     printf("rank %d, global_rects[%d][%d]: %d, %d\n", rank_id, i, j, rect.lo[j], rect.hi[j]);
+    //   }
+    // }
   // }
   
   // // ===== Round 1: Compute request size histogram =====

@@ -249,17 +249,17 @@ void global_all2all(
   printf("%s\n", send_histo_str.c_str());
   // }
   
-  // thrust::exclusive_scan(round1_send_histo.begin(), round1_send_histo.end(), round1_send_offsets.begin());
-  // cudaStreamSynchronize(stream);
+  thrust::exclusive_scan(round1_send_histo.begin(), round1_send_histo.end(), round1_send_offsets.begin());
+  cudaStreamSynchronize(stream);
   
-  // // Pack request indices by target rank
-  // pack_request_indices_kernel<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, num_requests,  
-  //   (legate::Point<DIM_input>*)thrust::raw_pointer_cast(round2_send_indices.data()), 
-  //   thrust::raw_pointer_cast(round1_send_offsets.data()),
-  //   thrust::raw_pointer_cast(round2_request_positions.data()), 
-  //   thrust::raw_pointer_cast(packing_counters.data()), 
-  //   (legate::Rect<DIM_input>*)thrust::raw_pointer_cast(global_rects.data()), num_ranks);
-  // cudaStreamSynchronize(stream);
+  // Pack request indices by target rank
+  pack_request_indices_kernel<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, num_requests,  
+    (legate::Point<DIM_input>*)thrust::raw_pointer_cast(round2_send_indices.data()), 
+    thrust::raw_pointer_cast(round1_send_offsets.data()),
+    thrust::raw_pointer_cast(round2_request_positions.data()), 
+    thrust::raw_pointer_cast(packing_counters.data()), 
+    (legate::Rect<DIM_input>*)thrust::raw_pointer_cast(global_rects.data()), num_ranks);
+  cudaStreamSynchronize(stream);
 
   // // ===== Round 1: All2All exchange request size histograms =====
   // CHECK_NCCL(ncclGroupStart());

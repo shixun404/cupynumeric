@@ -116,27 +116,27 @@ __global__ void pack_request_indices_kernel(const legate::Point<DIM_input>* indi
     size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < vector_count) {
         
-      // for(int i = 0; i < num_ranks; i++){
-      //   int target_rank = 0;
-      //   int is_in_rect = 1;
-      //   legate::Point<DIM_input> point = indices[idx];
-      //   for(; target_rank < num_ranks; target_rank++){
-      //     is_in_rect = 1;
-      //     for(int d = 0; d < DIM_input; d++){
-      //       if(rect_buf[target_rank].lo[d] > point[d] || rect_buf[target_rank].hi[d] < point[d]){
-      //         is_in_rect = 0;
-      //         break;
-      //       }
-      //     }
-      //     if(is_in_rect){
-      //       break;
-      //     }
-      //   }
-      //   size_t pos = atomicAdd(&counters[target_rank], 1);
-      //   size_t offset = send_offsets[target_rank] + pos;
-      //   send_indices[offset] = indices[idx];
-      //   request_indices[offset] = idx;
-      // }
+      for(int i = 0; i < num_ranks; i++){
+        int target_rank = 0;
+        int is_in_rect = 1;
+        legate::Point<DIM_input> point = indices[idx];
+        for(; target_rank < num_ranks; target_rank++){
+          is_in_rect = 1;
+          for(int d = 0; d < DIM_input; d++){
+            if(rect_buf[target_rank].lo[d] > point[d] || rect_buf[target_rank].hi[d] < point[d]){
+              is_in_rect = 0;
+              break;
+            }
+          }
+          if(is_in_rect){
+            break;
+          }
+        }
+        size_t pos = atomicAdd(&counters[target_rank], 1);
+        size_t offset = send_offsets[target_rank] + pos;
+        send_indices[offset] = indices[idx];
+        request_indices[offset] = idx;
+      }
     }
 }
 
@@ -265,6 +265,9 @@ void global_all2all(
   size_t total_indices_to_receive = thrust::reduce(round1_recv_histo.begin(), round1_recv_histo.end());
   cudaStreamSynchronize(stream);
   // Pack request indices by target rank
+  if(rank_id == 0){
+    printf("grid_size: %d, block_size: %d\n", grid_size, block_size);
+  }
   pack_request_indices_kernel<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, num_requests,  
     (legate::Point<DIM_input>*)thrust::raw_pointer_cast(round2_send_indices.data()), 
     thrust::raw_pointer_cast(round1_send_offsets.data()),

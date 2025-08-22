@@ -265,15 +265,13 @@ void global_all2all(
   size_t total_indices_to_receive = thrust::reduce(round1_recv_histo.begin(), round1_recv_histo.end());
   cudaStreamSynchronize(stream);
   // Pack request indices by target rank
-  if(rank_id == 0){
-    printf("grid_size: %d, block_size: %d\n", grid_size, block_size);
-  }
-  // pack_request_indices_kernel<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, num_requests,  
-  //   (legate::Point<DIM_input>*)thrust::raw_pointer_cast(round2_send_indices.data()), 
-  //   thrust::raw_pointer_cast(round1_send_offsets.data()),
-  //   thrust::raw_pointer_cast(round2_request_positions.data()), 
-  //   thrust::raw_pointer_cast(packing_counters.data()), 
-  //   (legate::Rect<DIM_input>*)thrust::raw_pointer_cast(global_rects.data()), num_ranks);
+  
+  pack_request_indices_kernel<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, num_requests,  
+    (legate::Point<DIM_input>*)thrust::raw_pointer_cast(round2_send_indices.data()), 
+    thrust::raw_pointer_cast(round1_send_offsets.data()),
+    thrust::raw_pointer_cast(round2_request_positions.data()), 
+    thrust::raw_pointer_cast(packing_counters.data()), 
+    (legate::Rect<DIM_input>*)thrust::raw_pointer_cast(global_rects.data()), num_ranks);
   cudaStreamSynchronize(stream);
     
   // thrust::device_vector<legate::Point<DIM_input>> round2_recv_indices(total_indices_to_receive);

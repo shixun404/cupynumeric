@@ -265,8 +265,8 @@ void global_all2all(
   CHECK_NCCL(ncclGroupStart());
     
   for (size_t i = 0; i < num_ranks; ++i) {
-      CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(round1_send_histo.data() + i), 1, ncclUint32, i, *nccl_comm, stream));
-      CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(round1_recv_histo.data() + i), 1, ncclUint32, i, *nccl_comm, stream));
+    CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(round1_recv_histo.data() + i), 1, ncclUint32, i, *nccl_comm, stream));  
+    CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(round1_send_histo.data() + i), 1, ncclUint32, i, *nccl_comm, stream));
   }
   CHECK_NCCL(ncclGroupEnd());
   // size_t total_indices_to_receive = thrust::reduce(round1_recv_histo.begin(), round1_recv_histo.end());

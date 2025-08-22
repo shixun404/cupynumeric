@@ -14,7 +14,6 @@
 #
 from __future__ import annotations
 
-import nvtx
 import weakref
 from collections import Counter
 from collections.abc import Iterable
@@ -934,14 +933,12 @@ class DeferredArray(NumPyThunk):
         # Check to see if this is advanced indexing or not
         if is_advanced_indexing(key):
             # Create the indexing array
-            with nvtx.annotate("advanced_indexing", color="red"):
-                (
-                    copy_needed,
-                    rhs,
-                    index_array,
-                    self,
-                ) = self._create_indexing_array(key)
-            
+            (
+                copy_needed,
+                rhs,
+                index_array,
+                self,
+            ) = self._create_indexing_array(key)
 
             # print("=== INDEX ARRAY VALUES ===")
             # try:
@@ -962,59 +959,48 @@ class DeferredArray(NumPyThunk):
             #     print(f"Failed to parse index array: {e}")
 
             if copy_needed:
-                # nvtx.range_push("convert_future_to_regionfield", color="green")
-                with nvtx.annotate("convert_future_to_regionfield", color="green"):
-                    if rhs.base.has_scalar_storage:
-                        rhs = rhs._convert_future_to_regionfield()
-                
+                if rhs.base.has_scalar_storage:
+                    rhs = rhs._convert_future_to_regionfield()
                 result: NumPyThunk
-                
-                # nvtx.range_push("legate_runtime.create_store", color="green")
-                with nvtx.annotate("legate_runtime.create_store", color="blue"):
-                    if index_array.base.has_scalar_storage:
-                        index_array = index_array._convert_future_to_regionfield()
-                        result_store = legate_runtime.create_store(
-                            self.base.type,
-                            shape=index_array.shape,
-                            optimize_scalar=False,
-                        )
-                        result = DeferredArray(base=result_store)
+                if index_array.base.has_scalar_storage:
+                    index_array = index_array._convert_future_to_regionfield()
+                    result_store = legate_runtime.create_store(
+                        self.base.type,
+                        shape=index_array.shape,
+                        optimize_scalar=False,
+                    )
+                    result = DeferredArray(base=result_store)
 
-                    else:
-                        result = runtime.create_empty_thunk(
-                            index_array.base.shape,
-                            self.base.type,
-                            inputs=[self],
-                        )
-                
-                # nvtx.range_push("legate_runtime.issue_gather", color="green")
-                # with nvtx.annotate("legate_runtime.issue_gather", color="black"):
-                #     legate_runtime.issue_gather(
-                #         result.base, rhs.base, index_array.base  # type: ignore
-                #     )
-                # nvtx.range_pop()
+                else:
+                    result = runtime.create_empty_thunk(
+                        index_array.base.shape,
+                        self.base.type,
+                        inputs=[self],
+                    )
+           
+                legate_runtime.issue_gather(
+                    result.base, rhs.base, index_array.base  # type: ignore
+                )
                 # Add communicators if needed for distributed shuffle
                 
-
-                with nvtx.annotate("DEVTECH ALL2ALL", color="black"):
-                    task = legate_runtime.create_auto_task(
-                        self.library, CuPyNumericOpCode.ALL2ALL
-                    )
-                    task.add_input(rhs.base)
-                    task.add_input(index_array.base)
-                    task.add_output(result.base)
-                    # Add scalar arguments
-                    task.add_scalar_arg(rhs.base.shape, (ty.int64,))   # total volume
-                    task.add_scalar_arg(index_array.base.shape, (ty.int64,))   # total volume
-                    task.add_scalar_arg(result.base.shape, (ty.int64,))   # total volume
-        
+                # task = legate_runtime.create_auto_task(
+                #     self.library, CuPyNumericOpCode.ALL2ALL
+                # )
+                # task.add_input(rhs.base)
+                # task.add_input(index_array.base)
+                # task.add_output(result.base)
+                # # Add scalar arguments
+                # task.add_scalar_arg(rhs.base.shape, (ty.int64,))   # total volume
+                # task.add_scalar_arg(index_array.base.shape, (ty.int64,))   # total volume
+                # task.add_scalar_arg(result.base.shape, (ty.int64,))   # total volume
+    
+                
+                # if runtime.num_gpus > 1:
+                #     task.add_nccl_communicator()
+                # elif runtime.num_gpus == 0 and runtime.num_procs > 1:
+                #     task.add_cpu_communicator()
                     
-                    if runtime.num_gpus > 1:
-                        task.add_nccl_communicator()
-                    elif runtime.num_gpus == 0 and runtime.num_procs > 1:
-                        task.add_cpu_communicator()
-                        
-                    task.execute()
+                # task.execute()
 
             else:
                 return index_array

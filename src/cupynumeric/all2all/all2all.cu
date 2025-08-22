@@ -295,30 +295,30 @@ void global_all2all(
   CHECK_NCCL(ncclGroupEnd());
   cudaStreamSynchronize(stream);
 
-  // thrust::device_vector<DataType> round3_send_data(total_indices_to_receive);
+  thrust::device_vector<DataType> round3_send_data(total_indices_to_receive);
   
-  // pack_send_data_kernel<DataType, DIM_input><<<grid_size, block_size, 0, stream>>>(input_ptr, (legate::Point<DIM_input>*)thrust::raw_pointer_cast(round2_recv_indices.data()),
-  // total_indices_to_receive, thrust::raw_pointer_cast(round3_send_data.data()), input_rect);
-  // cudaStreamSynchronize(stream);
+  pack_send_data_kernel<DataType, DIM_input><<<grid_size, block_size, 0, stream>>>(input_ptr, (legate::Point<DIM_input>*)thrust::raw_pointer_cast(round2_recv_indices.data()),
+  total_indices_to_receive, thrust::raw_pointer_cast(round3_send_data.data()), input_rect);
+  cudaStreamSynchronize(stream);
 
-  // // ===== Round 3: All2All exchange actual data =====
-  // CHECK_NCCL(ncclGroupStart());
-  // for (size_t i = 0; i < num_ranks; ++i) {
-  //     unsigned int data_to_send_to_rank_i = round1_send_histo[i];
-  //     unsigned int send_offset_for_rank_i = round1_send_offsets[i];
-  //     unsigned int data_to_recv_from_rank_i = round1_recv_histo[i];
-  //     unsigned int recv_offset_for_rank_i = round1_recv_offsets[i];
-  //     if (data_to_recv_from_rank_i > 0) {
-  //     CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(round3_send_data.data()) + recv_offset_for_rank_i,
-  //     data_to_recv_from_rank_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
-  //   }
-  //     if (data_to_send_to_rank_i > 0) {
-  //       CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(round3_recv_data.data()) + send_offset_for_rank_i,
-  //       data_to_send_to_rank_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
-  //     }   
-  // }
-  // CHECK_NCCL(ncclGroupEnd());
-  // cudaStreamSynchronize(stream);
+  // ===== Round 3: All2All exchange actual data =====
+  CHECK_NCCL(ncclGroupStart());
+  for (size_t i = 0; i < num_ranks; ++i) {
+      unsigned int data_to_send_to_rank_i = round1_send_histo[i];
+      unsigned int send_offset_for_rank_i = round1_send_offsets[i];
+      unsigned int data_to_recv_from_rank_i = round1_recv_histo[i];
+      unsigned int recv_offset_for_rank_i = round1_recv_offsets[i];
+      if (data_to_recv_from_rank_i > 0) {
+      CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(round3_send_data.data()) + recv_offset_for_rank_i,
+      data_to_recv_from_rank_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
+    }
+      if (data_to_send_to_rank_i > 0) {
+        CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(round3_recv_data.data()) + send_offset_for_rank_i,
+        data_to_send_to_rank_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
+      }   
+  }
+  CHECK_NCCL(ncclGroupEnd());
+  cudaStreamSynchronize(stream);
   
   // // ===== Final step: Unpack received data to output =====
   // unpack_recv_data_kernel<DataType, DIM_output><<<grid_size, block_size, 0, stream>>>(output_ptr, thrust::raw_pointer_cast(round2_request_positions.data()),

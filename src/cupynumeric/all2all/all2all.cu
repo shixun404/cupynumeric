@@ -239,7 +239,7 @@ void global_all2all(
                 (legate::Rect<DIM_input>*)thrust::raw_pointer_cast(global_rects.data()), 
                 num_ranks, local_index_count);
   
-  if(rank_id == 0) {
+  // if(rank_id == 0) {
   printf("round1_send_histo: ");
   std::string send_histo_str = "";
   for(size_t i = 0; i < num_ranks; i++){
@@ -247,7 +247,7 @@ void global_all2all(
     send_histo_str += std::to_string(tmp) + " ";
   }
   printf("%s\n", send_histo_str.c_str());
-  }
+  // }
   
   // thrust::exclusive_scan(round1_send_histo.begin(), round1_send_histo.end(), round1_send_offsets.begin());
   // cudaStreamSynchronize(stream);

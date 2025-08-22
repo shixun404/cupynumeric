@@ -194,7 +194,8 @@ void global_all2all(
 
   // ===== Round 0: Exchange rects =====
   thrust::device_vector<int64_t> global_rects(num_ranks * DIM_input * 2, 0);
-
+  thrust::device_vector<int64_t> input_rect_device(DIM_input * 2, 0);
+  thrust::copy(input_rect.begin(), input_rect.end(), input_rect_device.begin());
   // ===== Round 1: Exchange request size histograms =====
   thrust::device_vector<unsigned int> round1_send_histo(num_ranks, 0);  // How many requests to send to each rank
   thrust::device_vector<unsigned int> round1_send_offsets(num_ranks, 0); // Offsets for packing requests
@@ -215,7 +216,7 @@ void global_all2all(
   // ===== Round 0: Exchange rects =====
   CHECK_NCCL(ncclGroupStart());
   for(int i = 0; i < num_ranks; i++){
-    CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(&input_rect), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
+    CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(input_rect_device.data()), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
     CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(global_rects.data() + i * DIM_input * 2), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
   }
   CHECK_NCCL(ncclGroupEnd());

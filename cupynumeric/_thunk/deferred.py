@@ -13,6 +13,7 @@
 # limitations under the License.
 #
 from __future__ import annotations
+import cupy as cp
 import nvtx
 import weakref
 from collections import Counter
@@ -982,27 +983,32 @@ class DeferredArray(NumPyThunk):
                 #     result.base, rhs.base, index_array.base  # type: ignore
                 # )
                 # Add communicators if needed for distributed shuffle
-                with nvtx.annotate("add_create_all2all_task", color="red"):
+                # with nvtx.annotate("add_create_al4l2all_task", color="red"):
+                with cp.prof.time_range("add_create_al4l2all_task"):
                     task = legate_runtime.create_auto_task(
                         self.library, CuPyNumericOpCode.ALL2ALL
                     )
-                with nvtx.annotate("add_input_output", color="blue"):
+                # with nvtx.annotate("add_input_output", color="blue"):
+                with cp.prof.time_range("add_input_output"):
                     task.add_input(rhs.base)
                     task.add_input(index_array.base)
                     task.add_output(result.base)
-                with nvtx.annotate("add_scalar_args", color="green"):
+                # with nvtx.annotate("add_scalar_args", color="green"):
+                with cp.prof.time_range("add_scalar_args"):
                     # Add scalar arguments
                     task.add_scalar_arg(rhs.base.shape, (ty.int64,))   # total volume
                     task.add_scalar_arg(index_array.base.shape, (ty.int64,))   # total volume
                     task.add_scalar_arg(result.base.shape, (ty.int64,))   # total volume
         
-                with nvtx.annotate("add_communicators", color="yellow"):
+                # with nvtx.annotate("add_communicators", color="yellow"):
+                with cp.prof.time_range("add_communicators"):
                     if runtime.num_gpus > 1:
                         task.add_nccl_communicator()
                     elif runtime.num_gpus == 0 and runtime.num_procs > 1:
                         task.add_cpu_communicator()
                     
-                with nvtx.annotate("execute", color="purple"):
+                # with nvtx.annotate("execute", color="purple"):
+                with cp.prof.time_range("execute"):
                     task.execute()
 
             else:

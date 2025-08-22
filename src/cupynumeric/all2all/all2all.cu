@@ -263,7 +263,7 @@ void global_all2all(
   }
   CHECK_NCCL(ncclGroupEnd());
   size_t total_indices_to_receive = thrust::reduce(round1_recv_histo.begin(), round1_recv_histo.end());
-
+  cudaStreamSynchronize(stream);
   // Pack request indices by target rank
   pack_request_indices_kernel<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, num_requests,  
     (legate::Point<DIM_input>*)thrust::raw_pointer_cast(round2_send_indices.data()), 
@@ -276,7 +276,7 @@ void global_all2all(
   thrust::device_vector<legate::Point<DIM_input>> round2_recv_indices(total_indices_to_receive);
   thrust::exclusive_scan(round1_recv_histo.begin(), round1_recv_histo.end(), round1_recv_offsets.begin());
 
-  cudaStreamSynchronize(stream);
+  cudaDeviceSynchronize();
   // // ===== Round 2: All2All exchange request indices =====
   CHECK_NCCL(ncclGroupStart());
   for (size_t i = 0; i < num_ranks; ++i) {

@@ -116,7 +116,7 @@ __global__ void pack_request_indices_kernel(const legate::Point<DIM_input>* indi
     size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < vector_count) {
         
-      for(int i = 0; i < num_ranks; i++){
+      // for(int i = 0; i < num_ranks; i++){
         int target_rank = 0;
         int is_in_rect = 1;
         legate::Point<DIM_input> point = indices[idx];
@@ -136,7 +136,7 @@ __global__ void pack_request_indices_kernel(const legate::Point<DIM_input>* indi
         size_t offset = send_offsets[target_rank] + pos;
         send_indices[offset] = indices[idx];
         request_indices[offset] = idx;
-      }
+      // }
     }
 }
 

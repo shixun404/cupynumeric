@@ -250,7 +250,7 @@ void global_all2all(
   // }
   // cudaStreamSynchronize(stream);
   // thrust::exclusive_scan(round1_send_histo.begin(), round1_send_histo.end(), round1_send_offsets.begin());
-  // cudaStreamSynchronize(stream);
+  cudaStreamSynchronize(stream);
   
   // Pack request indices by target rank
   // pack_request_indices_kernel<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, num_requests,  

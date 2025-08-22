@@ -240,17 +240,17 @@ void global_all2all(
                 num_ranks, local_index_count);
   
   // if(rank_id == 0) {
-  // printf("round1_send_histo: ");
-  // std::string send_histo_str = "";
-  // for(size_t i = 0; i < num_ranks; i++){
-  //   unsigned int tmp = round1_send_histo[i];
-  //   send_histo_str += std::to_string(tmp) + " ";
-  // }
-  // printf("%s\n", send_histo_str.c_str());
+  printf("round1_send_histo: ");
+  std::string send_histo_str = "";
+  for(size_t i = 0; i < num_ranks; i++){
+    unsigned int tmp = round1_send_histo[i];
+    send_histo_str += std::to_string(tmp) + " ";
+  }
+  printf("%s\n", send_histo_str.c_str());
   // }
   
   thrust::exclusive_scan(round1_send_histo.begin(), round1_send_histo.end(), round1_send_offsets.begin());
-  cudaStreamSynchronize(stream);
+  // cudaStreamSynchronize(stream);
   
   // Pack request indices by target rank
   // pack_request_indices_kernel<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, num_requests,  

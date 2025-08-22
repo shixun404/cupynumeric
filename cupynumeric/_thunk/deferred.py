@@ -962,9 +962,12 @@ class DeferredArray(NumPyThunk):
             #     print(f"Failed to parse index array: {e}")
 
             if copy_needed:
+                nvtx.range_push("convert_future_to_regionfield", color="green")
                 if rhs.base.has_scalar_storage:
                     rhs = rhs._convert_future_to_regionfield()
+                nvtx.range_pop()
                 result: NumPyThunk
+                nvtx.range_push("legate_runtime.create_store", color="green")
                 if index_array.base.has_scalar_storage:
                     index_array = index_array._convert_future_to_regionfield()
                     result_store = legate_runtime.create_store(
@@ -980,10 +983,12 @@ class DeferredArray(NumPyThunk):
                         self.base.type,
                         inputs=[self],
                     )
-           
+                nvtx.range_pop()
+                nvtx.range_push("legate_runtime.issue_gather", color="green")
                 legate_runtime.issue_gather(
                     result.base, rhs.base, index_array.base  # type: ignore
                 )
+                nvtx.range_pop()
                 # Add communicators if needed for distributed shuffle
                 
                 # task = legate_runtime.create_auto_task(

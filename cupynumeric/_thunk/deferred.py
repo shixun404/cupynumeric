@@ -14,6 +14,7 @@
 #
 from __future__ import annotations
 
+import nvtx
 import weakref
 from collections import Counter
 from collections.abc import Iterable
@@ -933,12 +934,14 @@ class DeferredArray(NumPyThunk):
         # Check to see if this is advanced indexing or not
         if is_advanced_indexing(key):
             # Create the indexing array
+            nvtx.range_push("create_indexing_array", color="green")
             (
                 copy_needed,
                 rhs,
                 index_array,
                 self,
             ) = self._create_indexing_array(key)
+            nvtx.range_pop()
 
             # print("=== INDEX ARRAY VALUES ===")
             # try:

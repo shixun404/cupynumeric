@@ -207,13 +207,13 @@ void global_all2all(
   const size_t grid_size = (local_index_count + block_size - 1) / block_size;
   
   // ===== Round 0: Exchange rects =====
-  CHECK_NCCL(ncclGroupStart());
-  for(int i = 0; i < num_ranks; i++){
-    CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(&input_rect), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
-    CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(global_rects.data() + i * DIM_input * 2), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
-  }
-  CHECK_NCCL(ncclGroupEnd());
-  cudaStreamSynchronize(stream);
+  // CHECK_NCCL(ncclGroupStart());
+  // for(int i = 0; i < num_ranks; i++){
+  //   CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(&input_rect), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
+  //   CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(global_rects.data() + i * DIM_input * 2), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
+  // }
+  // CHECK_NCCL(ncclGroupEnd());
+  // cudaStreamSynchronize(stream);
 
   // if(rank_id == 0){
     // for(int i = 0; i < num_ranks; i++){

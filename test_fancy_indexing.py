@@ -57,7 +57,7 @@ print(data_array)
 # print("Taking pairs")
 # pair_list = [[i, i] for i in range(2)]
 # pair_list = [[i, i] for i in range(4)]
-pair_list = [1,2,3,4]
+pair_list = np.arange(N_ROWS * N_COLS, dtype=np.int64)
 pairs_array = np.array(pair_list)
 print(pairs_array.shape)
 

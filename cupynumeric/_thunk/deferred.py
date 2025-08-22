@@ -934,14 +934,14 @@ class DeferredArray(NumPyThunk):
         # Check to see if this is advanced indexing or not
         if is_advanced_indexing(key):
             # Create the indexing array
-            nvtx.range_push("create_indexing_array", color="green")
-            (
-                copy_needed,
-                rhs,
-                index_array,
-                self,
-            ) = self._create_indexing_array(key)
-            nvtx.range_pop()
+            with nvtx.annotate("advanced_indexing", color="red"):
+                (
+                    copy_needed,
+                    rhs,
+                    index_array,
+                    self,
+                ) = self._create_indexing_array(key)
+            
 
             # print("=== INDEX ARRAY VALUES ===")
             # try:
@@ -962,33 +962,37 @@ class DeferredArray(NumPyThunk):
             #     print(f"Failed to parse index array: {e}")
 
             if copy_needed:
-                nvtx.range_push("convert_future_to_regionfield", color="green")
-                if rhs.base.has_scalar_storage:
-                    rhs = rhs._convert_future_to_regionfield()
-                nvtx.range_pop()
+                # nvtx.range_push("convert_future_to_regionfield", color="green")
+                with nvtx.annotate("convert_future_to_regionfield", color="green"):
+                    if rhs.base.has_scalar_storage:
+                        rhs = rhs._convert_future_to_regionfield()
+                
                 result: NumPyThunk
-                nvtx.range_push("legate_runtime.create_store", color="green")
-                if index_array.base.has_scalar_storage:
-                    index_array = index_array._convert_future_to_regionfield()
-                    result_store = legate_runtime.create_store(
-                        self.base.type,
-                        shape=index_array.shape,
-                        optimize_scalar=False,
-                    )
-                    result = DeferredArray(base=result_store)
+                
+                # nvtx.range_push("legate_runtime.create_store", color="green")
+                with nvtx.annotate("legate_runtime.create_store", color="blue"):
+                    if index_array.base.has_scalar_storage:
+                        index_array = index_array._convert_future_to_regionfield()
+                        result_store = legate_runtime.create_store(
+                            self.base.type,
+                            shape=index_array.shape,
+                            optimize_scalar=False,
+                        )
+                        result = DeferredArray(base=result_store)
 
-                else:
-                    result = runtime.create_empty_thunk(
-                        index_array.base.shape,
-                        self.base.type,
-                        inputs=[self],
+                    else:
+                        result = runtime.create_empty_thunk(
+                            index_array.base.shape,
+                            self.base.type,
+                            inputs=[self],
+                        )
+                
+                # nvtx.range_push("legate_runtime.issue_gather", color="green")
+                with nvtx.annotate("legate_runtime.issue_gather", color="black"):
+                    legate_runtime.issue_gather(
+                        result.base, rhs.base, index_array.base  # type: ignore
                     )
-                nvtx.range_pop()
-                nvtx.range_push("legate_runtime.issue_gather", color="green")
-                legate_runtime.issue_gather(
-                    result.base, rhs.base, index_array.base  # type: ignore
-                )
-                nvtx.range_pop()
+                # nvtx.range_pop()
                 # Add communicators if needed for distributed shuffle
                 
                 # task = legate_runtime.create_auto_task(

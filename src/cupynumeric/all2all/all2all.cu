@@ -451,7 +451,7 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM_input, DIM_output> {
      for (int i = 0; i < DIM_input; i++) {  
       auto hi          = rect_input.hi;
      auto lo          = rect_input.lo;
-      printf("rank %d, rect_input.hi()[%d]: %d, rect_input.lo()[%d]: %d\n", args.rank_id, i, hi[i], i, lo[i]);
+      printf("num_ranks %d, rank %d, rect_input.hi()[%d]: %d, rect_input.lo()[%d]: %d\n", args.num_ranks, args.rank_id, i, hi[i], i, lo[i]);
      }
     //  for (int i = 0; i < DIM_output; i++) {
     //   auto hi          = rect_output.hi;

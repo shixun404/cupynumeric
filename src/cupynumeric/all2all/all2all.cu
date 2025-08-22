@@ -248,18 +248,7 @@ void global_all2all(
   // }
   // printf("%s\n", send_histo_str.c_str());
   // }
-  // cudaStreamSynchronize(stream);
-  // thrust::exclusive_scan(round1_send_histo.begin(), round1_send_histo.end(), round1_send_offsets.begin());
   cudaStreamSynchronize(stream);
-  
-  // Pack request indices by target rank
-  // pack_request_indices_kernel<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, num_requests,  
-  //   (legate::Point<DIM_input>*)thrust::raw_pointer_cast(round2_send_indices.data()), 
-  //   thrust::raw_pointer_cast(round1_send_offsets.data()),
-  //   thrust::raw_pointer_cast(round2_request_positions.data()), 
-  //   thrust::raw_pointer_cast(packing_counters.data()), 
-  //   (legate::Rect<DIM_input>*)thrust::raw_pointer_cast(global_rects.data()), num_ranks);
-  // cudaStreamSynchronize(stream);
 
   // ===== Round 1: All2All exchange request size histograms =====
   CHECK_NCCL(ncclGroupStart());
@@ -269,7 +258,18 @@ void global_all2all(
     CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(round1_send_histo.data() + i), 1, ncclUint32, i, *nccl_comm, stream));
   }
   CHECK_NCCL(ncclGroupEnd());
-  // size_t total_indices_to_receive = thrust::reduce(round1_recv_histo.begin(), round1_recv_histo.end());
+  size_t total_indices_to_receive = thrust::reduce(round1_recv_histo.begin(), round1_recv_histo.end());
+  // thrust::exclusive_scan(round1_send_histo.begin(), round1_send_histo.end(), round1_send_offsets.begin());
+  // cudaStreamSynchronize(stream);
+
+  // Pack request indices by target rank
+  // pack_request_indices_kernel<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, num_requests,  
+  //   (legate::Point<DIM_input>*)thrust::raw_pointer_cast(round2_send_indices.data()), 
+  //   thrust::raw_pointer_cast(round1_send_offsets.data()),
+  //   thrust::raw_pointer_cast(round2_request_positions.data()), 
+  //   thrust::raw_pointer_cast(packing_counters.data()), 
+  //   (legate::Rect<DIM_input>*)thrust::raw_pointer_cast(global_rects.data()), num_ranks);
+  // cudaStreamSynchronize(stream);
     
   // thrust::device_vector<legate::Point<DIM_input>> round2_recv_indices(total_indices_to_receive);
   // thrust::exclusive_scan(round1_recv_histo.begin(), round1_recv_histo.end(), round1_recv_offsets.begin());

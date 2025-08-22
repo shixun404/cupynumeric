@@ -320,9 +320,9 @@ void global_all2all(
   CHECK_NCCL(ncclGroupEnd());
   cudaStreamSynchronize(stream);
   
-  // // ===== Final step: Unpack received data to output =====
-  // unpack_recv_data_kernel<DataType, DIM_output><<<grid_size, block_size, 0, stream>>>(output_ptr, thrust::raw_pointer_cast(round2_request_positions.data()),
-  //   num_requests, thrust::raw_pointer_cast(round3_recv_data.data()));
+  // ===== Final step: Unpack received data to output =====
+  unpack_recv_data_kernel<DataType, DIM_output><<<grid_size, block_size, 0, stream>>>(output_ptr, thrust::raw_pointer_cast(round2_request_positions.data()),
+    num_requests, thrust::raw_pointer_cast(round3_recv_data.data()));
 }
  
  template <Type::Code CODE, int32_t DIM_input, int32_t DIM_output>

@@ -191,7 +191,7 @@ void global_all2all(
   size_t local_output_count = get_volume<DIM_output>(output_rect);
   
   size_t num_requests = local_index_count;
-
+   nvtxRangePushA("global_all2all");
   // ===== Round 0: Exchange rects =====
   thrust::device_vector<int64_t> global_rects(num_ranks * DIM_input * 2, 0);
   thrust::device_vector<int64_t> input_rect_device(DIM_input * 2, 0);
@@ -223,15 +223,15 @@ void global_all2all(
   CHECK_NCCL(ncclGroupEnd());
   cudaStreamSynchronize(stream);
 
-  if(rank_id == 0){
-    for(int i = 0; i < num_ranks; i++){
-      legate::Rect<DIM_input> rect;
-      cudaMemcpy(&rect, thrust::raw_pointer_cast(global_rects.data() + i * DIM_input * 2), sizeof(input_rect), cudaMemcpyDeviceToHost);
-      for(int j = 0; j < DIM_input; j++){
-        printf("rank %d, global_rects[%d][%d]: %d, %d\n", rank_id, i, j, rect.lo[j], rect.hi[j]);
-      }
-    }
-  }
+  // if(rank_id == 0){
+  //   for(int i = 0; i < num_ranks; i++){
+  //     legate::Rect<DIM_input> rect;
+  //     cudaMemcpy(&rect, thrust::raw_pointer_cast(global_rects.data() + i * DIM_input * 2), sizeof(input_rect), cudaMemcpyDeviceToHost);
+  //     for(int j = 0; j < DIM_input; j++){
+  //       printf("rank %d, global_rects[%d][%d]: %d, %d\n", rank_id, i, j, rect.lo[j], rect.hi[j]);
+  //     }
+  //   }
+  // }
   
   // ===== Round 1: Compute request size histogram =====
   compute_send_histogram<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, 
@@ -326,6 +326,7 @@ void global_all2all(
   // ===== Final step: Unpack received data to output =====
   unpack_recv_data_kernel<DataType, DIM_output><<<grid_size, block_size, 0, stream>>>(output_ptr, thrust::raw_pointer_cast(round2_request_positions.data()),
     num_requests, thrust::raw_pointer_cast(round3_recv_data.data()));
+  nvtxRangePop();
 }
  
  template <Type::Code CODE, int32_t DIM_input, int32_t DIM_output>

@@ -19,7 +19,7 @@ print("Data generated")
 print("Taking pairs")
 pair_list = [(i * N_COLS + j + k) % N_ROWS for i in range(N_ROWS) for j in range(N_COLS) for  k in range(16)]
 pairs_array = np.array(pair_list)
-print(len(pair_list))
+# print(len(pair_list))
 print(data_array.shape)
 start_time = time()
 # result_array = take_with_pairs(data_array, pairs_array)

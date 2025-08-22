@@ -195,7 +195,8 @@ void global_all2all(
   // ===== Round 0: Exchange rects =====
   thrust::device_vector<int64_t> global_rects(num_ranks * DIM_input * 2, 0);
   thrust::device_vector<int64_t> input_rect_device(DIM_input * 2, 0);
-  thrust::copy(input_rect.begin(), input_rect.end(), input_rect_device.begin());
+  cudaMemcpy(thrust::raw_pointer_cast(input_rect_device.data()), &input_rect, sizeof(input_rect), cudaMemcpyHostToDevice);
+
   // ===== Round 1: Exchange request size histograms =====
   thrust::device_vector<unsigned int> round1_send_histo(num_ranks, 0);  // How many requests to send to each rank
   thrust::device_vector<unsigned int> round1_send_offsets(num_ranks, 0); // Offsets for packing requests

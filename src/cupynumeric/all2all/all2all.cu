@@ -261,15 +261,15 @@ void global_all2all(
     (legate::Rect<DIM_input>*)thrust::raw_pointer_cast(global_rects.data()), num_ranks);
   cudaStreamSynchronize(stream);
 
-  // // ===== Round 1: All2All exchange request size histograms =====
-  // CHECK_NCCL(ncclGroupStart());
+  // ===== Round 1: All2All exchange request size histograms =====
+  CHECK_NCCL(ncclGroupStart());
     
-  // for (size_t i = 0; i < num_ranks; ++i) {
-  //     CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(round1_send_histo.data()) + i, 1, ncclUint32, i, *nccl_comm, stream));
-  //     CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(round1_recv_histo.data()) + i, 1, ncclUint32, i, *nccl_comm, stream));
-  // }
-  // CHECK_NCCL(ncclGroupEnd());
-  // size_t total_indices_to_receive = thrust::reduce(round1_recv_histo.begin(), round1_recv_histo.end());
+  for (size_t i = 0; i < num_ranks; ++i) {
+      CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(round1_send_histo.data()) + i, 1, ncclUint32, i, *nccl_comm, stream));
+      CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(round1_recv_histo.data()) + i, 1, ncclUint32, i, *nccl_comm, stream));
+  }
+  CHECK_NCCL(ncclGroupEnd());
+  size_t total_indices_to_receive = thrust::reduce(round1_recv_histo.begin(), round1_recv_histo.end());
     
   // thrust::device_vector<legate::Point<DIM_input>> round2_recv_indices(total_indices_to_receive);
   // thrust::exclusive_scan(round1_recv_histo.begin(), round1_recv_histo.end(), round1_recv_offsets.begin());

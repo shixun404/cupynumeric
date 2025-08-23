@@ -40,12 +40,14 @@ struct ArangeImplBody<VariantKind::GPU, VAL> {
                   const VAL start,
                   const VAL step) const
   {
+    nvtxRangePushA("ArangeImplBody");
     const auto distance = rect.hi[0] - rect.lo[0] + 1;
     const size_t blocks = (distance + THREADS_PER_BLOCK - 1) / THREADS_PER_BLOCK;
     auto stream         = get_cached_stream();
     arange_kernel<VAL>
       <<<blocks, THREADS_PER_BLOCK, 0, stream>>>(out, rect.lo[0], start, step, distance);
     CUPYNUMERIC_CHECK_CUDA_STREAM(stream);
+    nvtxRangePop();
   }
 };
 

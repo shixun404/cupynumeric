@@ -16,7 +16,7 @@
 
 #include "cupynumeric/nullary/arange.h"
 #include "cupynumeric/nullary/arange_template.inl"
-
+#include <nvtx3/nvToolsExt.h>
 #include "cupynumeric/cuda_help.h"
 
 namespace cupynumeric {

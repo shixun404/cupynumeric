@@ -28,15 +28,15 @@ result_array = data_array[pairs_array]
 duration = time() - start_time
 print(duration / 1e6)
 
-start_time = time()
-result_array = data_array[pairs_array]
-duration = time() - start_time
-print(duration / 1e6)
+# start_time = time()
+# result_array = data_array[pairs_array]
+# duration = time() - start_time
+# print(duration / 1e6)
 
-start_time = time()
-result_array = data_array[pairs_array]
-duration = time() - start_time
-print(duration / 1e6)
+# start_time = time()
+# result_array = data_array[pairs_array]
+# duration = time() - start_time
+# print(duration / 1e6)
 
 
 

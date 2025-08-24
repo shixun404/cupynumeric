@@ -24,13 +24,8 @@ pairs_array = np.array(pair_list)
 print(data_array.shape)
 
 start_time = time()
-result_array = data_array[pairs_array]
-
-
-
-
-# start_time = time()
-result_array_1 = data_array[pairs_array]
+for i in range(10):
+    result_array = data_array[pairs_array]
 duration = time() - start_time
 print(duration / 1e6)
 

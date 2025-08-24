@@ -327,6 +327,7 @@ void global_all2all(
   unpack_recv_data_kernel<DataType, DIM_output><<<grid_size, block_size, 0, stream>>>(output_ptr, thrust::raw_pointer_cast(round2_request_positions.data()),
     num_requests, thrust::raw_pointer_cast(round3_recv_data.data()));
   nvtxRangePop();
+  cudaDeviceSynchronize();
 }
  
  template <Type::Code CODE, int32_t DIM_input, int32_t DIM_output>

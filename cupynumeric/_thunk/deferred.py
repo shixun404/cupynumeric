@@ -14,7 +14,7 @@
 #
 from __future__ import annotations
 # import cupy as cp
-import nvtx
+# import nvtx
 import weakref
 from collections import Counter
 from collections.abc import Iterable

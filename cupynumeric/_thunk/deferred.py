@@ -979,32 +979,32 @@ class DeferredArray(NumPyThunk):
                         inputs=[self],
                     )
            
-                legate_runtime.issue_gather(
-                    result.base, rhs.base, index_array.base  # type: ignore
-                )
+                # legate_runtime.issue_gather(
+                #     result.base, rhs.base, index_array.base  # type: ignore
+                # )
                 # Add communicators if needed for distributed shuffle
                 
-                # task = legate_runtime.create_auto_task(
-                #     self.library, CuPyNumericOpCode.ALL2ALL
-                # )
+                task = legate_runtime.create_auto_task(
+                    self.library, CuPyNumericOpCode.ALL2ALL
+                )
 
-                # task.add_input(rhs.base)
-                # task.add_input(index_array.base)
-                # task.add_output(result.base)
+                task.add_input(rhs.base)
+                task.add_input(index_array.base)
+                task.add_output(result.base)
 
-                # # Add scalar arguments
-                # task.add_scalar_arg(rhs.base.shape, (ty.int64,))   # total volume
-                # task.add_scalar_arg(index_array.base.shape, (ty.int64,))   # total volume
-                # task.add_scalar_arg(result.base.shape, (ty.int64,))   # total volume
+                # Add scalar arguments
+                task.add_scalar_arg(rhs.base.shape, (ty.int64,))   # total volume
+                task.add_scalar_arg(index_array.base.shape, (ty.int64,))   # total volume
+                task.add_scalar_arg(result.base.shape, (ty.int64,))   # total volume
     
 
-                # if runtime.num_gpus > 1:
-                #     task.add_nccl_communicator()
-                # elif runtime.num_gpus == 0 and runtime.num_procs > 1:
-                #     task.add_cpu_communicator()
+                if runtime.num_gpus > 1:
+                    task.add_nccl_communicator()
+                elif runtime.num_gpus == 0 and runtime.num_procs > 1:
+                    task.add_cpu_communicator()
                     
 
-                # task.execute()
+                task.execute()
 
             else:
                 return index_array

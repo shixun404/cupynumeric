@@ -29,7 +29,7 @@ print(data_array.shape)
 start_time = time()
 for i in range(2):
     result_array = data_array[pairs_array]
-    data_array = result_array
+    # data_array = result_array
 duration = time() - start_time
 print(duration / 1e6)
 

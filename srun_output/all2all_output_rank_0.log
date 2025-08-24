@@ -1,0 +1,122 @@
+--- Starting Legate Application ---
+───────────────────────────── Legate Configuration ─────────────────────────────
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│ Legate paths                                                                 │
+╰──────────────────────────────────────────────────────────────────────────────╯
+ bind_sh_path   /root/miniconda3/envs/legate/share/legate/libexec/legate-bind.… 
+ legate_lib_p…  /root/miniconda3/envs/legate/lib                                
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│ Versions                                                                     │
+╰──────────────────────────────────────────────────────────────────────────────╯
+ legate_version  25.05.00.dev168+g86a00a17 
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│ Command                                                                      │
+╰──────────────────────────────────────────────────────────────────────────────╯
+ /root/miniconda3/envs/legate/share/legate/libexec/legate-bind.sh --launcher local -- python /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│ Customized Environment                                                       │
+╰──────────────────────────────────────────────────────────────────────────────╯
+ LEGATE_CONFIG='--gpus 8 --fbmem 50000 --logdir /project/coreai_devtech_all/shixunw/result --log-to-file'
+ PYTHONDONTWRITEBYTECODE=1
+
+
+────────────────────────────────────────────────────────────────────────────────
+[1756069629.405190] [eos0022:3428841:0]           debug.c:1158 UCX  DEBUG using signal stack 0x7ffff7b4d000 size 141824
+[1756069629.431102] [eos0022:3428841:0]             cpu.c:339  UCX  DEBUG measured tsc frequency 1988.061 MHz after 0.10 ms
+[1756069629.431123] [eos0022:3428841:0]            init.c:121  UCX  DEBUG /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0 loaded at 0x7ffff7e30000
+[1756069629.431138] [eos0022:3428841:0]            init.c:122  UCX  DEBUG cmd line: bash /root/miniconda3/envs/legate/share/legate/libexec/legate-bind.sh --launcher local -- python /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py 
+[1756069629.431145] [eos0022:3428841:0]          module.c:72   UCX  DEBUG ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1756069629.431147] [eos0022:3428841:0]          module.c:280  UCX  DEBUG loading modules for ucs
+[1756069629.431147] [eos0022:3428841:0]          module.c:242  UCX  DEBUG loading module 'fuse' with mode 0x101
+[1756069629.431220] [eos0022:3428841:0]          module.c:183  UCX  DEBUG loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x5555556b9580]
+[1756069629.476266] [eos0022:3428841:0]           debug.c:1158 UCX  DEBUG using signal stack 0x7ffff7b92000 size 141824
+[1756069629.479604] [eos0022:3428841:0]             cpu.c:339  UCX  DEBUG measured tsc frequency 1990.693 MHz after 0.10 ms
+[1756069629.479620] [eos0022:3428841:0]            init.c:121  UCX  DEBUG /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0 loaded at 0x7ffff7e30000
+[1756069629.479630] [eos0022:3428841:0]            init.c:122  UCX  DEBUG cmd line: python /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py 
+[1756069629.479637] [eos0022:3428841:0]          module.c:72   UCX  DEBUG ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1756069629.479639] [eos0022:3428841:0]          module.c:280  UCX  DEBUG loading modules for ucs
+[1756069629.479640] [eos0022:3428841:0]          module.c:242  UCX  DEBUG loading module 'fuse' with mode 0x101
+[1756069629.479716] [eos0022:3428841:0]          module.c:183  UCX  DEBUG loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b33500]
+num_ranks 8, rank 6, rect_input.hi()[0]: 874999, rect_input.lo()[0]: 750000
+num_ranks 8, rank 6, rect_input.hi()[1]: 31, rect_input.lo()[1]: 0
+num_ranks 8, rank 7, rect_input.hi()[0]: 999999, rect_input.lo()[0]: 875000
+num_ranks 8, rank 7, rect_input.hi()[1]: 31, rect_input.lo()[1]: 0
+num_ranks 8, rank 1, rect_input.hi()[0]: 249999, rect_input.lo()[0]: 125000
+num_ranks 8, rank 1, rect_input.hi()[1]: 31, rect_input.lo()[1]: 0
+num_ranks 8, rank 2, rect_input.hi()[0]: 374999, rect_input.lo()[0]: 250000
+num_ranks 8, rank 2, rect_input.hi()[1]: 31, rect_input.lo()[1]: 0
+num_ranks 8, rank 0, rect_input.hi()[0]: 124999, rect_input.lo()[0]: 0
+num_ranks 8, rank 0, rect_input.hi()[1]: 31, rect_input.lo()[1]: 0
+num_ranks 8, rank 5, rect_input.hi()[0]: 749999, rect_input.lo()[0]: 625000
+num_ranks 8, rank 5, rect_input.hi()[1]: 31, rect_input.lo()[1]: 0
+num_ranks 8, rank 3, rect_input.hi()[0]: 499999, rect_input.lo()[0]: 375000
+num_ranks 8, rank 3, rect_input.hi()[1]: 31, rect_input.lo()[1]: 0
+num_ranks 8, rank 4, rect_input.hi()[0]: 624999, rect_input.lo()[0]: 500000
+num_ranks 8, rank 4, rect_input.hi()[1]: 31, rect_input.lo()[1]: 0
+computed_shape=(1000000, 32)
+Data generated
+Taking pairs
+496
+(1000000, 496, 2)
+8.604613
+[[[0.0000000e+00 1.0000000e+00]
+  [0.0000000e+00 2.0000000e+00]
+  [0.0000000e+00 3.0000000e+00]
+  ...
+  [2.9000000e+01 3.0000000e+01]
+  [2.9000000e+01 3.1000000e+01]
+  [3.0000000e+01 3.1000000e+01]]
+
+ [[3.2000000e+01 3.3000000e+01]
+  [3.2000000e+01 3.4000000e+01]
+  [3.2000000e+01 3.5000000e+01]
+  ...
+  [6.1000000e+01 6.2000000e+01]
+  [6.1000000e+01 6.3000000e+01]
+  [6.2000000e+01 6.3000000e+01]]
+
+ [[6.4000000e+01 6.5000000e+01]
+  [6.4000000e+01 6.6000000e+01]
+  [6.4000000e+01 6.7000000e+01]
+  ...
+  [9.3000000e+01 9.4000000e+01]
+  [9.3000000e+01 9.5000000e+01]
+  [9.4000000e+01 9.5000000e+01]]
+
+ ...
+
+ [[3.1999904e+07 3.1999904e+07]
+  [3.1999904e+07 3.1999906e+07]
+  [3.1999904e+07 3.1999908e+07]
+  ...
+  [3.1999932e+07 3.1999934e+07]
+  [3.1999932e+07 3.1999936e+07]
+  [3.1999934e+07 3.1999936e+07]]
+
+ [[3.1999936e+07 3.1999936e+07]
+  [3.1999936e+07 3.1999938e+07]
+  [3.1999936e+07 3.1999940e+07]
+  ...
+  [3.1999964e+07 3.1999966e+07]
+  [3.1999964e+07 3.1999968e+07]
+  [3.1999966e+07 3.1999968e+07]]
+
+ [[3.1999968e+07 3.1999968e+07]
+  [3.1999968e+07 3.1999970e+07]
+  [3.1999968e+07 3.1999972e+07]
+  ...
+  [3.1999996e+07 3.1999998e+07]
+  [3.1999996e+07 3.2000000e+07]
+  [3.1999998e+07 3.2000000e+07]]]
+[1756069629.182517] [eos0022:3428840:0]           debug.c:1158 UCX  DEBUG using signal stack 0x7ffff7b92000 size 141824
+[1756069629.207241] [eos0022:3428840:0]             cpu.c:339  UCX  DEBUG measured tsc frequency 1999.808 MHz after 0.12 ms
+[1756069629.207263] [eos0022:3428840:0]            init.c:121  UCX  DEBUG /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0 loaded at 0x7ffff7e30000
+[1756069629.207280] [eos0022:3428840:0]            init.c:122  UCX  DEBUG cmd line: /root/miniconda3/envs/legate/bin/python3.13 /root/miniconda3/envs/legate/bin/legate --logdir /project/coreai_devtech_all/shixunw/result --launcher none --gpus 8 --fbmem 50000 --verbose --log-to-file --nodes 1 --ranks-per-node 1 /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py 
+[1756069629.207288] [eos0022:3428840:0]          module.c:72   UCX  DEBUG ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1756069629.207290] [eos0022:3428840:0]          module.c:280  UCX  DEBUG loading modules for ucs
+[1756069629.207291] [eos0022:3428840:0]          module.c:242  UCX  DEBUG loading module 'fuse' with mode 0x101
+[1756069629.207377] [eos0022:3428840:0]          module.c:183  UCX  DEBUG loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b33500]

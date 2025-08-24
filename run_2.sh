@@ -78,6 +78,7 @@ export CPATH=$CUDNN_PATH/include:$CPATH;
 export RAPIDS_LIBUCX_PREFER_SYSTEM_LIBRARY=1;
 export OMPI_ALLOW_RUN_AS_ROOT=1
 export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+export UCX_VFS_ENABLE=n
 # --- Run the application ---
 echo "--- Starting Legate Application ---"
 # legate --gpus 8 --fbmem 10000 --launcher none /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py

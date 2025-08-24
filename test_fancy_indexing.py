@@ -124,3 +124,4 @@ duration = time() - start_time
 print(result_array.shape)
 
 print(duration / 1e6)
+print(result_array)

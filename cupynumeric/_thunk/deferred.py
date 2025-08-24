@@ -13,7 +13,7 @@
 # limitations under the License.
 #
 from __future__ import annotations
-import cupy as cp
+# import cupy as cp
 import nvtx
 import weakref
 from collections import Counter

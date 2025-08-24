@@ -22,15 +22,21 @@ pair_list = np.arange(N_ROWS * N_COLS, dtype=np.int64)
 pairs_array = np.array(pair_list)
 # print(len(pair_list))
 print(data_array.shape)
-for i in range(10):
-    start_time = time()
-    # result_array = take_with_pairs(data_array, pairs_array)
-    result_array = data_array[pairs_array]
-    duration = time() - start_time
 
-    # print(result_array.shape)
+start_time = time()
+result_array = data_array[pairs_array]
+duration = time() - start_time
+print(duration / 1e6)
 
-    print(duration / 1e6)
+start_time = time()
+result_array_1 = data_array[pairs_array]
+duration = time() - start_time
+print(duration / 1e6)
+
+start_time = time()
+result_array_2 = data_array[pairs_array]
+duration = time() - start_time
+print(duration / 1e6)
 
 
 

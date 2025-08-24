@@ -22,6 +22,7 @@ pair_list = np.arange(N_ROWS * N_COLS, dtype=np.int64)
 pairs_array = np.array(pair_list)
 # print(len(pair_list))
 print(data_array.shape)
+start_time = time()
 for i in range(3):
     result_array = data_array[pairs_array]
 

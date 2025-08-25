@@ -287,9 +287,9 @@ void global_all2all(
       unsigned int indices_to_send_to_rank_i = *(round1_send_histo.ptr(i));
       unsigned int send_offset_for_rank_i = *(round1_send_offsets.ptr(i));
       unsigned int indices_to_recv_from_rank_i = *(round1_recv_histo.ptr(i));
-      unsigned int recv_offset_for_rank_i = round1_recv_offsets[i];
+      unsigned int recv_offset_for_rank_i = *(round1_recv_offsets.ptr(i));
       if (indices_to_send_to_rank_i > 0) {
-          CHECK_NCCL(ncclSend((void*)(round2_send_indices.ptr(0)) + send_offset_for_rank_i * DIM_input,
+          CHECK_NCCL(ncclSend((void*)(round2_send_indices.ptr(send_offset_for_rank_i * DIM_input)),
             indices_to_send_to_rank_i * sizeof(legate::Point<DIM_input>), ncclInt8, i, *nccl_comm, stream));
       }
       

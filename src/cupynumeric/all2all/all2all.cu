@@ -218,7 +218,7 @@ void global_all2all(
   CHECK_NCCL(ncclGroupStart());
   for(int i = 0; i < num_ranks; i++){
     CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(input_rect_device.data()), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
-    CHECK_NCCL(ncclRecv(global_rects + i * DIM_input * 2, sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
+    CHECK_NCCL(ncclRecv(global_rects.ptr(i * DIM_input * 2), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
   }
   CHECK_NCCL(ncclGroupEnd());
   cudaStreamSynchronize(stream);
@@ -236,7 +236,7 @@ void global_all2all(
   // ===== Round 1: Compute request size histogram =====
   compute_send_histogram<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, 
                 thrust::raw_pointer_cast(round1_send_histo.data()), 
-                (legate::Rect<DIM_input>*)(global_rects), 
+                (legate::Rect<DIM_input>*)(global_rects.ptr(0)), 
                 num_ranks, local_index_count);
   
   // if(rank_id == 0) {
@@ -271,7 +271,7 @@ void global_all2all(
     thrust::raw_pointer_cast(round1_send_offsets.data()),
     thrust::raw_pointer_cast(round2_request_positions.data()), 
     thrust::raw_pointer_cast(packing_counters.data()), 
-    (legate::Rect<DIM_input>*)(global_rects), num_ranks);
+    (legate::Rect<DIM_input>*)(global_rects.ptr(0)), num_ranks);
   cudaStreamSynchronize(stream);
     
   thrust::device_vector<legate::Point<DIM_input>> round2_recv_indices(total_indices_to_receive);

@@ -277,29 +277,29 @@ void global_all2all(
   cudaStreamSynchronize(stream);
     
 
-  auto round2_recv_indices = create_buffer<legate::Point<DIM_input>>(total_indices_to_receive, Memory::Kind::GPU_FB_MEM);
-  thrust::exclusive_scan(DEFAULT_POLICY.on(stream), round1_recv_histo.ptr(0), round1_recv_histo.ptr(0) + num_ranks, round1_recv_offsets.ptr(0));
+  // auto round2_recv_indices = create_buffer<legate::Point<DIM_input>>(total_indices_to_receive, Memory::Kind::GPU_FB_MEM);
+  // thrust::exclusive_scan(DEFAULT_POLICY.on(stream), round1_recv_histo.ptr(0), round1_recv_histo.ptr(0) + num_ranks, round1_recv_offsets.ptr(0));
 
-  cudaDeviceSynchronize();
-  // // ===== Round 2: All2All exchange request indices =====
-  CHECK_NCCL(ncclGroupStart());
-  for (size_t i = 0; i < num_ranks; ++i) {
-      unsigned int indices_to_send_to_rank_i = *(round1_send_histo.ptr(i));
-      unsigned int send_offset_for_rank_i = *(round1_send_offsets.ptr(i));
-      unsigned int indices_to_recv_from_rank_i = *(round1_recv_histo.ptr(i));
-      unsigned int recv_offset_for_rank_i = *(round1_recv_offsets.ptr(i));
-      if (indices_to_send_to_rank_i > 0) {
-          CHECK_NCCL(ncclSend((void*)(round2_send_indices.ptr(send_offset_for_rank_i * DIM_input)),
-            indices_to_send_to_rank_i * sizeof(legate::Point<DIM_input>), ncclInt8, i, *nccl_comm, stream));
-      }
+  // cudaDeviceSynchronize();
+  // // // ===== Round 2: All2All exchange request indices =====
+  // CHECK_NCCL(ncclGroupStart());
+  // for (size_t i = 0; i < num_ranks; ++i) {
+  //     unsigned int indices_to_send_to_rank_i = *(round1_send_histo.ptr(i));
+  //     unsigned int send_offset_for_rank_i = *(round1_send_offsets.ptr(i));
+  //     unsigned int indices_to_recv_from_rank_i = *(round1_recv_histo.ptr(i));
+  //     unsigned int recv_offset_for_rank_i = *(round1_recv_offsets.ptr(i));
+  //     if (indices_to_send_to_rank_i > 0) {
+  //         CHECK_NCCL(ncclSend((void*)(round2_send_indices.ptr(send_offset_for_rank_i * DIM_input)),
+  //           indices_to_send_to_rank_i * sizeof(legate::Point<DIM_input>), ncclInt8, i, *nccl_comm, stream));
+  //     }
       
-      if (indices_to_recv_from_rank_i > 0) {
-          CHECK_NCCL(ncclRecv(round2_recv_indices.ptr(recv_offset_for_rank_i * DIM_input),
-                  indices_to_recv_from_rank_i * sizeof(legate::Point<DIM_input>), ncclInt8, i, *nccl_comm, stream));
-      }
-  }
-  CHECK_NCCL(ncclGroupEnd());
-  cudaStreamSynchronize(stream);
+  //     if (indices_to_recv_from_rank_i > 0) {
+  //         CHECK_NCCL(ncclRecv(round2_recv_indices.ptr(recv_offset_for_rank_i * DIM_input),
+  //                 indices_to_recv_from_rank_i * sizeof(legate::Point<DIM_input>), ncclInt8, i, *nccl_comm, stream));
+  //     }
+  // }
+  // CHECK_NCCL(ncclGroupEnd());
+  // cudaStreamSynchronize(stream);
 
   
   // auto round3_send_data = create_buffer<DataType>(total_indices_to_receive, Memory::Kind::GPU_FB_MEM);

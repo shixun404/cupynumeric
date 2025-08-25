@@ -249,9 +249,9 @@ void global_all2all(
   // // printf("%s\n", send_histo_str.c_str());
   // // }
   
-  // cudaStreamSynchronize(stream);
-  //   thrust::exclusive_scan(round1_send_histo.ptr(0), round1_send_histo.ptr(num_ranks), round1_send_offsets.ptr(0));
-  // cudaDeviceSynchronize();
+  cudaStreamSynchronize(stream);
+    thrust::exclusive_scan(round1_send_histo.ptr(0), round1_send_histo.ptr(num_ranks), round1_send_offsets.ptr(0));
+  cudaDeviceSynchronize();
   
 
   // // ===== Round 1: All2All exchange request size histograms =====

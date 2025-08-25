@@ -262,7 +262,7 @@ void global_all2all(
     CHECK_NCCL(ncclSend((void*)round1_send_histo.ptr(i), 1, ncclUint32, i, *nccl_comm, stream));
   }
   CHECK_NCCL(ncclGroupEnd());
-  size_t total_indices_to_receive = thrust::reduce(round1_recv_histo.ptr(0), round1_recv_histo.ptr(num_ranks));
+  size_t total_indices_to_receive = thrust::reduce(round1_recv_histo.ptr(0), round1_recv_histo.ptr(0) + num_ranks);
   cudaStreamSynchronize(stream);
   // Pack request indices by target rank
   

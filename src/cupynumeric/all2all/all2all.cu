@@ -193,7 +193,7 @@ void global_all2all(
   size_t num_requests = local_index_count;
    nvtxRangePushA("global_all2all");
   // ===== Round 0: Exchange rects =====
-  thrust::device_vector<int64_t> global_rects(num_ranks * DIM_input * 2, 0);
+  auto global_rects = create_buffer<int64_t>(num_ranks * DIM_input * 2, Memory::Kind::GPU_FB_MEM);
   thrust::device_vector<int64_t> input_rect_device(DIM_input * 2, 0);
   cudaMemcpy(thrust::raw_pointer_cast(input_rect_device.data()), &input_rect, sizeof(input_rect), cudaMemcpyHostToDevice);
 
@@ -218,7 +218,7 @@ void global_all2all(
   CHECK_NCCL(ncclGroupStart());
   for(int i = 0; i < num_ranks; i++){
     CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(input_rect_device.data()), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
-    CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(global_rects.data() + i * DIM_input * 2), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
+    CHECK_NCCL(ncclRecv(global_rects.data() + i * DIM_input * 2, sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
   }
   CHECK_NCCL(ncclGroupEnd());
   cudaStreamSynchronize(stream);
@@ -236,7 +236,7 @@ void global_all2all(
   // ===== Round 1: Compute request size histogram =====
   compute_send_histogram<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, 
                 thrust::raw_pointer_cast(round1_send_histo.data()), 
-                (legate::Rect<DIM_input>*)thrust::raw_pointer_cast(global_rects.data()), 
+                (legate::Rect<DIM_input>*)(global_rects), 
                 num_ranks, local_index_count);
   
   // if(rank_id == 0) {
@@ -271,7 +271,7 @@ void global_all2all(
     thrust::raw_pointer_cast(round1_send_offsets.data()),
     thrust::raw_pointer_cast(round2_request_positions.data()), 
     thrust::raw_pointer_cast(packing_counters.data()), 
-    (legate::Rect<DIM_input>*)thrust::raw_pointer_cast(global_rects.data()), num_ranks);
+    (legate::Rect<DIM_input>*)(global_rects), num_ranks);
   cudaStreamSynchronize(stream);
     
   thrust::device_vector<legate::Point<DIM_input>> round2_recv_indices(total_indices_to_receive);

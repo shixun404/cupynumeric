@@ -218,7 +218,7 @@ void global_all2all(
   CHECK_NCCL(ncclGroupStart());
   for(int i = 0; i < num_ranks; i++){
     CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(input_rect_device.data()), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
-    CHECK_NCCL(ncclRecv(global_rects.data() + i * DIM_input * 2, sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
+    CHECK_NCCL(ncclRecv(global_rects + i * DIM_input * 2, sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
   }
   CHECK_NCCL(ncclGroupEnd());
   cudaStreamSynchronize(stream);

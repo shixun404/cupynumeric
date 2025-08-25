@@ -276,9 +276,10 @@ void global_all2all(
     (legate::Rect<DIM_input>*)(global_rects.ptr(0)), num_ranks);
   cudaStreamSynchronize(stream);
     
-
-  // auto round2_recv_indices = create_buffer<legate::Point<DIM_input>>(total_indices_to_receive, Memory::Kind::GPU_FB_MEM);
-  // thrust::exclusive_scan(DEFAULT_POLICY.on(stream), round1_recv_histo.ptr(0), round1_recv_histo.ptr(0) + num_ranks, round1_recv_offsets.ptr(0));
+  cudaStreamSynchronize(stream);
+  auto round2_recv_indices = create_buffer<legate::Point<DIM_input>>(total_indices_to_receive, Memory::Kind::GPU_FB_MEM);
+  thrust::exclusive_scan(DEFAULT_POLICY.on(stream), round1_recv_histo.ptr(0), round1_recv_histo.ptr(0) + num_ranks, round1_recv_offsets.ptr(0));
+  cudaStreamSynchronize(stream);
 
   // cudaDeviceSynchronize();
   // // // ===== Round 2: All2All exchange request indices =====

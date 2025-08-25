@@ -251,8 +251,8 @@ void global_all2all(
   
   cudaStreamSynchronize(stream);
     thrust::exclusive_scan(DEFAULT_POLICY.on(stream), 
-                          round1_send_histo.ptr(0), 
-                          round1_send_histo.ptr(0) + num_ranks, round1_send_offsets.ptr(0));
+                          (unsigned int*)round1_send_histo.ptr(0), 
+                          ((unsigned int*)round1_send_histo.ptr(0)) + num_ranks, round1_send_offsets.ptr(0));
   cudaDeviceSynchronize();
   
 

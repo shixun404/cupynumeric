@@ -243,7 +243,8 @@ void global_all2all(
   printf("round1_send_histo: ");
   std::string send_histo_str = "";
   for(size_t i = 0; i < num_ranks; i++){
-    unsigned int tmp = *(round1_send_histo.ptr(i));
+    // unsigned int tmp = *(round1_send_histo.ptr(i));
+    unsigned int tmp = 0;
     send_histo_str += std::to_string(tmp) + " ";
   }
   printf("%s\n", send_histo_str.c_str());

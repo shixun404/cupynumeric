@@ -298,7 +298,7 @@ void global_all2all(
   thrust::exclusive_scan(DEFAULT_POLICY.on(stream), round1_recv_histo.ptr(0), round1_recv_histo.ptr(0) + num_ranks, round1_recv_offsets.ptr(0));
   cudaStreamSynchronize(stream);
   nvtxRangePop();
-  cudaStreamSynchronize();
+  cudaStreamSynchronize(stream);
   // // ===== Round 2: All2All exchange request indices =====
   nvtxRangePushA("All2All exchange request indices");
   CHECK_NCCL(ncclGroupStart());

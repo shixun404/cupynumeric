@@ -192,8 +192,8 @@ void global_all2all(
   
   size_t num_requests = local_index_count;
   // ===== Round 0: Exchange rects =====
-  auto global_rects = create_buffer<int64_t>(num_ranks * DIM_input * 2, Memory::Kind::Z_COPY_MEM);
-  auto input_rect_device = create_buffer<int64_t>(DIM_input * 2, Memory::Kind::Z_COPY_MEM);
+  auto global_rects = create_buffer<int64_t>(num_ranks * DIM_input * 2, Memory::Kind::GPU_FB_MEM);
+  auto input_rect_device = create_buffer<int64_t>(DIM_input * 2, Memory::Kind::GPU_FB_MEM);
   cudaMemcpy((legate::Rect<DIM_input>*)input_rect_device.ptr(0), &input_rect, sizeof(input_rect), cudaMemcpyHostToDevice);
 
   // ===== Round 1: Exchange request size histograms =====
@@ -217,12 +217,18 @@ void global_all2all(
   // ToDO: Replace with AllGather
   cudaStreamSynchronize(stream);
   nvtxRangePushA("Exchange rects");
-  CHECK_NCCL(ncclGroupStart());
-  for(int i = 0; i < num_ranks; i++){
-    CHECK_NCCL(ncclSend((void*)input_rect_device.ptr(0), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
-    CHECK_NCCL(ncclRecv((void*)global_rects.ptr(i * DIM_input * 2), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
-  }
-  CHECK_NCCL(ncclGroupEnd());
+  // CHECK_NCCL(ncclGroupStart());
+  // for(int i = 0; i < num_ranks; i++){
+  //   CHECK_NCCL(ncclSend((void*)input_rect_device.ptr(0), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
+  //   CHECK_NCCL(ncclRecv((void*)global_rects.ptr(i * DIM_input * 2), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
+  // }
+  // CHECK_NCCL(ncclGroupEnd());
+  CHECK_NCCL(ncclAllGather((void*)input_rect_device.ptr(0), 
+                         (void*)global_rects.ptr(0), 
+                         sizeof(input_rect), 
+                         ncclInt8, 
+                         *nccl_comm, 
+                         stream));
   cudaStreamSynchronize(stream);
   nvtxRangePop();
 

@@ -223,15 +223,15 @@ void global_all2all(
   CHECK_NCCL(ncclGroupEnd());
   cudaStreamSynchronize(stream);
 
-  if(rank_id == 0){
-    for(int i = 0; i < num_ranks; i++){
-      legate::Rect<DIM_input> rect;
-      cudaMemcpy(&rect, global_rects.ptr(i * DIM_input * 2), sizeof(input_rect), cudaMemcpyDeviceToHost);
-      for(int j = 0; j < DIM_input; j++){
-        printf("rank %d, global_rects[%d][%d]: %d, %d\n", rank_id, i, j, rect.lo[j], rect.hi[j]);
-      }
-    }
-  }
+  // if(rank_id == 0){
+  //   for(int i = 0; i < num_ranks; i++){
+  //     legate::Rect<DIM_input> rect;
+  //     cudaMemcpy(&rect, global_rects.ptr(i * DIM_input * 2), sizeof(input_rect), cudaMemcpyDeviceToHost);
+  //     for(int j = 0; j < DIM_input; j++){
+  //       printf("rank %d, global_rects[%d][%d]: %d, %d\n", rank_id, i, j, rect.lo[j], rect.hi[j]);
+  //     }
+  //   }
+  // }
   
   // ===== Round 1: Compute request size histogram =====
   compute_send_histogram<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, 
@@ -239,23 +239,31 @@ void global_all2all(
                 (legate::Rect<DIM_input>*)(global_rects.ptr(0)), 
                 num_ranks, local_index_count);
   
-  if(rank_id == 0) {
-  printf("round1_send_histo: ");
-  std::string send_histo_str = "";
-  for(size_t i = 0; i < num_ranks; i++){
-    // unsigned int tmp = *(round1_send_histo.ptr(i));
-    unsigned int tmp = 0;
-    cudaMemcpy(&tmp, round1_send_histo.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
-    send_histo_str += std::to_string(tmp) + " ";
-  }
-  printf("%s\n", send_histo_str.c_str());
-  }
+  // if(rank_id == 0) {
+  // printf("round1_send_histo: ");
+  // std::string send_histo_str = "";
+  // for(size_t i = 0; i < num_ranks; i++){
+  //   // unsigned int tmp = *(round1_send_histo.ptr(i));
+  //   unsigned int tmp = 0;
+  //   cudaMemcpy(&tmp, round1_send_histo.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
+  //   send_histo_str += std::to_string(tmp) + " ";
+  // }
+  // printf("%s\n", send_histo_str.c_str());
+  // }
   
-  // cudaStreamSynchronize(stream);
-  //   thrust::exclusive_scan(DEFAULT_POLICY.on(stream), 
-  //                         (unsigned int*)round1_send_histo.ptr(0), 
-  //                         ((unsigned int*)round1_send_histo.ptr(0)) + num_ranks, round1_send_offsets.ptr(0));
-  // cudaDeviceSynchronize();
+  cudaStreamSynchronize(stream);
+    thrust::exclusive_scan(DEFAULT_POLICY.on(stream), 
+                          (unsigned int*)round1_send_histo.ptr(0), 
+                          ((unsigned int*)round1_send_histo.ptr(0)) + num_ranks, round1_send_offsets.ptr(0));
+  cudaDeviceSynchronize();
+
+  if(rank_id == 0){
+    for(int i = 0; i < num_ranks; i++){
+      unsigned int tmp = 0;
+      cudaMemcpy(&tmp, round1_send_offsets.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
+      printf("round1_send_offsets[%d]: %d\n", i, tmp);
+    }
+  }
   
 
   // // ===== Round 1: All2All exchange request size histograms =====

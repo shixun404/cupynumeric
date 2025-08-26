@@ -120,7 +120,7 @@ export UCX_IB_MLX5_DEVX=n
 #CUDA_VISIBLE_DEVICES=0,1 
 # legate --gpus 8 --launcher none --nodes 1 /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_all2all.py
 # legate --launcher none --cpus 1 --sysmem 4000 --gpus 1 --fbmem 76000  --verbose --log-to-file  /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_all2all.py
-legate --gpus 8 --fbmem 50000 /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py
+# legate --gpus 8 --fbmem 50000 /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py
 #ulimit -v unlimited
 
 # ____~U~M____~O__~W| ~Y~P~H
@@ -135,7 +135,7 @@ legate --gpus 8 --fbmem 50000 /project/coreai_devtech_all/shixunw/cupynumeric.in
 #which mpiexec
 #which mpicc
 # nsys profile -o /project/coreai_devtech_all/shixunw/nsys_result/report_%q{SLURM_PROCID} --force-overwrite true  -t cuda,nvtx,mpi /project/coreai_devtech_all/shixunw/cupynumeric-intern-project/build/global_shuffle_bidirectional_2D 1000000000 8 1 1
-#/project/coreai_devtech_all/shixunw/osu-micro-benchmarks-7.5.1/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoall
+/project/coreai_devtech_all/shixunw/osu-micro-benchmarks-7.5.1/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoall
 #/project/coreai_devtech_all/shixunw/osu-micro-benchmarks-7.5.1/libexec/osu-micro-benchmarks/xccl/collective/osu_xccl_alltoall -m 2:2^30  -x 1 -i 3
 
 

@@ -191,7 +191,6 @@ void global_all2all(
   size_t local_output_count = get_volume<DIM_output>(output_rect);
   
   size_t num_requests = local_index_count;
-   nvtxRangePushA("global_all2all");
   // ===== Round 0: Exchange rects =====
   auto global_rects = create_buffer<int64_t>(num_ranks * DIM_input * 2, Memory::Kind::GPU_FB_MEM);
   auto input_rect_device = create_buffer<int64_t>(DIM_input * 2, Memory::Kind::GPU_FB_MEM);
@@ -438,7 +437,7 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM_input, DIM_output> {
         const VAL* input_ptr = input.ptr(input_rect.lo);
          const INDEX_VAL* index_ptr = index.ptr(index_rect.lo);
          VAL* output_ptr = output.ptr(output_rect.lo);
-       
+         nvtxRangePushA("global_all2all");
       cudaDeviceSynchronize();
        global_all2all<VAL, DIM_input, DIM_output>(
            input_ptr,
@@ -453,7 +452,8 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM_input, DIM_output> {
            comms[0].get<ncclComm_t*>(),
            stream
        );
-      
+       cudaDeviceSynchronize();
+       nvtxRangePop();
      }
  
      CUPYNUMERIC_CHECK_CUDA_STREAM(stream);

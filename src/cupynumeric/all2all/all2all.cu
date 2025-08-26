@@ -192,8 +192,8 @@ void global_all2all(
   
   size_t num_requests = local_index_count;
   // ===== Round 0: Exchange rects =====
-  auto global_rects = create_buffer<int64_t>(num_ranks * DIM_input * 2, Memory::Kind::GPU_FB_MEM);
-  auto input_rect_device = create_buffer<int64_t>(DIM_input * 2, Memory::Kind::GPU_FB_MEM);
+  auto global_rects = create_buffer<int64_t>(num_ranks * DIM_input * 2, Memory::Kind::Z_COPY_MEM);
+  auto input_rect_device = create_buffer<int64_t>(DIM_input * 2, Memory::Kind::Z_COPY_MEM);
   cudaMemcpy((legate::Rect<DIM_input>*)input_rect_device.ptr(0), &input_rect, sizeof(input_rect), cudaMemcpyHostToDevice);
 
   // ===== Round 1: Exchange request size histograms =====

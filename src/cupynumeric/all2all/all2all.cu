@@ -245,6 +245,7 @@ void global_all2all(
   for(size_t i = 0; i < num_ranks; i++){
     // unsigned int tmp = *(round1_send_histo.ptr(i));
     unsigned int tmp = 0;
+    cudaMemcpy(&tmp, round1_send_histo.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
     send_histo_str += std::to_string(tmp) + " ";
   }
   printf("%s\n", send_histo_str.c_str());

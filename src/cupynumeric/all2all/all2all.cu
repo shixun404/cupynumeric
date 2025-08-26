@@ -233,11 +233,11 @@ void global_all2all(
     }
   }
   
-  // // ===== Round 1: Compute request size histogram =====
-  // compute_send_histogram<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, 
-  //               round1_send_histo.ptr(0), 
-  //               (legate::Rect<DIM_input>*)(global_rects.ptr(0)), 
-  //               num_ranks, local_index_count);
+  // ===== Round 1: Compute request size histogram =====
+  compute_send_histogram<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, 
+                round1_send_histo.ptr(0), 
+                (legate::Rect<DIM_input>*)(global_rects.ptr(0)), 
+                num_ranks, local_index_count);
   
   if(rank_id == 0) {
   printf("round1_send_histo: ");

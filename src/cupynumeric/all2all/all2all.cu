@@ -439,7 +439,7 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM_input, DIM_output> {
          const INDEX_VAL* index_ptr = index.ptr(index_rect.lo);
          VAL* output_ptr = output.ptr(output_rect.lo);
        
-
+      cudaDeviceSynchronize();
        global_all2all<VAL, DIM_input, DIM_output>(
            input_ptr,
            index_ptr,

@@ -239,15 +239,15 @@ void global_all2all(
                 (legate::Rect<DIM_input>*)(global_rects.ptr(0)), 
                 num_ranks, local_index_count);
   
-  if(rank_id == 0) {
-  printf("round1_send_histo: ");
-  std::string send_histo_str = "";
-  for(size_t i = 0; i < num_ranks; i++){
-    unsigned int tmp = *round1_send_histo.ptr(i);
-    send_histo_str += std::to_string(tmp) + " ";
-  }
-  printf("%s\n", send_histo_str.c_str());
-  }
+  // if(rank_id == 0) {
+  // printf("round1_send_histo: ");
+  // std::string send_histo_str = "";
+  // for(size_t i = 0; i < num_ranks; i++){
+  //   unsigned int tmp = *round1_send_histo.ptr(i);
+  //   send_histo_str += std::to_string(tmp) + " ";
+  // }
+  // printf("%s\n", send_histo_str.c_str());
+  // }
   
   // cudaStreamSynchronize(stream);
   //   thrust::exclusive_scan(DEFAULT_POLICY.on(stream), 

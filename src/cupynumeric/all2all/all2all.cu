@@ -216,6 +216,7 @@ void global_all2all(
   
   // ===== Round 0: Exchange rects =====
   // ToDO: Replace with AllGather
+  cudaStreamSynchronize(stream);
   nvtxRangePushA("Exchange rects");
   CHECK_NCCL(ncclGroupStart());
   for(int i = 0; i < num_ranks; i++){

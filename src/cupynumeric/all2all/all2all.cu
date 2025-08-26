@@ -215,16 +215,16 @@ void global_all2all(
   
   // ===== Round 0: Exchange rects =====
   // ToDO: Replace with AllGather
-  cudaStreamSynchronize(stream);
-  nvtxRangePushA("Exchange rects");
-  CHECK_NCCL(ncclGroupStart());
-  for(int i = 0; i < num_ranks; i++){
-    CHECK_NCCL(ncclSend((void*)input_rect_device.ptr(0), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
-    CHECK_NCCL(ncclRecv((void*)global_rects.ptr(i * DIM_input * 2), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
-  }
-  CHECK_NCCL(ncclGroupEnd());
-  cudaStreamSynchronize(stream);
-  nvtxRangePop();
+  // cudaStreamSynchronize(stream);
+  // nvtxRangePushA("Exchange rects");
+  // CHECK_NCCL(ncclGroupStart());
+  // for(int i = 0; i < num_ranks; i++){
+  //   CHECK_NCCL(ncclSend((void*)input_rect_device.ptr(0), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
+  //   CHECK_NCCL(ncclRecv((void*)global_rects.ptr(i * DIM_input * 2), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
+  // }
+  // CHECK_NCCL(ncclGroupEnd());
+  // cudaStreamSynchronize(stream);
+  // nvtxRangePop();
 
   // if(rank_id == 0){
   //   for(int i = 0; i < num_ranks; i++){

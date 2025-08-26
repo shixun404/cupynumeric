@@ -197,34 +197,34 @@ void global_all2all(
   cudaMemcpy((legate::Rect<DIM_input>*)input_rect_device.ptr(0), &input_rect, sizeof(input_rect), cudaMemcpyHostToDevice);
 
   // ===== Round 1: Exchange request size histograms =====
-  auto round1_send_histo = create_buffer<unsigned int>(num_ranks, Memory::Kind::GPU_FB_MEM); // How many requests to send to each rank
-  auto round1_send_offsets = create_buffer<unsigned int>(num_ranks, Memory::Kind::GPU_FB_MEM); // Offsets for packing requests
-  auto round1_recv_histo = create_buffer<unsigned int>(num_ranks, Memory::Kind::GPU_FB_MEM); // How many requests to receive from each rank
-  auto round1_recv_offsets = create_buffer<unsigned int>(num_ranks, Memory::Kind::GPU_FB_MEM); // Offsets for unpacking requests
-  auto packing_counters = create_buffer<unsigned int>(num_ranks, Memory::Kind::GPU_FB_MEM); // Temporary counters for packing
+  // auto round1_send_histo = create_buffer<unsigned int>(num_ranks, Memory::Kind::GPU_FB_MEM); // How many requests to send to each rank
+  // auto round1_send_offsets = create_buffer<unsigned int>(num_ranks, Memory::Kind::GPU_FB_MEM); // Offsets for packing requests
+  // auto round1_recv_histo = create_buffer<unsigned int>(num_ranks, Memory::Kind::GPU_FB_MEM); // How many requests to receive from each rank
+  // auto round1_recv_offsets = create_buffer<unsigned int>(num_ranks, Memory::Kind::GPU_FB_MEM); // Offsets for unpacking requests
+  // auto packing_counters = create_buffer<unsigned int>(num_ranks, Memory::Kind::GPU_FB_MEM); // Temporary counters for packing
   
-  // ===== Round 2: Exchange request indices =====
-  auto round2_send_indices = create_buffer<int64_t>(num_requests * DIM_input, Memory::Kind::GPU_FB_MEM); // Indices to send (packed by target rank)
-  auto round2_request_positions = create_buffer<unsigned int>(num_requests, Memory::Kind::GPU_FB_MEM); // Position of each request in output
+  // // ===== Round 2: Exchange request indices =====
+  // auto round2_send_indices = create_buffer<int64_t>(num_requests * DIM_input, Memory::Kind::GPU_FB_MEM); // Indices to send (packed by target rank)
+  // auto round2_request_positions = create_buffer<unsigned int>(num_requests, Memory::Kind::GPU_FB_MEM); // Position of each request in output
   
-  // ===== Round 3: Exchange actual data =====
-  auto round3_recv_data = create_buffer<DataType>(num_requests, Memory::Kind::GPU_FB_MEM); // Final received data
+  // // ===== Round 3: Exchange actual data =====
+  // auto round3_recv_data = create_buffer<DataType>(num_requests, Memory::Kind::GPU_FB_MEM); // Final received data
 
   const size_t block_size = 256;
   const size_t grid_size = (local_index_count + block_size - 1) / block_size;
   
   // ===== Round 0: Exchange rects =====
   // ToDO: Replace with AllGather
-  // cudaStreamSynchronize(stream);
-  // nvtxRangePushA("Exchange rects");
-  // CHECK_NCCL(ncclGroupStart());
-  // for(int i = 0; i < num_ranks; i++){
-  //   CHECK_NCCL(ncclSend((void*)input_rect_device.ptr(0), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
-  //   CHECK_NCCL(ncclRecv((void*)global_rects.ptr(i * DIM_input * 2), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
-  // }
-  // CHECK_NCCL(ncclGroupEnd());
-  // cudaStreamSynchronize(stream);
-  // nvtxRangePop();
+  cudaStreamSynchronize(stream);
+  nvtxRangePushA("Exchange rects");
+  CHECK_NCCL(ncclGroupStart());
+  for(int i = 0; i < num_ranks; i++){
+    CHECK_NCCL(ncclSend((void*)input_rect_device.ptr(0), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
+    CHECK_NCCL(ncclRecv((void*)global_rects.ptr(i * DIM_input * 2), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
+  }
+  CHECK_NCCL(ncclGroupEnd());
+  cudaStreamSynchronize(stream);
+  nvtxRangePop();
 
   // if(rank_id == 0){
   //   for(int i = 0; i < num_ranks; i++){

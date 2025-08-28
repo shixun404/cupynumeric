@@ -3373,7 +3373,7 @@ class ndarray:
         # Handle an easy case
         if computed_shape == self.shape:
             return self
-        print(f"computed_shape={computed_shape}")
+        # print(f"computed_shape={computed_shape}")
         return ndarray(
             shape=None,
             thunk=self._thunk.reshape(computed_shape, order),

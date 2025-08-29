@@ -68,7 +68,6 @@ def test_getitem_scalar_0d(arr, idx, request):
     arr = request.getfixturevalue(arr)
     print(arr)
     print(idx)
-    assert False
     assert np.array_equal(arr[idx], 42)
 
 

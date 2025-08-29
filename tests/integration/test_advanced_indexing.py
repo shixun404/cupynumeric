@@ -66,6 +66,8 @@ VALS_EMPTY_1D = (num.array([]),)
 @pytest.mark.parametrize("arr", ARRS_FIXTURES)  # arr = [42]
 def test_getitem_scalar_0d(arr, idx, request):
     arr = request.getfixturevalue(arr)
+    print(arr)
+    print(idx)
     assert np.array_equal(arr[idx], 42)
 
 

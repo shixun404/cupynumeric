@@ -206,6 +206,7 @@ void global_all2all(
   // // ===== Round 2: Exchange request indices =====
   auto round2_send_indices = create_buffer<int64_t>(num_requests * DIM_input, Memory::Kind::GPU_FB_MEM); // Indices to send (packed by target rank)
   auto round2_request_positions = create_buffer<unsigned int>(num_requests, Memory::Kind::GPU_FB_MEM); // Position of each request in output
+   
   
   // // ===== Round 3: Exchange actual data =====
   auto round3_recv_data = create_buffer<DataType>(num_requests, Memory::Kind::GPU_FB_MEM); // Final received data

@@ -62,22 +62,20 @@ IDXS_EMPTY_1D = (idx_empty_1d,)
 VALS_EMPTY_1D = (num.array([]),)
 
 
-@pytest.mark.parametrize("idx", IDXS_0D)  # idx = 0
-@pytest.mark.parametrize("arr", ARRS_FIXTURES)  # arr = [42]
-def test_getitem_scalar_0d(arr, idx, request):
-    arr = request.getfixturevalue(arr)
-    print(arr, idx, arr[idx])
-    
-    assert np.array_equal(arr[idx], 42)
-
-
-# @pytest.mark.parametrize("val", VALS_0D)  # val = -1
 # @pytest.mark.parametrize("idx", IDXS_0D)  # idx = 0
 # @pytest.mark.parametrize("arr", ARRS_FIXTURES)  # arr = [42]
-# def test_setitem_scalar_0d(arr, idx, val, request):
+# def test_getitem_scalar_0d(arr, idx, request):
 #     arr = request.getfixturevalue(arr)
-#     arr[idx] = val
-#     assert np.array_equal(arr, [-1])
+#     assert np.array_equal(arr[idx], 42)
+
+
+@pytest.mark.parametrize("val", VALS_0D)  # val = -1
+@pytest.mark.parametrize("idx", IDXS_0D)  # idx = 0
+@pytest.mark.parametrize("arr", ARRS_FIXTURES)  # arr = [42]
+def test_setitem_scalar_0d(arr, idx, val, request):
+    arr = request.getfixturevalue(arr)
+    arr[idx] = val
+    assert np.array_equal(arr, [-1])
 
 
 # @pytest.mark.parametrize("idx", IDXS_1D)  # idx = [0]

@@ -933,6 +933,7 @@ class DeferredArray(NumPyThunk):
     def get_item(self, key: Any) -> NumPyThunk:
         # Check to see if this is advanced indexing or not
         if is_advanced_indexing(key):
+            print("Advanced indexing")
             # Create the indexing array
             (
                 copy_needed,
@@ -1010,6 +1011,7 @@ class DeferredArray(NumPyThunk):
                 return index_array
 
         else:
+            print("Not advanced indexing")
             result = self._get_view(key)
 
             if result.shape == ():

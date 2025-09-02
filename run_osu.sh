@@ -77,7 +77,7 @@ ulimit -s unlimited  # 栈大小
 # nsys profile -o /project/coreai_devtech_all/shixunw/nsys_result/report_%q{SLURM_PROCID} --force-overwrite true  -t cuda,nvtx,mpi /project/coreai_devtech_all/shixunw/cupynumeric-intern-project/build/global_shuffle_bidirectional_2D 1000000000 8 1 1
 #/project/coreai_devtech_all/shixunw/osu-micro-benchmarks-7.5.1/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoall
 # nsys profile -o /project/coreai_devtech_all/shixunw/nsys_result/report_%q{SLURM_PROCID} -t cuda,mpi,ucx --force-overwrite true /project/coreai_devtech_all/shixunw/osu-micro-benchmarks-7.5.1/libexec/osu-micro-benchmarks/xccl/collective/osu_xccl_alltoall -m 2:2^30  -x 1 -i 1
-/project/coreai_devtech_all/shixunw/osu-micro-benchmarks-7.5.1/libexec/osu-micro-benchmarks/xccl/collective/osu_xccl_alltoall -m 2:2^30  -x 1 -i 1
+/project/coreai_devtech_all/shixunw/osu-micro-benchmarks-7.5.1/libexec/osu-micro-benchmarks/xccl/collective/osu_xccl_alltoall -m 2:2^30  -x 5 -i 5
 # nsys profile -o /project/coreai_devtech_all/shixunw/nsys_result/report_%q{SLURM_PROCID} -t cuda,nvtx,mpi /project/coreai_devtech_all/shixunw/test_shuffle.py
 # /project/coreai_devtech_all/shixunw/cupynumeric-intern-project/mpi_hello_world
 # /project/coreai_devtech_all/shixunw/cupynumeric-intern-project/nccl_hello_world/nccl_hello_world

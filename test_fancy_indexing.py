@@ -99,6 +99,7 @@
 
 import cupynumeric as np
 from legate.timing import time
+import numpy
 
 
 N_ROWS = 1_000_000
@@ -110,7 +111,9 @@ def take_with_pairs(data, pairs):
 
 
 # data_array = np.arange(N_ROWS * N_COLS, dtype=np.float32).reshape((N_ROWS, N_COLS))
-data_array = np.ones(N_ROWS * N_COLS, dtype=np.float32).reshape((N_ROWS, N_COLS))
+
+data_array_numpy = numpy.ones(N_ROWS * N_COLS, dtype=np.float32).reshape((N_ROWS, N_COLS))
+data_array = np.array(data_array_numpy)
 
 pair_list = [[i, j] for i in range(N_COLS) for j in range(i + 1, N_COLS)]
 pairs_array = np.array(pair_list)

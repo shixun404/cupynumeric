@@ -356,12 +356,12 @@ printf("Rank %d is using GPU device %d (%s)\n", rank_id, device_id, prop.name);
   CHECK_NCCL(ncclGroupEnd());
   cudaStreamSynchronize(stream);
   nvtxRangePop();
-  // // ===== Final step: Unpack received data to output =====
-  // nvtxRangePushA("unpack received data");
-  // unpack_recv_data_kernel<DataType, DIM_output><<<grid_size, block_size, 0, stream>>>(output_ptr, round2_request_positions.ptr(0),
-  //   num_requests, round3_recv_data.ptr(0));
-  // cudaStreamSynchronize(stream);
-  // nvtxRangePop();
+  // ===== Final step: Unpack received data to output =====
+  nvtxRangePushA("unpack received data");
+  unpack_recv_data_kernel<DataType, DIM_output><<<grid_size, block_size, 0, stream>>>(output_ptr, round2_request_positions.ptr(0),
+    num_requests, round3_recv_data.ptr(0));
+  cudaStreamSynchronize(stream);
+  nvtxRangePop();
 }
  
  template <Type::Code CODE, int32_t DIM_input, int32_t DIM_output>

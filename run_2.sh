@@ -55,7 +55,7 @@ export LD_LIBRARY_PATH=$HPC_SDK_ROOT/compilers/lib:$LD_LIBRARY_PATH;
 export LD_LIBRARY_PATH=$MPI_HOME/lib:$LD_LIBRARY_PATH;
 export LD_LIBRARY_PATH=$HPC_SDK_ROOT/compilers/lib:$LD_LIBRARY_PATH;
 export LD_LIBRARY_PATH=$MPI_HOME/lib:$LD_LIBRARY_PATH;
-export LD_PRELOAD="$UCX_LIB_DIR/libucs.so.0:$UCX_LIB_DIR/libucp.so.0:$UCX_LIB_DIR/libucm.so.0:$MPI_LIB_DIR/libmpi.so"
+# export LD_PRELOAD="$UCX_LIB_DIR/libucs.so.0:$UCX_LIB_DIR/libucp.so.0:$UCX_LIB_DIR/libucm.so.0:$MPI_LIB_DIR/libmpi.so"
 export PATH=$HPC_SDK_ROOT/compilers/bin:$PATH;
 export PATH=$MPI_HOME/bin:$PATH;
 

@@ -18,7 +18,7 @@
 import math
 from functools import reduce
 from typing import Protocol
-
+import os
 
 class Timer(Protocol):
     def start(self):
@@ -114,6 +114,12 @@ def parse_args(parser):
     if args.package == "legate":
         print("Using Legate | cuPyNumeric")
         import cupynumeric as np
+
+        # Get the absolute path to the cupynumeric package directory
+        cupynumeric_path = os.path.dirname(os.path.abspath(np.__file__))
+
+        # Print the path
+        print(f"cuPyNumeric is installed at: {cupynumeric_path}")
 
         timer = CuPyNumericTimer()
     elif args.package == "cupy":

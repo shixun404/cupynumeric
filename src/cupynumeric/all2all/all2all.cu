@@ -290,21 +290,21 @@ printf("Rank %d is using GPU device %d (%s)\n", rank_id, device_id, prop.name);
   size_t total_indices_to_receive = thrust::reduce(DEFAULT_POLICY.on(stream), round1_recv_histo.ptr(0), round1_recv_histo.ptr(0) + num_ranks);
   cudaStreamSynchronize(stream);
   nvtxRangePop();
-  // Pack request indices by target rank
-  // nvtxRangePushA("Pack request indices");
-  // pack_request_indices_kernel<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, num_requests,  
-  //   (legate::Point<DIM_input>*)(round2_send_indices.ptr(0)), 
-  //   round1_send_offsets.ptr(0),
-  //   round2_request_positions.ptr(0), 
-  //   packing_counters.ptr(0), 
-  //   (legate::Rect<DIM_input>*)(global_rects.ptr(0)), num_ranks);
-  // cudaStreamSynchronize(stream);
-  // nvtxRangePop();
-  // nvtxRangePushA("Exclusive scan");
-  // auto round2_recv_indices = create_buffer<legate::Point<DIM_input>>(total_indices_to_receive, Memory::Kind::GPU_FB_MEM);
-  // thrust::exclusive_scan(DEFAULT_POLICY.on(stream), round1_recv_histo.ptr(0), round1_recv_histo.ptr(0) + num_ranks, round1_recv_offsets.ptr(0));
-  // cudaStreamSynchronize(stream);
-  // nvtxRangePop();
+  Pack request indices by target rank
+  nvtxRangePushA("Pack request indices");
+  pack_request_indices_kernel<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, num_requests,  
+    (legate::Point<DIM_input>*)(round2_send_indices.ptr(0)), 
+    round1_send_offsets.ptr(0),
+    round2_request_positions.ptr(0), 
+    packing_counters.ptr(0), 
+    (legate::Rect<DIM_input>*)(global_rects.ptr(0)), num_ranks);
+  cudaStreamSynchronize(stream);
+  nvtxRangePop();
+  nvtxRangePushA("Exclusive scan");
+  auto round2_recv_indices = create_buffer<legate::Point<DIM_input>>(total_indices_to_receive, Memory::Kind::GPU_FB_MEM);
+  thrust::exclusive_scan(DEFAULT_POLICY.on(stream), round1_recv_histo.ptr(0), round1_recv_histo.ptr(0) + num_ranks, round1_recv_offsets.ptr(0));
+  cudaStreamSynchronize(stream);
+  nvtxRangePop();
   // // // ===== Round 2: All2All exchange request indices =====
   // nvtxRangePushA("All2All exchange request indices");
   // CHECK_NCCL(ncclGroupStart());

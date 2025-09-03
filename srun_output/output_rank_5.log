@@ -1,50 +1,167 @@
-/project/coreai_devtech_all/shixunw/cupynumeric.internal/run_2.sh: line 19: export: `16': not a valid identifier
 --- Starting Legate Application ---
-[1756859523.636659] [eos0001:3300478:0]           debug.c:1158 UCX  DEBUG using signal stack 0x7ffff7b4d000 size 141824
-[1756859523.638915] [eos0001:3300478:0]             cpu.c:339  UCX  DEBUG measured tsc frequency 1990.519 MHz after 0.10 ms
-[1756859523.638928] [eos0001:3300478:0]            init.c:121  UCX  DEBUG /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0 loaded at 0x7ffff7e30000
-[1756859523.638936] [eos0001:3300478:0]            init.c:122  UCX  DEBUG cmd line: bash /root/miniconda3/envs/legate/share/legate/libexec/legate-bind.sh --launcher auto -- python /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py 
-[1756859523.638942] [eos0001:3300478:0]          module.c:72   UCX  DEBUG ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
-[1756859523.638943] [eos0001:3300478:0]          module.c:280  UCX  DEBUG loading modules for ucs
-[1756859523.638944] [eos0001:3300478:0]          module.c:242  UCX  DEBUG loading module 'fuse' with mode 0x101
-[1756859523.639002] [eos0001:3300478:0]          module.c:183  UCX  DEBUG loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x5555556b9580]
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_register: registering framework btl components
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_register: found loaded component vader
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_register: component vader register function successful
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_register: found loaded component tcp
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_register: component tcp register function successful
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_register: found loaded component smcuda
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_register: component smcuda register function successful
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_register: found loaded component sm
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_register: found loaded component self
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_register: component self register function successful
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_open: opening btl components
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_open: found loaded component vader
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_open: component vader open function successful
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_open: found loaded component tcp
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_open: component tcp open function successful
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_open: found loaded component smcuda
-[eos0001.eos.clusters.nvidia.com:3300478] btl: smcuda: cuda_max_send_size=131072, max_send_size=32768, max_frag_size=131072
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_open: component smcuda open function successful
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_open: found loaded component self
-[eos0001.eos.clusters.nvidia.com:3300478] mca: base: components_open: component self open function successful
-[eos0001.eos.clusters.nvidia.com:3300478] select: initializing btl component vader
-[eos0001.eos.clusters.nvidia.com:3300478] select: init of component vader returned success
-[eos0001.eos.clusters.nvidia.com:3300478] select: initializing btl component tcp
-[eos0001.eos.clusters.nvidia.com:3300478] btl: tcp: Using interface: eth3 
-[eos0001.eos.clusters.nvidia.com:3300478] btl:tcp: Attempting to bind to AF_INET port 1024
-[eos0001.eos.clusters.nvidia.com:3300478] btl:tcp: Attempting to bind to AF_INET port 1025
-[eos0001.eos.clusters.nvidia.com:3300478] btl:tcp: Attempting to bind to AF_INET port 1026
-[eos0001.eos.clusters.nvidia.com:3300478] btl:tcp: Attempting to bind to AF_INET port 1027
-[eos0001.eos.clusters.nvidia.com:3300478] btl:tcp: Attempting to bind to AF_INET port 1028
-[eos0001.eos.clusters.nvidia.com:3300478] btl:tcp: Attempting to bind to AF_INET port 1029
-[eos0001.eos.clusters.nvidia.com:3300478] btl:tcp: Attempting to bind to AF_INET port 1030
-[eos0001.eos.clusters.nvidia.com:3300478] btl:tcp: Successfully bound to AF_INET port 1030
-[eos0001.eos.clusters.nvidia.com:3300478] btl:tcp: my listening v4 socket is 0.0.0.0:1030
-[eos0001.eos.clusters.nvidia.com:3300478] btl:tcp: examining interface eth3
-[eos0001.eos.clusters.nvidia.com:3300478] btl:tcp: using ipv6 interface eth3
-[eos0001.eos.clusters.nvidia.com:3300478] select: init of component tcp returned success
-[eos0001.eos.clusters.nvidia.com:3300478] select: initializing btl component smcuda
-[eos0001.eos.clusters.nvidia.com:3300478] select: init of component smcuda returned success
-[eos0001.eos.clusters.nvidia.com:3300478] select: initializing btl component self
-[eos0001.eos.clusters.nvidia.com:3300478] select: init of component self returned success
+[1756859677.125629] [eos0001:3309611:0]           debug.c:1158 UCX  DEBUG using signal stack 0x7ffff7b4d000 size 141824
+[1756859677.127742] [eos0001:3309611:0]             cpu.c:339  UCX  DEBUG measured tsc frequency 1994.947 MHz after 0.10 ms
+[1756859677.127756] [eos0001:3309611:0]            init.c:121  UCX  DEBUG /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0 loaded at 0x7ffff7e30000
+[1756859677.127763] [eos0001:3309611:0]            init.c:122  UCX  DEBUG cmd line: bash /root/miniconda3/envs/legate/share/legate/libexec/legate-bind.sh --launcher auto -- python /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py 
+[1756859677.127770] [eos0001:3309611:0]          module.c:72   UCX  DEBUG ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1756859677.127771] [eos0001:3309611:0]          module.c:280  UCX  DEBUG loading modules for ucs
+[1756859677.127772] [eos0001:3309611:0]          module.c:242  UCX  DEBUG loading module 'fuse' with mode 0x101
+[1756859677.127834] [eos0001:3309611:0]          module.c:183  UCX  DEBUG loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x5555556b9580]
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_register: registering framework btl components
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_register: found loaded component vader
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_register: component vader register function successful
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_register: found loaded component tcp
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_register: component tcp register function successful
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_register: found loaded component smcuda
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_register: component smcuda register function successful
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_register: found loaded component sm
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_register: found loaded component self
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_register: component self register function successful
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_open: opening btl components
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_open: found loaded component vader
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_open: component vader open function successful
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_open: found loaded component tcp
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_open: component tcp open function successful
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_open: found loaded component smcuda
+[eos0001.eos.clusters.nvidia.com:3309611] btl: smcuda: cuda_max_send_size=131072, max_send_size=32768, max_frag_size=131072
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_open: component smcuda open function successful
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_open: found loaded component self
+[eos0001.eos.clusters.nvidia.com:3309611] mca: base: components_open: component self open function successful
+[eos0001.eos.clusters.nvidia.com:3309611] select: initializing btl component vader
+[eos0001.eos.clusters.nvidia.com:3309611] select: init of component vader returned success
+[eos0001.eos.clusters.nvidia.com:3309611] select: initializing btl component tcp
+[eos0001.eos.clusters.nvidia.com:3309611] btl: tcp: Using interface: eth3 
+[eos0001.eos.clusters.nvidia.com:3309611] btl:tcp: Attempting to bind to AF_INET port 1024
+[eos0001.eos.clusters.nvidia.com:3309611] btl:tcp: Attempting to bind to AF_INET port 1025
+[eos0001.eos.clusters.nvidia.com:3309611] btl:tcp: Attempting to bind to AF_INET port 1026
+[eos0001.eos.clusters.nvidia.com:3309611] btl:tcp: Attempting to bind to AF_INET port 1027
+[eos0001.eos.clusters.nvidia.com:3309611] btl:tcp: Attempting to bind to AF_INET port 1028
+[eos0001.eos.clusters.nvidia.com:3309611] btl:tcp: Attempting to bind to AF_INET port 1029
+[eos0001.eos.clusters.nvidia.com:3309611] btl:tcp: Attempting to bind to AF_INET port 1030
+[eos0001.eos.clusters.nvidia.com:3309611] btl:tcp: Successfully bound to AF_INET port 1030
+[eos0001.eos.clusters.nvidia.com:3309611] btl:tcp: my listening v4 socket is 0.0.0.0:1030
+[eos0001.eos.clusters.nvidia.com:3309611] btl:tcp: examining interface eth3
+[eos0001.eos.clusters.nvidia.com:3309611] btl:tcp: using ipv6 interface eth3
+[eos0001.eos.clusters.nvidia.com:3309611] select: init of component tcp returned success
+[eos0001.eos.clusters.nvidia.com:3309611] select: initializing btl component smcuda
+[eos0001.eos.clusters.nvidia.com:3309611] select: init of component smcuda returned success
+[eos0001.eos.clusters.nvidia.com:3309611] select: initializing btl component self
+[eos0001.eos.clusters.nvidia.com:3309611] select: init of component self returned success
+[1756859677.173512] [eos0001:3309611:0]           debug.c:1158 UCX  DEBUG using signal stack 0x7ffff7b92000 size 141824
+[1756859677.176453] [eos0001:3309611:0]             cpu.c:339  UCX  DEBUG measured tsc frequency 1975.132 MHz after 0.05 ms
+[1756859677.176466] [eos0001:3309611:0]            init.c:121  UCX  DEBUG /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0 loaded at 0x7ffff7e30000
+[1756859677.176473] [eos0001:3309611:0]            init.c:122  UCX  DEBUG cmd line: python /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py 
+[1756859677.176479] [eos0001:3309611:0]          module.c:72   UCX  DEBUG ucs library path: /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucs.so.0
+[1756859677.176481] [eos0001:3309611:0]          module.c:280  UCX  DEBUG loading modules for ucs
+[1756859677.176482] [eos0001:3309611:0]          module.c:242  UCX  DEBUG loading module 'fuse' with mode 0x101
+[1756859677.176544] [eos0001:3309611:0]          module.c:183  UCX  DEBUG loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucs_fuse.so.0.0.0 [0x555555b33500]
+[1756859677.529052] [eos0001:3309611:0]            time.c:22   UCX  DEBUG arch clock frequency: 1975132075.47 Hz
+[1756859677.529096] [eos0001:3309611:0]     ucp_context.c:2257 UCX  INFO  Version 1.18.0 (loaded from /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/libucp.so.0)
+[1756859677.529101] [eos0001:3309611:0]     ucp_context.c:2016 UCX  DEBUG estimated number of endpoints is 16
+[1756859677.529102] [eos0001:3309611:0]     ucp_context.c:2023 UCX  DEBUG estimated number of endpoints per node is 8
+[1756859677.529104] [eos0001:3309611:0]     ucp_context.c:2033 UCX  DEBUG estimated bcopy bandwidth is 7340032000.000000
+[1756859677.529110] [eos0001:3309611:0]     ucp_context.c:2092 UCX  DEBUG allocation method[0] is md 'sysv'
+[1756859677.529111] [eos0001:3309611:0]     ucp_context.c:2092 UCX  DEBUG allocation method[1] is md 'posix'
+[1756859677.529115] [eos0001:3309611:0]     ucp_context.c:2104 UCX  DEBUG allocation method[2] is 'thp'
+[1756859677.529116] [eos0001:3309611:0]     ucp_context.c:2092 UCX  DEBUG allocation method[3] is md '*'
+[1756859677.529116] [eos0001:3309611:0]     ucp_context.c:2104 UCX  DEBUG allocation method[4] is 'mmap'
+[1756859677.529117] [eos0001:3309611:0]     ucp_context.c:2104 UCX  DEBUG allocation method[5] is 'heap'
+[1756859677.529125] [eos0001:3309611:0]          module.c:280  UCX  DEBUG loading modules for uct
+[1756859677.529127] [eos0001:3309611:0]          module.c:242  UCX  DEBUG loading module 'cuda' with mode 0x1
+[1756859682.623591] [eos0001:3309611:0]          module.c:183  UCX  DEBUG loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda.so.0.0.0 [0x5555563db570]
+[1756859682.623613] [eos0001:3309611:0]          module.c:192  UCX  DEBUG calling 'ucs_module_global_init' in '/opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda.so.0.0.0': [0x7fffcaa6b470]
+[1756859682.623632] [eos0001:3309611:0]          module.c:280  UCX  DEBUG loading modules for uct_cuda
+[1756859682.623634] [eos0001:3309611:0]          module.c:242  UCX  DEBUG loading module 'gdrcopy' with mode 0x1
+[1756859682.623815] [eos0001:3309611:0]          module.c:183  UCX  DEBUG loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cuda_gdrcopy.so.0.0.0 [0x55555638bb20]
+[1756859682.623819] [eos0001:3309611:0]          module.c:165  UCX  DEBUG ignoring 'ucs_module_global_init' (0x7fffcaa6b470) from libuct_cuda.so.0 (0x7fffcaa63000), expected in libuct_cuda_gdrcopy.so.0 (7fffcaa0a000)
+[1756859682.623822] [eos0001:3309611:0]          module.c:242  UCX  DEBUG loading module 'ib' with mode 0x1
+[1756859682.624032] [eos0001:3309611:0]          module.c:280  UCX  DEBUG loading modules for uct_ib
+[1756859682.624034] [eos0001:3309611:0]          module.c:242  UCX  DEBUG loading module 'mlx5' with mode 0x1
+[1756859682.624298] [eos0001:3309611:0]          module.c:183  UCX  DEBUG loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_ib_mlx5.so.0.0.0 [0x55555638d830]
+[1756859682.624306] [eos0001:3309611:0]          module.c:183  UCX  DEBUG loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_ib.so.0.0.0 [0x55555638c820]
+[1756859682.624308] [eos0001:3309611:0]          module.c:242  UCX  DEBUG loading module 'rdmacm' with mode 0x1
+[1756859682.624481] [eos0001:3309611:0]          module.c:183  UCX  DEBUG loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_rdmacm.so.0.0.0 [0x55555638ea30]
+[1756859682.624483] [eos0001:3309611:0]          module.c:242  UCX  DEBUG loading module 'cma' with mode 0x1
+[1756859682.624537] [eos0001:3309611:0]          module.c:183  UCX  DEBUG loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libuct_cma.so.0.0.0 [0x55555638fa50]
+[1756859682.624593] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 0 for bus id 1b:00.0
+[1756859682.624610] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 1 for bus id 43:00.0
+[1756859682.624625] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 2 for bus id 52:00.0
+[1756859682.624641] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 3 for bus id 61:00.0
+[1756859682.624657] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 4 for bus id 9d:00.0
+[1756859682.624671] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 5 for bus id c3:00.0
+[1756859682.624687] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 6 for bus id d1:00.0
+[1756859682.624701] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 7 for bus id df:00.0
+[1756859682.626237] [eos0001:3309611:0]            topo.c:895  UCX  DEBUG /sys/class/net/bmc-redfish0/lower_enxb6aa3bf3cf74: sysfs path undetected
+[1756859682.626240] [eos0001:3309611:0]            topo.c:556  UCX  DEBUG bmc-redfish0: system device unknown
+[1756859682.635335] [eos0001:3309611:0]            topo.c:899  UCX  DEBUG /sys/class/net/eth3: PF sysfs path is '/sys/devices/pci0000:80/0000:80:05.0/0000:82:00.1'
+[1756859682.635356] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 8 for bus id 82:00.1
+[1756859682.635358] [eos0001:3309611:0]            topo.c:552  UCX  DEBUG eth3: bdf_name 0000:82:00.1 sys_dev 8
+[1756859682.636168] [eos0001:3309611:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp154s0: PF sysfs path is '/sys/devices/pci0000:97/0000:97:01.0/0000:98:00.0/0000:99:00.0/0000:9a:00.0'
+[1756859682.636185] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 9 for bus id 9a:00.0
+[1756859682.636186] [eos0001:3309611:0]            topo.c:552  UCX  DEBUG ibp154s0: bdf_name 0000:9a:00.0 sys_dev 9
+[1756859682.637006] [eos0001:3309611:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp170s0f0: PF sysfs path is '/sys/devices/pci0000:a5/0000:a5:01.0/0000:a6:00.0/0000:a7:00.0/0000:a8:00.0/0000:a9:00.0/0000:aa:00.0'
+[1756859682.637023] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 10 for bus id aa:00.0
+[1756859682.637025] [eos0001:3309611:0]            topo.c:552  UCX  DEBUG ibp170s0f0: bdf_name 0000:aa:00.0 sys_dev 10
+[1756859682.637840] [eos0001:3309611:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp192s0: PF sysfs path is '/sys/devices/pci0000:bd/0000:bd:01.0/0000:be:00.0/0000:bf:00.0/0000:c0:00.0'
+[1756859682.637855] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 11 for bus id c0:00.0
+[1756859682.637857] [eos0001:3309611:0]            topo.c:552  UCX  DEBUG ibp192s0: bdf_name 0000:c0:00.0 sys_dev 11
+[1756859682.638674] [eos0001:3309611:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp206s0: PF sysfs path is '/sys/devices/pci0000:cb/0000:cb:01.0/0000:cc:00.0/0000:cd:00.0/0000:ce:00.0'
+[1756859682.638692] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 12 for bus id ce:00.0
+[1756859682.638708] [eos0001:3309611:0]            topo.c:552  UCX  DEBUG ibp206s0: bdf_name 0000:ce:00.0 sys_dev 12
+[1756859682.639513] [eos0001:3309611:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp220s0: PF sysfs path is '/sys/devices/pci0000:d9/0000:d9:01.0/0000:da:00.0/0000:db:00.0/0000:dc:00.0'
+[1756859682.639529] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 13 for bus id dc:00.0
+[1756859682.639530] [eos0001:3309611:0]            topo.c:552  UCX  DEBUG ibp220s0: bdf_name 0000:dc:00.0 sys_dev 13
+[1756859682.640348] [eos0001:3309611:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp24s0: PF sysfs path is '/sys/devices/pci0000:15/0000:15:01.0/0000:16:00.0/0000:17:00.0/0000:18:00.0'
+[1756859682.640364] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 14 for bus id 18:00.0
+[1756859682.640365] [eos0001:3309611:0]            topo.c:552  UCX  DEBUG ibp24s0: bdf_name 0000:18:00.0 sys_dev 14
+[1756859682.641187] [eos0001:3309611:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp41s0f0: PF sysfs path is '/sys/devices/pci0000:24/0000:24:01.0/0000:25:00.0/0000:26:00.0/0000:27:00.0/0000:28:00.0/0000:29:00.0'
+[1756859682.641205] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 15 for bus id 29:00.0
+[1756859682.641206] [eos0001:3309611:0]            topo.c:552  UCX  DEBUG ibp41s0f0: bdf_name 0000:29:00.0 sys_dev 15
+[1756859682.642017] [eos0001:3309611:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp64s0: PF sysfs path is '/sys/devices/pci0000:3d/0000:3d:01.0/0000:3e:00.0/0000:3f:00.0/0000:40:00.0'
+[1756859682.642033] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 16 for bus id 40:00.0
+[1756859682.642034] [eos0001:3309611:0]            topo.c:552  UCX  DEBUG ibp64s0: bdf_name 0000:40:00.0 sys_dev 16
+[1756859682.642844] [eos0001:3309611:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp79s0: PF sysfs path is '/sys/devices/pci0000:4c/0000:4c:01.0/0000:4d:00.0/0000:4e:00.0/0000:4f:00.0'
+[1756859682.642860] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 17 for bus id 4f:00.0
+[1756859682.642861] [eos0001:3309611:0]            topo.c:552  UCX  DEBUG ibp79s0: bdf_name 0000:4f:00.0 sys_dev 17
+[1756859682.643674] [eos0001:3309611:0]            topo.c:899  UCX  DEBUG /sys/class/net/ibp94s0: PF sysfs path is '/sys/devices/pci0000:5b/0000:5b:01.0/0000:5c:00.0/0000:5d:00.0/0000:5e:00.0'
+[1756859682.643690] [eos0001:3309611:0]            topo.c:298  UCX  DEBUG added sys_dev 18 for bus id 5e:00.0
+[1756859682.643691] [eos0001:3309611:0]            topo.c:552  UCX  DEBUG ibp94s0: bdf_name 0000:5e:00.0 sys_dev 18
+[1756859682.644316] [eos0001:3309611:0]            topo.c:895  UCX  DEBUG /sys/class/net/lo: sysfs path undetected
+[1756859682.644318] [eos0001:3309611:0]            topo.c:556  UCX  DEBUG lo: system device unknown
+[1756859682.644402] [eos0001:3309611:0]    cuda_copy_md.c:104  UCX  DEBUG dmabuf is supported on cuda device 0
+[1756859682.644421] [eos0001:3309611:0]      cuda_iface.c:52   UCX  DEBUG set cuda sys_device to `unknown` as no context is currently active
+[1756859682.851903] [eos0001:3309611:0]     cuda_ipc_md.c:449  UCX  DEBUG fabric_info: state=3 status=0 uuid=00000000:00000000:00000000:00000000
+[1756859682.855715] [eos0001:3309611:0]      cuda_iface.c:52   UCX  DEBUG set cuda sys_device to `unknown` as no context is currently active
+[1756859682.855778] [eos0001:3309611:0]           mpool.c:138  UCX  DEBUG mpool rcache_mp: align 8, maxelems 4294967295, elemsize 144
+[1756859682.860289] [eos0001:3309611:0]           async.c:248  UCX  DEBUG added async handler 0x5555566b20a0 [id=48 ref 1] ucs_rcache_invalidate_handler() to hash
+[1756859682.860387] [eos0001:3309611:0]           async.c:522  UCX  DEBUG listening to async event fd 48 events 0x1 mode thread_spinlock
+[1756859682.860419] [eos0001:3309611:0]          module.c:280  UCX  DEBUG loading modules for ucm
+[1756859682.860421] [eos0001:3309611:0]          module.c:242  UCX  DEBUG loading module 'cuda' with mode 0x1001
+[1756859682.860565] [eos0001:3309611:0]          module.c:183  UCX  DEBUG loaded /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/comm_libs/12.8/hpcx/hpcx-2.22.1/ucx/lib/ucx/libucm_cuda.so.0.0.0 [0x555556878fe0]
+[1756859682.925793] [eos0001:3309611:0]      cuda_iface.c:52   UCX  DEBUG set cuda sys_device to `unknown` as no context is currently active
+[1756859682.932086] [eos0001:3309611:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_0: PF sysfs path is '/sys/devices/pci0000:15/0000:15:01.0/0000:16:00.0/0000:17:00.0/0000:18:00.0'
+[1756859682.932092] [eos0001:3309611:0]            topo.c:552  UCX  DEBUG mlx5_0: bdf_name 0000:18:00.0 sys_dev 14
+[1756859682.932118] [eos0001:3309611:0]       ib_device.c:498  UCX  DEBUG mlx5_0: vendor_id 0x15b3 device_id 4129
+[1756859682.932618] [eos0001:3309611:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_0: cross gvmi alias mkey is supported
+[1756859682.932619] [eos0001:3309611:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_0: mkey_by_name_reserve is not supported
+[1756859682.932620] [eos0001:3309611:0]    ib_mlx5dv_md.c:1910 UCX  DEBUG mlx5_0: dp_ordering support: force=1 ooo_rw_rc=1 ooo_rw_dc=1
+[1756859682.932752] [eos0001:3309611:0]    ib_mlx5dv_md.c:1705 UCX  DEBUG mlx5_0: ODP is disabled because version 1 is not supported for DevX QP
+[1756859682.936715] [eos0001:3309611:0]           async.c:248  UCX  DEBUG added async handler 0x555556898010 [id=54 ref 1] uct_ib_async_event_handler() to hash
+[1756859682.936733] [eos0001:3309611:0]           async.c:522  UCX  DEBUG listening to async event fd 54 events 0x1 mode thread_spinlock
+[1756859682.936741] [eos0001:3309611:0]       ib_device.c:597  UCX  DEBUG initialized device 'mlx5_0' (InfiniBand channel adapter) with 1 ports
+[1756859682.936752] [eos0001:3309611:0]           ib_md.c:1177 UCX  DEBUG mlx5_0: cuda GPUDirect RDMA is detected by checking /sys/kernel/mm/memory_peers/nv_mem/version
+[1756859682.936757] [eos0001:3309611:0]           ib_md.c:1177 UCX  DEBUG mlx5_0: rocm GPUDirect RDMA is not detected by checking /dev/kfd
+[1756859682.936768] [eos0001:3309611:0]           ib_md.c:1202 UCX  DEBUG mlx5_0: dmabuf is supported
+[1756859682.936773] [eos0001:3309611:0]           mpool.c:138  UCX  DEBUG mpool devx dbrec: align 64, maxelems 4294967295, elemsize 40
+[1756859682.936966] [eos0001:3309611:0]    ib_mlx5dv_md.c:2423 UCX  DEBUG mlx5_0: opened DEVX md log_max_qp=17
+[1756859682.937386] [eos0001:3309611:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_0: KSM dm memory registration status "Success" range 0x7fffcaa05000..0x7fffcaa05020 iova 0x0 mkey_index 0x0
+[1756859682.937681] [eos0001:3309611:0]    ib_mlx5dv_md.c:96   UCX  DEBUG mlx5_0: mlx5dv_devx_obj_create(CREATE_MKEY, mode=KSM, start_addr=0x7fffcaa05000 length=32) failed, syndrome 0x45d3a4: Remote I/O error
+[1756859682.937684] [eos0001:3309611:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_0: KSM atomic-key memory registration status "Unsupported operation" range (nil)..0x20 iova 0x7fffcaa05000 atomic mkey_index 0x0
+[1756859682.938052] [eos0001:3309611:0]           ib_md.c:1161 UCX  DEBUG mlx5_0: relaxed order memory access is disabled
+[1756859682.938275] [eos0001:3309611:0]    ib_mlx5dv_md.c:126  UCX  DEBUG mlx5_0: KSM flush-mr memory registration status "Success" range 0x555556895000..0x555556895008 iova 0x0 mkey_index 0x0
+[1756859682.938277] [eos0001:3309611:0]           ib_md.c:1031 UCX  DEBUG mlx5_0: md open by 'uct_ib_mlx5_devx_md_ops' is successful
+[1756859682.944606] [eos0001:3309611:0]            topo.c:899  UCX  DEBUG /sys/class/infiniband/mlx5_3: PF sysfs path is '/sys/devices/pci0000:3d/0000:3d:01.0/0000:3e:00.0/0000:3f:00.0/0000:40:00.0'
+[1756859682.944611] [eos0001:3309611:0]            topo.c:552  UCX  DEBUG mlx5_3: bdf_name 0000:40:00.0 sys_dev 16
+[1756859682.944624] [eos0001:3309611:0]       ib_device.c:498  UCX  DEBUG mlx5_3: vendor_id 0x15b3 device_id 4129
+[1756859682.945126] [eos0001:3309611:0]    ib_mlx5dv_md.c:1875 UCX  DEBUG mlx5_3: cross gvmi alias mkey is supported
+[1756859682.945127] [eos0001:3309611:0]    ib_mlx5dv_md.c:1925 UCX  DEBUG mlx5_3: mkey_by_name_reserve is not supp

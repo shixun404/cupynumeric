@@ -64,7 +64,7 @@ export MPI_CXX_COMPILER=mpicxx;
 export ucc_DIR=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ucc/lib/cmake/ucc;
 # export UCX_LOG_LEVEL=error;
 # export UCX_MODULE_LOG_LEVEL=error;
-export NCCL_DEBUG=INFO
+# export NCCL_DEBUG=INFO
 
 
 export UCX_IB_TIMEOUT=22s

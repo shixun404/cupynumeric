@@ -116,7 +116,7 @@ pairs_array = np.array(pair_list)
 print(len(pair_list))
 
 start_time = time()
-for i in range(2):
+for i in range(10):
     result_array = take_with_pairs(data_array, pairs_array)
 # result_array_1 = take_with_pairs(data_array, pairs_array)
 duration = time() - start_time

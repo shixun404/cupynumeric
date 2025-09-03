@@ -16,7 +16,18 @@ conda activate legate
 
 export OMPI_MCA_btl=^openib
 export OMPI_MCA_pml=ucx
+export GASNET_AM_CREDITS_PP 16
 export GASNET_IBV_PORTS=mlx5_0+mlx5_3+mlx5_4+mlx5_5+mlx5_6+mlx5_9+mlx5_10+mlx5_11
+
+# NUMAS_PER_NODE=2
+# RAM_PER_NUMA=950000
+# GPUS_PER_NODE=8
+# CORES_PER_NUMA=56
+# FB_PER_GPU=76000
+# CPU_SLOTS=" 0-13,112-125  14-27,126-139  28-41,140-153  42-55,154-167  56-69,168-181  70-83,182-195  84-97,196-209  98-111,210-223"
+# GPU_SLOTS="            0              1              2              3              4              5              6               7"
+# MEM_SLOTS="            0              0              0              0              1              1              1               1"
+# NIC_SLOTS="       mlx5_0         mlx5_3         mlx5_4         mlx5_5         mlx5_6         mlx5_9        mlx5_10         mlx5_11"
 
 export LEGATE_DEBUG=1
 export REALM_BACKTRACE=1

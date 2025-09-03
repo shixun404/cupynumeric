@@ -16,7 +16,7 @@ conda activate legate
 
 export OMPI_MCA_btl=^openib
 export OMPI_MCA_pml=ucx
-export GASNET_AM_CREDITS_PP 16
+export GASNET_AM_CREDITS_PP=16
 export GASNET_IBV_PORTS=mlx5_0+mlx5_3+mlx5_4+mlx5_5+mlx5_6+mlx5_9+mlx5_10+mlx5_11
 
 # NUMAS_PER_NODE=2

@@ -198,6 +198,12 @@ cudaStreamSynchronize(stream);
   auto input_rect_device = create_buffer<int64_t>(DIM_input * 2, Memory::Kind::GPU_FB_MEM);
   cudaMemcpy((legate::Rect<DIM_input>*)input_rect_device.ptr(0), &input_rect, sizeof(input_rect), cudaMemcpyHostToDevice);
 
+    // 初始化Round 0缓冲区
+    CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(global_rects.ptr(0), 0, 
+    num_ranks * DIM_input * 2 * sizeof(int64_t), stream));
+  CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(input_rect_device.ptr(0), 0, 
+    DIM_input * 2 * sizeof(int64_t), stream));
+
   // ===== Round 1: Exchange request size histograms =====
   auto round1_send_histo = create_buffer<unsigned int>(num_ranks, Memory::Kind::GPU_FB_MEM); // How many requests to send to each rank
   auto round1_send_offsets = create_buffer<unsigned int>(num_ranks, Memory::Kind::GPU_FB_MEM); // Offsets for packing requests

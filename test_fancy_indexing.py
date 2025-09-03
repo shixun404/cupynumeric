@@ -115,6 +115,9 @@ pair_list = [[i, j] for i in range(N_COLS) for j in range(i + 1, N_COLS)]
 pairs_array = np.array(pair_list)
 print(len(pair_list))
 
+for i in range(3):
+    result_array = take_with_pairs(data_array, pairs_array)
+
 start_time = time()
 for i in range(10):
     result_array = take_with_pairs(data_array, pairs_array)

@@ -118,7 +118,7 @@ print(len(pair_list))
 start_time = time()
 # for i in range(2):
 result_array = take_with_pairs(data_array, pairs_array)
-result_array_1 = take_with_pairs(data_array, pairs_array)
+# result_array_1 = take_with_pairs(data_array, pairs_array)
 duration = time() - start_time
 
 print(result_array.shape)

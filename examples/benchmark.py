@@ -112,10 +112,12 @@ def parse_args(parser):
     )
     args, _ = parser.parse_known_args()
     if args.package == "legate":
+        print("Using Legate | cuPyNumeric")
         import cupynumeric as np
 
         timer = CuPyNumericTimer()
     elif args.package == "cupy":
+        print("Using Cupy")
         import cupy as np
 
         if args.cupy_allocator == "off":
@@ -128,6 +130,7 @@ def parse_args(parser):
             print("Using managed memory pool")
         timer = CuPyTimer()
     elif args.package == "numpy":
+        print("Using NumPy")
         import numpy as np
 
         timer = NumPyTimer()

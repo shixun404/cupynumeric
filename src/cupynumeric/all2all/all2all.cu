@@ -290,7 +290,7 @@ printf("Rank %d is using GPU device %d (%s)\n", rank_id, device_id, prop.name);
   size_t total_indices_to_receive = thrust::reduce(DEFAULT_POLICY.on(stream), round1_recv_histo.ptr(0), round1_recv_histo.ptr(0) + num_ranks);
   cudaStreamSynchronize(stream);
   nvtxRangePop();
-  Pack request indices by target rank
+  // Pack request indices by target rank
   nvtxRangePushA("Pack request indices");
   pack_request_indices_kernel<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, num_requests,  
     (legate::Point<DIM_input>*)(round2_send_indices.ptr(0)), 

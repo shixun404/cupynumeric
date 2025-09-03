@@ -186,6 +186,7 @@ cudaDeviceProp prop;
 cudaGetDeviceProperties(&prop, device_id);
 // printf("Rank %d is using GPU device %d (%s)\n", rank_id, device_id, prop.name);
 cudaDeviceSynchronize();
+cudaStreamSynchronize(stream);
 
   size_t local_input_count = get_volume<DIM_input>(input_rect);
   size_t local_index_count = get_volume<DIM_output>(index_rect);

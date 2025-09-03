@@ -211,13 +211,35 @@ cudaStreamSynchronize(stream);
   auto round1_recv_offsets = create_buffer<unsigned int>(num_ranks, Memory::Kind::GPU_FB_MEM); // Offsets for unpacking requests
   auto packing_counters = create_buffer<unsigned int>(num_ranks, Memory::Kind::GPU_FB_MEM); // Temporary counters for packing
   
+  // 初始化Round 1缓冲区
+  CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(round1_send_histo.ptr(0), 0, 
+    num_ranks * sizeof(unsigned int), stream));
+  CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(round1_send_offsets.ptr(0), 0, 
+    num_ranks * sizeof(unsigned int), stream));
+  CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(round1_recv_histo.ptr(0), 0, 
+    num_ranks * sizeof(unsigned int), stream));
+  CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(round1_recv_offsets.ptr(0), 0, 
+    num_ranks * sizeof(unsigned int), stream));
+  CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(packing_counters.ptr(0), 0, 
+    num_ranks * sizeof(unsigned int), stream));
+
   // // ===== Round 2: Exchange request indices =====
   auto round2_send_indices = create_buffer<int64_t>(num_requests * DIM_input, Memory::Kind::GPU_FB_MEM); // Indices to send (packed by target rank)
   auto round2_request_positions = create_buffer<unsigned int>(num_requests, Memory::Kind::GPU_FB_MEM); // Position of each request in output
    
+
+    // 初始化Round 2缓冲区
+    CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(round2_send_indices.ptr(0), 0, 
+    num_requests * DIM_input * sizeof(int64_t), stream));
+  CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(round2_request_positions.ptr(0), 0, 
+    num_requests * sizeof(unsigned int), stream));
   
   // // ===== Round 3: Exchange actual data =====
   auto round3_recv_data = create_buffer<DataType>(num_requests, Memory::Kind::GPU_FB_MEM); // Final received data
+
+    // 初始化Round 3缓冲区
+    CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(round3_recv_data.ptr(0), 0, 
+    num_requests * sizeof(DataType), stream));
 
   const size_t block_size = 256;
   const size_t grid_size = (local_index_count + block_size - 1) / block_size;
@@ -310,6 +332,8 @@ cudaStreamSynchronize(stream);
   nvtxRangePop();
   nvtxRangePushA("Exclusive scan");
   auto round2_recv_indices = create_buffer<legate::Point<DIM_input>>(total_indices_to_receive, Memory::Kind::GPU_FB_MEM);
+  CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(round2_recv_indices.ptr(0), 0, 
+    total_indices_to_receive * sizeof(legate::Point<DIM_input>), stream));
   thrust::exclusive_scan(DEFAULT_POLICY.on(stream), round1_recv_histo.ptr(0), round1_recv_histo.ptr(0) + num_ranks, round1_recv_offsets.ptr(0));
   cudaStreamSynchronize(stream);
   nvtxRangePop();
@@ -337,7 +361,8 @@ cudaStreamSynchronize(stream);
   nvtxRangePop();
   nvtxRangePushA("Pack send data");
   auto round3_send_data = create_buffer<DataType>(total_indices_to_receive, Memory::Kind::GPU_FB_MEM);
-  
+  CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(round3_send_data.ptr(0), 0, 
+    total_indices_to_receive * sizeof(DataType), stream));
   pack_send_data_kernel<DataType, DIM_input><<<grid_size, block_size, 0, stream>>>(input_ptr, (legate::Point<DIM_input>*)round2_recv_indices.ptr(0),
   total_indices_to_receive, round3_send_data.ptr(0), input_rect);
   cudaStreamSynchronize(stream);

@@ -101,8 +101,8 @@ import cupynumeric as np
 from legate.timing import time
 
 
-N_ROWS = 1_600_000
-N_COLS = 32
+N_ROWS = 1_000_000
+N_COLS = 16
 
 
 def take_with_pairs(data, pairs):

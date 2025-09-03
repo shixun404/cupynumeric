@@ -330,32 +330,32 @@ printf("Rank %d is using GPU device %d (%s)\n", rank_id, device_id, prop.name);
   nvtxRangePushA("Pack send data");
   auto round3_send_data = create_buffer<DataType>(total_indices_to_receive, Memory::Kind::GPU_FB_MEM);
   
-  // pack_send_data_kernel<DataType, DIM_input><<<grid_size, block_size, 0, stream>>>(input_ptr, (legate::Point<DIM_input>*)round2_recv_indices.ptr(0),
-  // total_indices_to_receive, round3_send_data.ptr(0), input_rect);
-  // cudaStreamSynchronize(stream);
-  // nvtxRangePop();
-  // // ===== Round 3: All2All exchange actual data =====
-  // nvtxRangePushA("All2All exchange actual data");
-  // CHECK_NCCL(ncclGroupStart());
-  // for (size_t i = 0; i < num_ranks; ++i) {
-  //     unsigned int data_to_send_to_rank_i, send_offset_for_rank_i, data_to_recv_from_rank_i, recv_offset_for_rank_i;
-  //     cudaMemcpy(&data_to_send_to_rank_i, round1_send_histo.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
-  //     cudaMemcpy(&send_offset_for_rank_i, round1_send_offsets.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
-  //     cudaMemcpy(&data_to_recv_from_rank_i, round1_recv_histo.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
-  //     cudaMemcpy(&recv_offset_for_rank_i, round1_recv_offsets.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
+  pack_send_data_kernel<DataType, DIM_input><<<grid_size, block_size, 0, stream>>>(input_ptr, (legate::Point<DIM_input>*)round2_recv_indices.ptr(0),
+  total_indices_to_receive, round3_send_data.ptr(0), input_rect);
+  cudaStreamSynchronize(stream);
+  nvtxRangePop();
+  // ===== Round 3: All2All exchange actual data =====
+  nvtxRangePushA("All2All exchange actual data");
+  CHECK_NCCL(ncclGroupStart());
+  for (size_t i = 0; i < num_ranks; ++i) {
+      unsigned int data_to_send_to_rank_i, send_offset_for_rank_i, data_to_recv_from_rank_i, recv_offset_for_rank_i;
+      cudaMemcpy(&data_to_send_to_rank_i, round1_send_histo.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
+      cudaMemcpy(&send_offset_for_rank_i, round1_send_offsets.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
+      cudaMemcpy(&data_to_recv_from_rank_i, round1_recv_histo.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
+      cudaMemcpy(&recv_offset_for_rank_i, round1_recv_offsets.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
 
-  //     if (data_to_recv_from_rank_i > 0) {
-  //     CHECK_NCCL(ncclSend(round3_send_data.ptr(recv_offset_for_rank_i),
-  //     data_to_recv_from_rank_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
-  //   }
-  //     if (data_to_send_to_rank_i > 0) {
-  //       CHECK_NCCL(ncclRecv(round3_recv_data.ptr(send_offset_for_rank_i),
-  //       data_to_send_to_rank_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
-  //     }   
-  // }
-  // CHECK_NCCL(ncclGroupEnd());
-  // cudaStreamSynchronize(stream);
-  // nvtxRangePop();
+      if (data_to_recv_from_rank_i > 0) {
+      CHECK_NCCL(ncclSend(round3_send_data.ptr(recv_offset_for_rank_i),
+      data_to_recv_from_rank_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
+    }
+      if (data_to_send_to_rank_i > 0) {
+        CHECK_NCCL(ncclRecv(round3_recv_data.ptr(send_offset_for_rank_i),
+        data_to_send_to_rank_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
+      }   
+  }
+  CHECK_NCCL(ncclGroupEnd());
+  cudaStreamSynchronize(stream);
+  nvtxRangePop();
   // // ===== Final step: Unpack received data to output =====
   // nvtxRangePushA("unpack received data");
   // unpack_recv_data_kernel<DataType, DIM_output><<<grid_size, block_size, 0, stream>>>(output_ptr, round2_request_positions.ptr(0),

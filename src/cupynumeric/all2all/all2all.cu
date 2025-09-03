@@ -376,7 +376,7 @@ cudaStreamSynchronize(stream);
       cudaMemcpy(&send_offset_for_rank_i, round1_send_offsets.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
       cudaMemcpy(&data_to_recv_from_rank_i, round1_recv_histo.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
       cudaMemcpy(&recv_offset_for_rank_i, round1_recv_offsets.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
-    printf("rank %d recv from rank %d: recv offset %d, recv data %d\n", rank_id, i, recv_offset_for_rank_i, data_to_recv_from_rank_i);
+    // printf("rank %d recv from rank %d: recv offset %d, recv data %d\n", rank_id, i, recv_offset_for_rank_i, data_to_recv_from_rank_i);
       if (data_to_recv_from_rank_i > 0) {
       CHECK_NCCL(ncclSend(round3_send_data.ptr(recv_offset_for_rank_i),
       data_to_recv_from_rank_i * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));

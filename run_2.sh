@@ -29,9 +29,9 @@ export GASNET_IBV_PORTS=mlx5_0+mlx5_3+mlx5_4+mlx5_5+mlx5_6+mlx5_9+mlx5_10+mlx5_1
 # MEM_SLOTS="            0              0              0              0              1              1              1               1"
 # NIC_SLOTS="       mlx5_0         mlx5_3         mlx5_4         mlx5_5         mlx5_6         mlx5_9        mlx5_10         mlx5_11"
 
-export LEGATE_DEBUG=1
-export REALM_BACKTRACE=1
-export LEGION_BACKTRACE=1
+# export LEGATE_DEBUG=1
+# export REALM_BACKTRACE=1
+# export LEGION_BACKTRACE=1
 
 export OMPI_MCA_btl_base_verbose=100  # 最详细的 BTL 调试
 export HOME=/project/coreai_devtech_all/shixunw;
@@ -62,8 +62,8 @@ export PATH=$MPI_HOME/bin:$PATH;
 export MPI_C_COMPILER=mpicc;
 export MPI_CXX_COMPILER=mpicxx;
 export ucc_DIR=$HPC_SDK_ROOT/comm_libs/12.8/hpcx/hpcx-2.22.1/ucc/lib/cmake/ucc;
-export UCX_LOG_LEVEL=debug;
-export UCX_MODULE_LOG_LEVEL=debug;
+export UCX_LOG_LEVEL=error;
+export UCX_MODULE_LOG_LEVEL=error;
 
 
 

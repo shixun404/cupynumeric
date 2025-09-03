@@ -277,20 +277,20 @@ printf("Rank %d is using GPU device %d (%s)\n", rank_id, device_id, prop.name);
   // }
   
 
-  // // ===== Round 1: All2All exchange request size histograms =====
-  // nvtxRangePushA("All2All exchange request size histograms");
-  // CHECK_NCCL(ncclGroupStart());
-  // for (size_t i = 0; i < num_ranks; ++i) {
-  //   CHECK_NCCL(ncclRecv((void*)round1_recv_histo.ptr(i), 1, ncclUint32, i, *nccl_comm, stream));  
-  //   CHECK_NCCL(ncclSend((void*)round1_send_histo.ptr(i), 1, ncclUint32, i, *nccl_comm, stream));
-  // }
-  // CHECK_NCCL(ncclGroupEnd());
-  // nvtxRangePop();
-  // nvtxRangePushA("Reduce");
-  // size_t total_indices_to_receive = thrust::reduce(DEFAULT_POLICY.on(stream), round1_recv_histo.ptr(0), round1_recv_histo.ptr(0) + num_ranks);
-  // cudaStreamSynchronize(stream);
-  // nvtxRangePop();
-  // // Pack request indices by target rank
+  // ===== Round 1: All2All exchange request size histograms =====
+  nvtxRangePushA("All2All exchange request size histograms");
+  CHECK_NCCL(ncclGroupStart());
+  for (size_t i = 0; i < num_ranks; ++i) {
+    CHECK_NCCL(ncclRecv((void*)round1_recv_histo.ptr(i), 1, ncclUint32, i, *nccl_comm, stream));  
+    CHECK_NCCL(ncclSend((void*)round1_send_histo.ptr(i), 1, ncclUint32, i, *nccl_comm, stream));
+  }
+  CHECK_NCCL(ncclGroupEnd());
+  nvtxRangePop();
+  nvtxRangePushA("Reduce");
+  size_t total_indices_to_receive = thrust::reduce(DEFAULT_POLICY.on(stream), round1_recv_histo.ptr(0), round1_recv_histo.ptr(0) + num_ranks);
+  cudaStreamSynchronize(stream);
+  nvtxRangePop();
+  // Pack request indices by target rank
   // nvtxRangePushA("Pack request indices");
   // pack_request_indices_kernel<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, num_requests,  
   //   (legate::Point<DIM_input>*)(round2_send_indices.ptr(0)), 

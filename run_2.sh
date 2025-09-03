@@ -93,6 +93,6 @@ export UCX_VFS_ENABLE=n
 # --- Run the application ---
 echo "--- Starting Legate Application ---"
 # legate --gpus 8 --fbmem 10000 --launcher none /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py
-legate --logdir /project/coreai_devtech_all/shixunw/result --launcher none  --cpus 1 --sysmem 100000 --gpus 8 --fbmem 50000 --verbose --log-to-file --nodes 2 --ranks-per-node 1 /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py
+legate --nsys --logdir /project/coreai_devtech_all/shixunw/result --launcher none  --cpus 1 --sysmem 100000 --gpus 8 --fbmem 50000 --verbose --log-to-file --nodes 2 --ranks-per-node 1 /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing.py
 # nsys profile -t cuda,mpi,ucx,nvtx /project/coreai_devtech_all/shixunw/osu-micro-benchmarks-7.5.1/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoall
 # /project/coreai_devtech_all/shixunw/osu-micro-benchmarks-7.5.1/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoall

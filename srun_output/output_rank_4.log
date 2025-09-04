@@ -1,0 +1,45 @@
+--- Starting Legate Application ---
+WARNING: Device-side CUDA Event completion trace is currently enabled.
+         This may increase runtime overhead and the likelihood of false
+         dependencies across CUDA Streams. If you wish to avoid this, please
+         disable the feature with --cuda-event-trace=false.
+[4 - 7ffff6c4b980]    0.000000 {6}{gpu}: Failed to allocate GPU memory of size 52428800000
+[eos0559:1250657] *** Process received signal ***
+[eos0559:1250657] Signal: Aborted (6)
+[eos0559:1250657] Signal code:  (-6)
+[eos0559:1250657] [ 0] /project/coreai_devtech_all/shixunw/miniconda3/envs/legate/lib/./libopen-pal.so.40(+0x6e647)[0x7fffc12c2647]
+[eos0559:1250657] [ 1] /opt/nvidia/hpc_sdk/Linux_x86_64/25.3/profilers/Nsight_Systems/target-linux-x64/libToolsInjection64.so(+0x4a7776)[0x7ffff74bc776]
+[eos0559:1250657] [ 2] /usr/lib/x86_64-linux-gnu/libc.so.6(+0x42520)[0x7ffff6d33520]
+[eos0559:1250657] [ 3] /usr/lib/x86_64-linux-gnu/libc.so.6(+0x969fc)[0x7ffff6d879fc]
+[eos0559:1250657] [ 4] /usr/lib/x86_64-linux-gnu/libc.so.6(raise+0x16)[0x7ffff6d33476]
+[eos0559:1250657] [ 5] /usr/lib/x86_64-linux-gnu/libc.so.6(abort+0xd3)[0x7ffff6d197f3]
+[eos0559:1250657] [ 6] /project/coreai_devtech_all/shixunw/miniconda3/envs/legate/lib/librealm-legate.so.1(+0x8cbee6)[0x7fffc48d4ee6]
+[eos0559:1250657] [ 7] /project/coreai_devtech_all/shixunw/miniconda3/envs/legate/lib/librealm-legate.so.1(+0x8cc011)[0x7fffc48d5011]
+[eos0559:1250657] [ 8] /project/coreai_devtech_all/shixunw/miniconda3/envs/legate/lib/librealm-legate.so.1(_ZN5Realm4Cuda10CudaModule15create_memoriesEPNS_11RuntimeImplE+0x91)[0x7fffc48db501]
+[eos0559:1250657] [ 9] /project/coreai_devtech_all/shixunw/miniconda3/envs/legate/lib/librealm-legate.so.1(+0x84beaa)[0x7fffc4854eaa]
+[eos0559:1250657] [10] /project/coreai_devtech_all/shixunw/miniconda3/envs/legate/lib/liblegion-legate.so.1(_ZN6Legion8Internal7Runtime5startEiPPcbbb+0x85)[0x7fffc770f7b5]
+[eos0559:1250657] [11] /root/miniconda3/envs/legate/lib/python3.13/site-packages/legate/core/_lib/data/../../../../../../liblegate.so.25.05.00(_ZN6legate6detail7Runtime5startEv+0x388)[0x7fffecd3af28]
+[eos0559:1250657] [12] /root/miniconda3/envs/legate/lib/python3.13/site-packages/legate/core/_lib/data/../../../../../../liblegate.so.25.05.00(_ZN6legate5startEv+0xd)[0x7fffecd08dcd]
+[eos0559:1250657] [13] /root/miniconda3/envs/legate/lib/python3.13/site-packages/legate/core/_lib/runtime/runtime.cpython-313-x86_64-linux-gnu.so(+0x3d475)[0x7fffc0c02475]
+[eos0559:1250657] [14] /root/miniconda3/envs/legate/lib/python3.13/site-packages/legate/core/_lib/runtime/runtime.cpython-313-x86_64-linux-gnu.so(+0x3e6c2)[0x7fffc0c036c2]
+[eos0559:1250657] [15] /root/miniconda3/envs/legate/bin/python(PyObject_Vectorcall+0x2e)[0x5555557060fe]
+[eos0559:1250657] [16] /root/miniconda3/envs/legate/bin/python(+0x9ee73)[0x5555555f2e73]
+[eos0559:1250657] [17] /root/miniconda3/envs/legate/bin/python(PyEval_EvalCode+0xa1)[0x5555557c9171]
+[eos0559:1250657] [18] /root/miniconda3/envs/legate/bin/python(+0x291699)[0x5555557e5699]
+[eos0559:1250657] [19] /root/miniconda3/envs/legate/bin/python(+0x1cb51b)[0x55555571f51b]
+[eos0559:1250657] [20] /root/miniconda3/envs/legate/bin/python(+0x9ea1c)[0x5555555f2a1c]
+[eos0559:1250657] [21] /root/miniconda3/envs/legate/bin/python(+0x1d31d4)[0x5555557271d4]
+[eos0559:1250657] [22] /root/miniconda3/envs/legate/bin/python(PyObject_CallMethodObjArgs+0xec)[0x5555557599ac]
+[eos0559:1250657] [23] /root/miniconda3/envs/legate/bin/python(PyImport_ImportModuleLevelObject+0x23c)[0x5555557588bc]
+[eos0559:1250657] [24] /root/miniconda3/envs/legate/bin/python(+0x212816)[0x555555766816]
+[eos0559:1250657] [25] /root/miniconda3/envs/legate/bin/python(+0x1cb51b)[0x55555571f51b]
+[eos0559:1250657] [26] /root/miniconda3/envs/legate/bin/python(+0x9ea1c)[0x5555555f2a1c]
+[eos0559:1250657] [27] /root/miniconda3/envs/legate/bin/python(+0x1d31d4)[0x5555557271d4]
+[eos0559:1250657] [28] /root/miniconda3/envs/legate/bin/python(PyObject_CallMethodObjArgs+0xec)[0x5555557599ac]
+[eos0559:1250657] [29] /root/miniconda3/envs/legate/bin/python(PyImport_ImportModuleLevelObject+0x23c)[0x5555557588bc]
+[eos0559:1250657] *** End of error message ***
+Collecting data...
+Generating '/tmp/nsys-report-5472.qdstrm'
+[1/1] [0%                          ] legate_4.nsys-rep[1/1] [0%                          ] legate_4.nsys-rep[1/1] [====26%                     ] legate_4.nsys-rep[1/1] [====28%                     ] legate_4.nsys-rep[1/1] [=====30%                    ] legate_4.nsys-rep[1/1] [=====31%                    ] legate_4.nsys-rep[1/1] [=====32%                    ] legate_4.nsys-rep[1/1] [======33%                   ] legate_4.nsys-rep[1/1] [======34%                   ] legate_4.nsys-rep[1/1] [======35%                   ] legate_4.nsys-rep[1/1] [=======36%                  ] legate_4.nsys-rep[1/1] [=======38%                  ] legate_4.nsys-rep[1/1] [========40%                 ] legate_4.nsys-rep[1/1] [========42%                 ] legate_4.nsys-rep[1/1] [=========43%                ] legate_4.nsys-rep[1/1] [=========45%                ] legate_4.nsys-rep[1/1] [==========48%               ] legate_4.nsys-rep[1/1] [===========50%              ] legate_4.nsys-rep[1/1] [===========51%              ] legate_4.nsys-rep[1/1] [===========53%              ] legate_4.nsys-rep[1/1] [=============59%            ] legate_4.nsys-rep[1/1] [=============60%            ] legate_4.nsys-rep[1/1] [===============66%          ] legate_4.nsys-rep[1/1] [================68%         ] legate_4.nsys-rep[1/1] [================69%         ] legate_4.nsys-rep[1/1] [=================73%        ] legate_4.nsys-rep[1/1] [=================74%        ] legate_4.nsys-rep[1/1] [==================76%       ] legate_4.nsys-rep[1/1] [==================77%       ] legate_4.nsys-rep[1/1] [===================79%      ] legate_4.nsys-rep[1/1] [===================80%      ] legate_4.nsys-rep[1/1] [========================100%] legate_4.nsys-rep[1/1] [========================100%] legate_4.nsys-rep
+Generated:
+	/project/coreai_devtech_all/shixunw/result/legate_4.nsys-rep

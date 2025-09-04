@@ -134,8 +134,9 @@ export UCX_IB_MLX5_DEVX=n
 # which mpirun
 #which mpiexec
 #which mpicc
+nsys profile -o /project/coreai_devtech_all/shixunw/nsys_result/report_%q{SLURM_PROCID} --force-overwrite true  -t cuda,nvtx,mpi /project/coreai_devtech_all/shixunw/cupynumeric.internal/test_fancy_indexing/fancy_indexing_standalone_complete
 # nsys profile -o /project/coreai_devtech_all/shixunw/nsys_result/report_%q{SLURM_PROCID} --force-overwrite true  -t cuda,nvtx,mpi /project/coreai_devtech_all/shixunw/cupynumeric-intern-project/build/global_shuffle_bidirectional_2D 1000000000 8 1 1
-/project/coreai_devtech_all/shixunw/osu-micro-benchmarks-7.5.1/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoall
+# /project/coreai_devtech_all/shixunw/osu-micro-benchmarks-7.5.1/libexec/osu-micro-benchmarks/mpi/collective/osu_alltoall
 #/project/coreai_devtech_all/shixunw/osu-micro-benchmarks-7.5.1/libexec/osu-micro-benchmarks/xccl/collective/osu_xccl_alltoall -m 2:2^30  -x 1 -i 3
 
 

@@ -33,8 +33,9 @@ struct ShuffleArgs {
   size_t vector_length;
   bool is_index_space;  // !single_task
   size_t local_rank;
+  Domain domain;
+  DomainPoint index_point;
   size_t num_ranks;
-  size_t num_shuffle_ranks;
 };
 
 template <typename T>

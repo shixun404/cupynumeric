@@ -319,80 +319,143 @@ __global__ void unpack_recv_data_2d_kernel(const DataType* recv_data, const Inde
 }
 
 
-
-
-template<typename DataType, int DIM>
+// Main global shuffle function for 2D data
+template<typename DataType>
 void global_shuffle_bidirectional(
   DataType* local_data, 
-  const legate::Rect<DIM> rect, 
+  const legate::Rect<DIM_input> rect, 
   size_t global_vector_count,
-  int rank, 
+  int rank_id, 
   int num_ranks,
-  const Domain domain,
-  const DomainPoint index_point,
   ncclComm_t* nccl_comm, 
   cudaStream_t stream
 ) {
+    nvtxRangePush("global_shuffle_bidirectional");
+    size_t total_gpus = num_ranks;
+    size_t global_gpu_id = rank_id;
+    size_t local_vector_count = rect.hi[0] - rect.lo[0] + 1;
+    // Calculate vector counts
+    size_t gpu_vector_offset = rect.lo[0];
+    
+    const size_t block_size = 256;
+    const size_t grid_size = (local_vector_count + block_size - 1) / block_size;
+    
+    // Step 3: Initialize index array with global vector IDs
+    nvtxRangePush("Initialize indices");
+    thrust::device_vector<uint64_t> indices(local_vector_count);
+    thrust::sequence(indices.begin(), indices.end(), gpu_vector_offset);
+    nvtxRangePop();
+    // Step 4: Apply Feistel bijection to vector indices
+    thrust::default_random_engine rng(42);
+    random_bijection<uint64_t> bijection(global_vector_count, rng);
 
-  // 1. Exchange rects
-  auto global_rects = create_buffer<int64_t>(num_ranks * DIM * 2, Memory::Kind::GPU_FB_MEM);
-  legate::Rect<DIM> global_rects_host[num_ranks];
-  auto rect_device = create_buffer<int64_t>(DIM * 2, Memory::Kind::GPU_FB_MEM);
-  cudaMemcpy((legate::Rect<DIM>*)rect_device.ptr(0), &rect, sizeof(rect), cudaMemcpyHostToDevice);
-  
-  CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(global_rects.ptr(0), 0, 
-  num_ranks * DIM * 2 * sizeof(int64_t), stream));
-  CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(rect_device.ptr(0), 0, 
-  DIM * 2 * sizeof(int64_t), stream));
+    apply_bijection_kernel<<<grid_size, block_size, 0, stream>>>(
+      thrust::raw_pointer_cast(indices.data()), local_vector_count, bijection);
+        
+    
+    
+    
+    // Step 5: Compute send histogram for vectors
+    thrust::device_vector<unsigned int> send_histo(total_gpus, 0);
+    thrust::device_vector<unsigned int> counters(total_gpus, 0);
+    cudaStreamSynchronize(stream);
 
-  cudaStreamSynchronize(stream);
-  CHECK_NCCL(ncclAllGather((void*)rect_device.ptr(0), 
-  (void*)global_rects.ptr(0), 
-  sizeof(rect), 
-  ncclInt8, 
-  *nccl_comm, 
-  stream));
-  cudaStreamSynchronize(stream);
-  cudaMemcpy((void*)global_rects_host, (void*)global_rects.ptr(0), num_ranks * DIM * 2 * sizeof(int64_t), cudaMemcpyDeviceToHost);
+    compute_send_histogram_2d_kernel<<<grid_size, block_size, 0, stream>>>(
+        thrust::raw_pointer_cast(indices.data()),
+        thrust::raw_pointer_cast(send_histo.data()), local_vector_count, total_gpus);
+    cudaStreamSynchronize(stream);
+    
+    // Compute send offsets
+    thrust::device_vector<unsigned int> send_offsets(total_gpus);
+    thrust::exclusive_scan(send_histo.begin(), send_histo.end(), send_offsets.begin());
+    thrust::host_vector<unsigned int> h_send_offsets(total_gpus);
+    thrust::copy_n(send_offsets.begin(), total_gpus, h_send_offsets.begin());
 
-  // 2. Verify whether regular tiling
-  bool is_regular_tiling = true;
-  int hi = domain.hi()[0];
-  int lo = domain.lo()[0];
-  for(int i = 0; i < hi[0] - lo[0] + 1; i++){
-    DomainPoint index_point_i = index_point;
-    index_point_i[0] = lo[0] + i;
-    rank_i = get_rank(domain, index_point_i);
-    Rect<DIM> rect_i = global_rects_host[rank_i];
-    for(int j = i + 1; j < hi[0] - lo[0] + 1; j++){
-      DomainPoint index_point_j = index_point;
-      index_point_j[0] = lo[0] + j;
-      rank_j = get_rank(domain, index_point_j);
-      Rect<DIM> rect_j = global_rects_host[rank_j];
+    // Pack send data (vectors)
+    size_t total_send_vectors = thrust::reduce(send_histo.begin(), send_histo.end());
+    thrust::device_vector<DataType> send_data(total_send_vectors * vector_length);
+    thrust::device_vector<uint64_t> send_indices(total_send_vectors);
+    cudaStreamSynchronize(stream);
+    thrust::fill(counters.begin(), counters.end(), 0);
+    pack_send_data_2d_kernel<<<grid_size, block_size, 0, stream>>>(
+        local_data, thrust::raw_pointer_cast(indices.data()), local_vector_count,
+        thrust::raw_pointer_cast(send_data.data()), thrust::raw_pointer_cast(send_indices.data()),
+        thrust::raw_pointer_cast(send_offsets.data()), thrust::raw_pointer_cast(counters.data()),
+        local_vector_count, total_gpus, vector_length);
+    
 
-      for(int d = 1; d < DIM; d++){
-        if(rect_i.lo[d] != rect_j.lo[d] || rect_i.hi[d] != rect_j.hi[d]){
-          is_regular_tiling = false;
-          break;
+    // Step 6: All2all exchange histograms
+    thrust::host_vector<unsigned int> h_recv_histo(total_gpus);
+    thrust::device_vector<unsigned int> recv_histo(total_gpus);
+    thrust::host_vector<unsigned int> h_send_histo = send_histo;
+
+
+    thrust::copy_n(send_histo.begin(), total_gpus, h_send_histo.begin());
+    
+    // ///////////////////////////////////////////////////
+    // Method 2: Use Feistel backward to calculate receive histogram (2D)
+    nvtxRangePush("Compute receive histogram (bidirectional)");
+    thrust::device_vector<uint64_t> recv_indices(local_vector_count);
+    thrust::sequence(recv_indices.begin(), recv_indices.end(), gpu_vector_offset);
+    
+    thrust::default_random_engine rng_1(42);
+    random_bijection<uint64_t> bijection_1(global_vector_count, rng_1);
+    cudaStreamSynchronize(stream);
+    apply_inverse_bijection_kernel<<<grid_size, block_size, 0, stream>>>(
+    thrust::raw_pointer_cast(recv_indices.data()), local_vector_count, bijection_1);
+    
+    // Compute histogram from inverse indices
+    thrust::fill(recv_histo.begin(), recv_histo.end(), 0);
+    cudaStreamSynchronize(stream);
+    compute_send_histogram_2d_kernel<<<grid_size, block_size, 0, stream>>>(
+    thrust::raw_pointer_cast(recv_indices.data()),
+    thrust::raw_pointer_cast(recv_histo.data()), local_vector_count, total_gpus);
+    cudaStreamSynchronize(stream);
+    thrust::copy_n(recv_histo.begin(), total_gpus, h_recv_histo.begin());
+    nvtxRangePop();
+
+    
+    // Step 7: Create recv buffers for vectors
+    size_t total_recv_vectors = thrust::reduce(recv_histo.begin(), recv_histo.end());
+    thrust::device_vector<DataType> recv_data(total_recv_vectors * vector_length);
+    
+    thrust::device_vector<size_t> recv_offsets(total_gpus);
+    thrust::host_vector<size_t> h_recv_offsets(total_gpus);
+    
+    thrust::exclusive_scan(recv_histo.begin(), recv_histo.end(), recv_offsets.begin());
+    thrust::copy_n(recv_offsets.begin(), total_gpus, h_recv_offsets.begin());
+
+    // Step 8: All2all distribute data
+    nvtxRangePush("NCCL_ALL2ALL");
+    CHECK_NCCL(ncclGroupStart());
+    for (size_t i = 0; i < total_gpus; ++i) {
+        if (h_send_histo[i] > 0) {
+            CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(send_data.data()) + h_send_offsets[i] * vector_length,
+                    h_send_histo[i] * vector_length, ncclInt64, i, *nccl_comm, stream));
         }
-      }
-      if(!is_regular_tiling){
-        break;
-      }
+        
+        if (h_recv_histo[i] > 0) {
+            CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(recv_data.data()) + h_recv_offsets[i] * vector_length,
+                    h_recv_histo[i] * vector_length, ncclInt64, i, *nccl_comm, stream));
+        }
     }
-  }
-
-  if (is_regular_tiling){
-    // 3a. Call Regular Tiling
-    shuffle_regular_tiling(local_data, rect, global_vector_count, rank, num_ranks, nccl_comm, stream);
-  } else {
-    // 3b. Call Fancy Indexing
-    shuffle_fancy_indexing(local_data, rect, global_vector_count, rank, num_ranks, nccl_comm, stream);
-  }
-
+    CHECK_NCCL(ncclGroupEnd());
+    nvtxRangePop();
+    // Step 9: Unpack to final positions (vectors)
+    const size_t unpack_grid_size = (total_recv_vectors + block_size - 1) / block_size;
+    cudaStreamSynchronize(stream);
+    unpack_recv_data_2d_kernel<<<unpack_grid_size, block_size, 0, stream>>>(
+        thrust::raw_pointer_cast(recv_data.data()), thrust::raw_pointer_cast(recv_indices.data()),
+        total_recv_vectors, local_data, local_vector_count, gpu_vector_offset, vector_length);
+    
+    cudaStreamSynchronize(stream);
+    nvtxRangePop();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
 
 
@@ -447,8 +510,6 @@ struct ShuffleImplBody<VariantKind::GPU, CODE, DIM> {
     const bool is_index_space,
     const size_t rank,
     const size_t num_ranks,
-    const Domain domain,
-    const DomainPoint index_point,
     const size_t num_shuffle_ranks,
     const std::vector<comm::Communicator>& comms)
   {
@@ -471,14 +532,12 @@ struct ShuffleImplBody<VariantKind::GPU, CODE, DIM> {
       
       VAL* data_ptr = input_output.ptr(rect.lo);
 
-      global_shuffle_bidirectional<VAL, DIM>(
+      global_shuffle_bidirectional<VAL>(
           data_ptr,
           rect,
           vector_count,
           rank,
           num_ranks,
-          domain,
-          index_point,
           comms[0].get<ncclComm_t*>(),
           stream
       );
@@ -510,8 +569,7 @@ struct ShuffleImpl {
         args.is_index_space,
         args.local_rank,
         args.num_ranks,
-        args.domain,
-        args.index_point,
+        args.num_shuffle_ranks,
         comms
     );
   }
@@ -541,8 +599,7 @@ static void shuffle_template(TaskContext& context)
   size_t d2 = 1;
   for (size_t i = 1; i < shape_span.size(); ++i) d2 *= shape_span[i];
 
-  Domain domain           = context.get_launch_domain();
-  DomainPoint index_point = context.get_task_index();
+  auto domain           = context.get_launch_domain();
   size_t local_rank     = get_rank(domain, context.get_task_index());
   size_t num_ranks      = domain.get_volume();
   size_t num_shuffle_ranks = domain.hi()[0] - domain.lo()[0] + 1;
@@ -553,9 +610,8 @@ static void shuffle_template(TaskContext& context)
     d2,
     !context.is_single_task(),
     local_rank,
-    domain,
-    index_point,
     num_ranks,
+    num_shuffle_ranks
   };
   
   double_dispatch(

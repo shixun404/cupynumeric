@@ -402,14 +402,6 @@ void global_shuffle_bidirectional(
     cudaStreamSynchronize(stream);
     apply_inverse_bijection_kernel<<<grid_size, block_size, 0, stream>>>(
     thrust::raw_pointer_cast(recv_indices.data()), local_vector_count, bijection_1);
-
-        
-      // // Debug first few indices
-      // for(int i = 0; i < std::min(5, (int)local_vector_count); i++) {
-      //   uint64_t value = recv_indices[i];  // This forces a device-to-host copy
-      //   printf("Rank %d, After inverse bijection indices[%d]: %zu\n", rank_id, i, value);
-      // }
-      // printf("sizeof(DataType): %zu\n", sizeof(DataType));
     
     // Compute histogram from inverse indices
     thrust::fill(recv_histo.begin(), recv_histo.end(), 0);

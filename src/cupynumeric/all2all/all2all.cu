@@ -92,9 +92,28 @@ __global__ void pack_send_data_kernel(const DataType* data, legate::Point<DIM_in
       legate::Point<DIM_input> point = indices[idx];
       int data_idx = 0;
       for(int d = 0; d < DIM_input - 1; d++){
-        data_idx += (point[d] - input_rect.lo[d]) * (input_rect.hi[d + 1] - input_rect.lo[d + 1] + 1);
+        data_idx += (point[d] - input_rect.lo[d]);
+        data_idx *= (input_rect.hi[d + 1] - input_rect.lo[d + 1] + 1);
       }
       data_idx += (point[DIM_input - 1] - input_rect.lo[DIM_input - 1]);
+      send_data[idx] = data[data_idx];
+    }
+}
+
+// Pack send data kernel for 2D (vectors)
+template<typename DataType, int DIM_input>
+__global__ void pack_send_data_kernel_single_rank(const DataType* data, const legate::Point<DIM_input>* indices, size_t request_count,
+                                          DataType* send_data, legate::Rect<DIM_input> input_rect) {
+    size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (idx < request_count) {
+      legate::Point<DIM_input> point = indices[idx];
+      int data_idx = 0;
+      for(int d = 0; d < DIM_input - 1; d++){
+        data_idx += (point[d] - input_rect.lo[d]);
+        data_idx *= (input_rect.hi[d + 1] - input_rect.lo[d + 1] + 1);
+      }
+      data_idx += (point[DIM_input - 1] - input_rect.lo[DIM_input - 1]);
+      
       send_data[idx] = data[data_idx];
     }
 }
@@ -245,15 +264,8 @@ cudaStreamSynchronize(stream);
   const size_t grid_size = (local_index_count + block_size - 1) / block_size;
   
   // ===== Round 0: Exchange rects =====
-  // ToDO: Replace with AllGather
   cudaStreamSynchronize(stream);
   nvtxRangePushA("Exchange rects");
-  // CHECK_NCCL(ncclGroupStart());
-  // for(int i = 0; i < num_ranks; i++){
-  //   CHECK_NCCL(ncclSend((void*)input_rect_device.ptr(0), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
-  //   CHECK_NCCL(ncclRecv((void*)global_rects.ptr(i * DIM_input * 2), sizeof(input_rect), ncclInt8, i, *nccl_comm, stream));
-  // }
-  // CHECK_NCCL(ncclGroupEnd());
   CHECK_NCCL(ncclAllGather((void*)input_rect_device.ptr(0), 
                          (void*)global_rects.ptr(0), 
                          sizeof(input_rect), 
@@ -263,15 +275,6 @@ cudaStreamSynchronize(stream);
   cudaStreamSynchronize(stream);
   nvtxRangePop();
 
-  // if(rank_id == 0){
-  //   for(int i = 0; i < num_ranks; i++){
-  //     legate::Rect<DIM_input> rect;
-  //     cudaMemcpy(&rect, global_rects.ptr(i * DIM_input * 2), sizeof(input_rect), cudaMemcpyDeviceToHost);
-  //     for(int j = 0; j < DIM_input; j++){
-  //       printf("rank %d, global_rects[%d][%d]: %d, %d\n", rank_id, i, j, rect.lo[j], rect.hi[j]);
-  //     }
-  //   }
-  // }
   
   // ===== Round 1: Compute request size histogram =====
   nvtxRangePushA("Compute request size histogram");
@@ -280,17 +283,7 @@ cudaStreamSynchronize(stream);
                 (legate::Rect<DIM_input>*)(global_rects.ptr(0)), 
                 num_ranks, local_index_count);
   nvtxRangePop();
-  // if(rank_id == 0) {
-  // printf("round1_send_histo: ");
-  // std::string send_histo_str = "";
-  // for(size_t i = 0; i < num_ranks; i++){
-  //   // unsigned int tmp = *(round1_send_histo.ptr(i));
-  //   unsigned int tmp = 0;
-  //   cudaMemcpy(&tmp, round1_send_histo.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
-  //   send_histo_str += std::to_string(tmp) + " ";
-  // }
-  // printf("%s\n", send_histo_str.c_str());
-  // }
+
   nvtxRangePushA("Exclusive scan");
   cudaStreamSynchronize(stream);
     thrust::exclusive_scan(DEFAULT_POLICY.on(stream), 
@@ -298,14 +291,7 @@ cudaStreamSynchronize(stream);
                           ((unsigned int*)round1_send_histo.ptr(0)) + num_ranks, round1_send_offsets.ptr(0));
   cudaDeviceSynchronize();
   nvtxRangePop();
-  // if(rank_id == 0){
-  //   for(int i = 0; i < num_ranks; i++){
-  //     unsigned int tmp = 0;
-  //     cudaMemcpy(&tmp, round1_send_offsets.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
-  //     printf("round1_send_offsets[%d]: %d\n", i, tmp);
-  //   }
-  // }
-  
+
 
   // ===== Round 1: All2All exchange request size histograms =====
   nvtxRangePushA("All2All exchange request size histograms");
@@ -365,6 +351,7 @@ cudaStreamSynchronize(stream);
     total_indices_to_receive * sizeof(DataType), stream));
   pack_send_data_kernel<DataType, DIM_input><<<grid_size, block_size, 0, stream>>>(input_ptr, (legate::Point<DIM_input>*)round2_recv_indices.ptr(0),
   total_indices_to_receive, round3_send_data.ptr(0), input_rect);
+
   cudaStreamSynchronize(stream);
   nvtxRangePop();
   // ===== Round 3: All2All exchange actual data =====
@@ -395,6 +382,34 @@ cudaStreamSynchronize(stream);
     num_requests, round3_recv_data.ptr(0));
   cudaStreamSynchronize(stream);
   nvtxRangePop();
+}
+
+template<typename DataType, int DIM_input, int DIM_output>
+void global_all2all_single_rank(
+  const DataType* input_ptr, 
+  const legate::Point<DIM_input>* index_ptr, 
+  DataType* output_ptr, 
+  const legate::Rect<DIM_input> input_rect,
+  const legate::Rect<DIM_output> index_rect,
+  const legate::Rect<DIM_output> output_rect,
+  int rank_id, 
+  int num_ranks,
+  cudaStream_t stream
+) {
+cudaDeviceSynchronize();
+cudaStreamSynchronize(stream);
+
+  size_t local_input_count = get_volume<DIM_input>(input_rect);
+  size_t local_index_count = get_volume<DIM_output>(index_rect);
+  size_t local_output_count = get_volume<DIM_output>(output_rect);
+  
+  size_t num_requests = local_index_count;
+  const size_t block_size = 256;
+  const size_t grid_size = (local_index_count + block_size - 1) / block_size;
+  if(local_index_count > 0){
+  pack_send_data_kernel_single_rank<DataType, DIM_input><<<grid_size, block_size, 0, stream>>>(input_ptr, index_ptr,
+    local_index_count, output_ptr, input_rect);
+  }
 }
  
  template <Type::Code CODE, int32_t DIM_input, int32_t DIM_output>
@@ -463,22 +478,33 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM_input, DIM_output> {
      auto stream = get_cached_stream();
  
      bool need_distributed_all2all = (num_ranks > 1) && is_index_space;
-   
+     const VAL* input_ptr = input.ptr(input_rect.lo);
+     const INDEX_VAL* index_ptr = index.ptr(index_rect.lo);
+     VAL* output_ptr = output.ptr(output_rect.lo);
      // For local all2all (single node or within a node)
      if (!need_distributed_all2all) {
-     
+      //  printf("local_all2all\n"); 
            // TODO: Implement key-sort local all2all
-           assert(false && "Key-sort local all2all not yet implemented");
+           global_all2all_single_rank<VAL, DIM_input, DIM_output>(
+               input_ptr,
+               index_ptr,
+               output_ptr,
+               input_rect,
+               index_rect,
+               output_rect,
+               rank,
+               num_ranks,
+               stream
+           );
+          //  assert(false && "Key-sort local all2all not yet implemented");
      
      } else {
        // Handle distributed all2all
+      //  printf("num_ranks: %d\n", num_ranks);
        
-       
-        const VAL* input_ptr = input.ptr(input_rect.lo);
-         const INDEX_VAL* index_ptr = index.ptr(index_rect.lo);
-         VAL* output_ptr = output.ptr(output_rect.lo);
          nvtxRangePushA("global_all2all");
       cudaDeviceSynchronize();
+      // printf("rank_id: %d, num_ranks: %d, comms size: %d\n", rank, num_ranks, comms.size());
        global_all2all<VAL, DIM_input, DIM_output>(
            input_ptr,
            index_ptr,
@@ -488,7 +514,6 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM_input, DIM_output> {
            output_rect,
            rank,
            num_ranks,
-          //  input_dim,
            comms[0].get<ncclComm_t*>(),
            stream
        );
@@ -497,6 +522,7 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM_input, DIM_output> {
      }
      cudaDeviceSynchronize();
      CUPYNUMERIC_CHECK_CUDA_STREAM(stream);
+    //  printf("end global_all2all\n");
    }
  };
 
@@ -521,27 +547,13 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM_input, DIM_output> {
      if (input_volume == 0 && index_volume == 0 && output_volume == 0) {
        return;
      }
-    //  printf("DIM_input: %d, DIM_output: %d\n", DIM_input, DIM_output);
-    //  auto input_shape_span = context.scalar(0).values<int64_t>();
-    //  for (size_t i = 0; i < input_shape_span.size(); ++i) {
-    //   printf("input shape_span[%d]: %d\n", i, int(input_shape_span[i]));
-    //  }
 
-    //  auto index_shape_span = context.scalar(1).values<int64_t>();
-    //  for (size_t i = 0; i < index_shape_span.size(); ++i) {
-    //   printf("index shape_span[%d]: %d\n", i, int(index_shape_span[i]));
-    //  }
      
      for (int i = 0; i < DIM_input; i++) {  
       auto hi          = rect_input.hi;
      auto lo          = rect_input.lo;
-      // printf("num_ranks %d, rank %d, rect_input.hi()[%d]: %d, rect_input.lo()[%d]: %d\n", args.num_ranks, args.rank_id, i, hi[i], i, lo[i]);
      }
-    //  for (int i = 0; i < DIM_output; i++) {
-    //   auto hi          = rect_output.hi;
-    //   auto lo          = rect_output.lo;
-    //   printf("rect_output.hi()[%d]: %d, rect_output.lo()[%d]: %d\n", i, hi[i], i, lo[i]);
-    //  }
+
      All2AllImplBody<KIND, CODE, DIM_input, DIM_output>()(
          context,
          args.input,
@@ -574,12 +586,29 @@ struct All2AllImpl {
   {
    // Custom type dispatch to only compile int64 type for faster compilation
    auto input_code = args.input.code();
+   auto output_code = args.output.code();
+   auto index_code = args.index_array.code();
+  //  printf("input_code: %d, output_code: %d, index_code: %d\n", input_code, output_code, index_code);
+  //  exit(0);
    switch (input_code) {
-     case legate::Type::Code::FLOAT32:
-       All2AllImpl_type<KIND, DIM_input, DIM_output>{}.template operator()<legate::Type::Code::FLOAT32>(args, context, context.communicators());
+    //  case legate::Type::Code::FLOAT32:
+    //    printf("FLOAT32\n");
+    //    All2AllImpl_type<KIND, DIM_input, DIM_output>{}.template operator()<legate::Type::Code::FLOAT32>(args, context, context.communicators());
+    //    break;
+     case legate::Type::Code::FLOAT64:
+      //  printf("FLOAT64\n");
+       All2AllImpl_type<KIND, DIM_input, DIM_output>{}.template operator()<legate::Type::Code::FLOAT64>(args, context, context.communicators());
        break;
+     case legate::Type::Code::INT64:
+      //  printf("INT64\n");
+       All2AllImpl_type<KIND, DIM_input, DIM_output>{}.template operator()<legate::Type::Code::INT64>(args, context, context.communicators());
+       break;
+    //  case legate::Type::Code::INT32:
+    //    printf("INT32\n");
+    //    All2AllImpl_type<KIND, DIM_input, DIM_output>{}.template operator()<legate::Type::Code::INT32>(args, context, context.communicators());
+    //    break;
      default:
-       printf("Unsupported data type code: %d. Only INT64 is supported for fast compilation.\n", (int)input_code);
+       printf("Unsupported data type code: %d. Only INT64&FLOAT64 is supported for fast compilation.\n", (int)input_code);
        assert(false && "Only INT64 data type is supported in this build");
        break;
    }
@@ -624,10 +653,10 @@ struct All2AllImpl {
      num_ranks
    };
   
-   auto dim_input = args.input.dim();
-   auto dim_output = args.output.dim();
+   auto dim_input = std::max(args.input.dim(), 1);
+   auto dim_output = std::max(args.output.dim(), 1);
 
-  
+  // printf("dim_input: %d, dim_output: %d\n", dim_input, dim_output);
   double_dispatch(
     dim_input, dim_output, All2AllImpl<KIND>{}, args, context, context.communicators());
  }

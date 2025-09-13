@@ -138,6 +138,7 @@ def test_zero_size(arr_ndim, idx_ndim, zero_dim):
     # print('arr_shape', arr_shape)
     np_arr = mk_deferred_array(np, arr_shape)
     num_arr = mk_deferred_array(num, arr_shape)
+    
     idx_shape = arr_shape[:idx_ndim]
     # print('arr_shape', arr_shape, 'idx_shape', idx_shape)
     val_shape = (
@@ -147,8 +148,6 @@ def test_zero_size(arr_ndim, idx_ndim, zero_dim):
     )
     np_idx = np.ones(idx_shape, dtype=np.bool_)
     num_idx = num.ones(idx_shape, dtype=np.bool_)
-    # print('arr_shape', arr_shape, 'idx_shape', idx_shape, 'np_idx', np_idx, 'np_arr', np_arr, 'np_arr[np_idx]', np_arr[np_idx])
-    # print('num_idx', num_idx)
     assert np.array_equal(np_arr[np_idx], num_arr[num_idx])
 
 
@@ -232,7 +231,6 @@ def test_future_stores():
     arr_num = num.array(arr_np)
     res_np = arr_np[index_np[3]]
     res_num = arr_num[index_num[3]]
-    print(arr_num, index_num, index_num[3], arr_num[index_num[3]])
     assert np.array_equal(res_np, res_num)
 
     # rhs is a future
@@ -676,7 +674,7 @@ def test():
     res = x[:, :, indx]
     res_num = x_num[:, :, indx_num]
     assert np.array_equal(res, res_num)
-
+    
     if LEGATE_MAX_DIM > 4:
         x = mk_seq_array(
             np,

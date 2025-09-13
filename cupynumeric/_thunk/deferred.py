@@ -933,7 +933,6 @@ class DeferredArray(NumPyThunk):
     def get_item(self, key: Any) -> NumPyThunk:
         # Check to see if this is advanced indexing or not
         if is_advanced_indexing(key):
-            print("Advanced indexing")
             # Create the indexing array
             (
                 copy_needed,
@@ -941,24 +940,6 @@ class DeferredArray(NumPyThunk):
                 index_array,
                 self,
             ) = self._create_indexing_array(key)
-
-            # print("=== INDEX ARRAY VALUES ===")
-            # try:
-            #     from cupynumeric.runtime import runtime
-            #     eager_array = runtime.to_eager_array(index_array)
-            #     numpy_values = eager_array.__numpy_array__()
-            #     print("numpy_values", numpy_values)
-            #     int64_data = numpy_values.view(dtype=np.int64)
-            #     points = int64_data.reshape(numpy_values.shape + (2,))
-            #     print(f"Index array shape: {numpy_values.shape}")
-            #     print(f"Point coordinates:")
-            #     for i in range(points.shape[0]):
-            #         for j in range(points.shape[1]):
-            #             for k in range(points.shape[2]):
-            #                 x, y = points[i, j, k]
-            #                 print(f"  [{i},{j},{k}]: Point({x}, {y})")
-            # except Exception as e:
-            #     print(f"Failed to parse index array: {e}")
 
             if copy_needed:
                 if rhs.base.has_scalar_storage:
@@ -980,38 +961,34 @@ class DeferredArray(NumPyThunk):
                         inputs=[self],
                     )
            
-                # legate_runtime.issue_gather(
-                #     result.base, rhs.base, index_array.base  # type: ignore
-                # )
-                # Add communicators if needed for distributed shuffle
-                
-                task = legate_runtime.create_auto_task(
-                    self.library, CuPyNumericOpCode.ALL2ALL
-                )
-
-                task.add_input(rhs.base)
-                task.add_input(index_array.base)
-                task.add_output(result.base)
-
-                # Add scalar arguments
-                task.add_scalar_arg(rhs.base.shape, (ty.int64,))   # total volume
-                task.add_scalar_arg(index_array.base.shape, (ty.int64,))   # total volume
-                task.add_scalar_arg(result.base.shape, (ty.int64,))   # total volume
-    
-
-                if runtime.num_gpus > 1:
-                    task.add_nccl_communicator()
-                elif runtime.num_gpus == 0 and runtime.num_procs > 1:
-                    task.add_cpu_communicator()
+                # Choose execution path based on hardware configuration
+                if runtime.num_gpus != 0:
+                # if True:
+                    # Multi-GPU distributed path using All2All
+                    task = legate_runtime.create_auto_task(
+                        self.library, CuPyNumericOpCode.ALL2ALL
+                    )
+                    task.add_input(rhs.base)
+                    task.add_input(index_array.base)
+                    task.add_output(result.base)
                     
-
-                task.execute()
+                    # Add scalar arguments
+                    task.add_scalar_arg(rhs.base.shape, (ty.int64,))
+                    task.add_scalar_arg(index_array.base.shape, (ty.int64,))
+                    task.add_scalar_arg(result.base.shape, (ty.int64,))
+                    
+                    task.add_nccl_communicator()
+                    task.execute()
+                else:
+                    # Single GPU or single CPU path using gather
+                    legate_runtime.issue_gather(
+                        result.base, rhs.base, index_array.base  # type: ignore
+                    )
 
             else:
                 return index_array
 
         else:
-            print("Not advanced indexing")
             result = self._get_view(key)
 
             if result.shape == ():

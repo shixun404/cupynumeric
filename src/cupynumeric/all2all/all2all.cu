@@ -257,8 +257,9 @@ cudaStreamSynchronize(stream);
 // for(int j = 0; j < DIM_output; j++){
 //   printf("rank %d, index_rect[%d]: %d, %d\n", rank_id, j, index_rect.lo[j], index_rect.hi[j]);
 // }
+// printf("rank %d, num_ranks: %d, num_requests: %ld\n", rank_id, num_ranks, num_requests);   
   if(num_requests > 0){
-    // printf("rank %d, num_ranks: %d, num_requests: %ld\n", rank_id, num_ranks, num_requests);   
+  
     // 初始化Round 2缓冲区
     CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(round2_send_indices.ptr(0), 0, 
     num_requests * DIM_input * sizeof(int64_t), stream));
@@ -598,9 +599,9 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM_input, DIM_output> {
      size_t index_volume = pitches_output.flatten(rect_index_array);
      size_t output_volume = pitches_output.flatten(rect_output);
      
-     if (input_volume == 0 && index_volume == 0 && output_volume == 0) {
-       return;
-     }
+    //  if (input_volume == 0 && index_volume == 0 && output_volume == 0) {
+    //    return;
+    //  }
 
      
      for (int i = 0; i < DIM_input; i++) {  

@@ -367,20 +367,20 @@ for(int j = 0; j < DIM_output; j++){
   nvtxRangePushA("All2All exchange request indices");
   CHECK_NCCL(ncclGroupStart());
   fflush(stdout);
-  for (size_t i = 0; i < num_ranks; ++i) {
+  for (int i = 0; i < num_ranks; ++i) {
       unsigned int indices_to_send_to_rank_i, send_offset_for_rank_i, indices_to_recv_from_rank_i, recv_offset_for_rank_i;
       cudaMemcpy(&indices_to_send_to_rank_i, round1_send_histo.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
       cudaMemcpy(&send_offset_for_rank_i, round1_send_offsets.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
       cudaMemcpy(&indices_to_recv_from_rank_i, round1_recv_histo.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
       cudaMemcpy(&recv_offset_for_rank_i, round1_recv_offsets.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
-      printf("All2All exchange request indices: rank %d, indices_to_send_to_rank_i[%d]: %u, send_offset_for_rank_i[%d]: %u, indices_to_recv_from_rank_i[%d]: %u, recv_offset_for_rank_i[%d]: %u\n", rank_id, i, indices_to_send_to_rank_i, i, send_offset_for_rank_i, indices_to_recv_from_rank_i, recv_offset_for_rank_i);
+      printf("All2All exchange request indices: rank %d, indices_to_send_to_rank_i[%d]: %u, send_offset_for_rank_i[%d]: %u, indices_to_recv_from_rank_i[%d]: %u, recv_offset_for_rank_i[%d]: %u\n", rank_id, i, indices_to_send_to_rank_i, i, send_offset_for_rank_i, i, indices_to_recv_from_rank_i, i, recv_offset_for_rank_i);
       if (indices_to_send_to_rank_i > 0) {
           CHECK_NCCL(ncclSend((void*)(round2_send_indices.ptr(send_offset_for_rank_i * DIM_input)),
             indices_to_send_to_rank_i * sizeof(legate::Point<DIM_input>), ncclInt8, i, *nccl_comm, stream));
       }
       
       if (indices_to_recv_from_rank_i > 0) {
-          CHECK_NCCL(ncclRecv(round2_recv_indices.ptr(recv_offset_for_rank_i * DIM_input),
+          CHECK_NCCL(ncclRecv(round2_recv_indices.ptr(recv_offset_for_rank_i),
                   indices_to_recv_from_rank_i * sizeof(legate::Point<DIM_input>), ncclInt8, i, *nccl_comm, stream));
       }
   }

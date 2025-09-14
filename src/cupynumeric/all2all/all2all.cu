@@ -80,7 +80,7 @@ __global__ void compute_send_histogram(const legate::Point<DIM_input>* indices,
           break;
         }
       }
-      printf("target_rank %d, idx %d, size %ld, point={%ld, %ld}\n", target_rank, idx, sizeof(legate::Point<DIM_input>), point[0], point[1]);
+      // printf("target_rank %d, idx %d, size %ld, point={%ld, %ld}\n", target_rank, idx, sizeof(legate::Point<DIM_input>), point[0], point[1]);
       atomicAdd(&send_histo[target_rank], is_in_rect);
     }
 }
@@ -99,7 +99,7 @@ __global__ void pack_send_data_kernel(const DataType* data, legate::Point<DIM_in
       }
       data_idx += (point[DIM_input - 1] - input_rect.lo[DIM_input - 1]);
       send_data[idx] = data[data_idx];
-      printf("idx %d, data_idx %d, send_data[%d] %ld\n", idx, data_idx, idx, send_data[idx]);
+      // printf("idx %d, data_idx %d, send_data[%d] %ld\n", idx, data_idx, idx, send_data[idx]);
     }
 }
 
@@ -126,7 +126,7 @@ __global__ void unpack_recv_data_kernel(DataType* data, unsigned int* request_in
                                           const DataType* recv_data) {
     int idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < request_count) {
-        printf("request_indices[%d]: %u, recv_data[%d]: %ld\n", idx, request_indices[idx], idx, recv_data[idx]);
+        // printf("request_indices[%d]: %u, recv_data[%d]: %ld\n", idx, request_indices[idx], idx, recv_data[idx]);
         data[request_indices[idx]] = recv_data[idx];
     }
 }
@@ -159,7 +159,7 @@ __global__ void pack_request_indices_kernel(const legate::Point<DIM_input>* indi
         size_t offset = send_offsets[target_rank] + pos;
         send_indices[offset] = indices[idx];
         request_indices[offset] = idx;
-        printf("pack_request_indices_kernel: idx %d, target_rank %d, indices[%d] = {%ld, %ld}\n", idx, target_rank, idx, indices[idx][0], indices[idx][1]);
+        // printf("pack_request_indices_kernel: idx %d, target_rank %d, indices[%d] = {%ld, %ld}\n", idx, target_rank, idx, indices[idx][0], indices[idx][1]);
       // }
     }
 }
@@ -292,9 +292,9 @@ cudaStreamSynchronize(stream);
 //   }
 // }
 
-for(int j = 0; j < DIM_output; j++){
-  printf("rank %d, index_rect[%d]: %d, %d\n", rank_id, j, index_rect.lo[j], index_rect.hi[j]);
-}
+// for(int j = 0; j < DIM_output; j++){
+//   printf("rank %d, index_rect[%d]: %d, %d\n", rank_id, j, index_rect.lo[j], index_rect.hi[j]);
+// }
   
   // ===== Round 1: Compute request size histogram =====
   nvtxRangePushA("Compute request size histogram");
@@ -373,7 +373,7 @@ for(int j = 0; j < DIM_output; j++){
       cudaMemcpy(&send_offset_for_rank_i, round1_send_offsets.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
       cudaMemcpy(&indices_to_recv_from_rank_i, round1_recv_histo.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
       cudaMemcpy(&recv_offset_for_rank_i, round1_recv_offsets.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
-      printf("All2All exchange request indices: rank %d, indices_to_send_to_rank_i[%d]: %u, send_offset_for_rank_i[%d]: %u, indices_to_recv_from_rank_i[%d]: %u, recv_offset_for_rank_i[%d]: %u\n", rank_id, i, indices_to_send_to_rank_i, i, send_offset_for_rank_i, i, indices_to_recv_from_rank_i, i, recv_offset_for_rank_i);
+      // printf("All2All exchange request indices: rank %d, indices_to_send_to_rank_i[%d]: %u, send_offset_for_rank_i[%d]: %u, indices_to_recv_from_rank_i[%d]: %u, recv_offset_for_rank_i[%d]: %u\n", rank_id, i, indices_to_send_to_rank_i, i, send_offset_for_rank_i, i, indices_to_recv_from_rank_i, i, recv_offset_for_rank_i);
       if (indices_to_send_to_rank_i > 0) {
           CHECK_NCCL(ncclSend((void*)(round2_send_indices.ptr(send_offset_for_rank_i * DIM_input)),
             indices_to_send_to_rank_i * sizeof(legate::Point<DIM_input>), ncclInt8, i, *nccl_comm, stream));

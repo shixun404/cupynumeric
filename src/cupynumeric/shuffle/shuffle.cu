@@ -52,27 +52,25 @@
 namespace cupynumeric {
 
 using namespace legate;
-/////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////// CUDA Kernels (from global_shuffle.cu)
-/////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Global Shuffle Implementation for Multi-Node Multi-GPU
-// Single file implementation under 500 lines
-
-// 1. Kernel to initialize a cuRAND state for each thread
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////
 
+static int get_rank(Domain domain, DomainPoint index_point)
+{
+  int domain_index = 0;
+  auto hi          = domain.hi();
+  auto lo          = domain.lo();
+  for (int i = 0; i < domain.get_dim(); ++i) {
+    if (i > 0) {
+      domain_index *= hi[i] - lo[i] + 1;
+    }
+    domain_index += index_point[i];
+  }
+  return domain_index;
+}
 
 class feistel_bijection {
 public:
@@ -220,11 +218,13 @@ __global__ void apply_inverse_bijection_kernel(IndexType* indices, size_t count,
 }
 
 // Compute send histogram kernel for 2D (vectors)
-template<typename DIM_input>
-__global__ void compute_send_histogram_2d_kernel(const IndexType* indices, 
+template<int DIM_input>
+__global__ void compute_send_histogram(const uint64_t* indices, 
                                                  unsigned int* send_histo, 
                                                  legate::Rect<DIM_input>* rect_buf, 
+                                                 int* shuffle_ranks,
                                                  size_t local_volume,
+                                                 int rank_id,
                                                  size_t num_ranks) {
     size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < local_volume) {
@@ -236,7 +236,7 @@ __global__ void compute_send_histogram_2d_kernel(const IndexType* indices,
         point[d] = rect_buf[rank_id].lo[d] + (data_idx % (rect_buf[rank_id].hi[d] - rect_buf[rank_id].lo[d] + 1));
         data_idx /= (rect_buf[target_rank].hi[d] - rect_buf[target_rank].lo[d] + 1);
       }
-      point[0] = indices[(data_idx % (rect_buf[rank_id].hi[d] - rect_buf[rank_id].lo[d] + 1))];
+      point[0] = indices[(data_idx % (rect_buf[rank_id].hi[0] - rect_buf[rank_id].lo[0] + 1))];
       
 
       for(; target_rank < num_ranks; target_rank++){
@@ -255,68 +255,188 @@ __global__ void compute_send_histogram_2d_kernel(const IndexType* indices,
     }
 }
 
-// Pack send data kernel for 2D (vectors)
-template<typename DataType, int DIM_input>
-__global__ void pack_send_data_2d_kernel(const DataType* data, const IndexType* indices, legate::Rect<DIM_input>* rect_buf, size_t local_volume,
-                                          DataType* send_data, IndexType* send_indices,
-                                          unsigned int* send_offsets, unsigned int* counters,
-                                          size_t num_ranks, int rank_id) {
-    size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx < local_volume) {
-      int target_rank = 0;
-      int is_in_rect = 1;
+// // Pack send data kernel for 2D (vectors)
+// template<typename DataType, int DIM_input>
+// __global__ void pack_send_data_2d_kernel(const DataType* data, const IndexType* indices, legate::Rect<DIM_input>* rect_buf, size_t local_volume,
+//                                           DataType* send_data, IndexType* send_indices,
+//                                           unsigned int* send_offsets, unsigned int* counters,
+//                                           size_t num_ranks, int rank_id) {
+//     size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
+//     if (idx < local_volume) {
+//       int target_rank = 0;
+//       int is_in_rect = 1;
       
-      legate::Point<DIM_input> point;
-      int data_idx = idx;
-      for(int d = DIM_input - 1; d > 0; d--){
-        point[d] = rect_buf[rank_id].lo[d] + (data_idx % (rect_buf[rank_id].hi[d] - rect_buf[rank_id].lo[d] + 1));
-        data_idx /= (rect_buf[target_rank].hi[d] - rect_buf[target_rank].lo[d] + 1);
-      }
-      point[0] = indices[(data_idx % (rect_buf[rank_id].hi[d] - rect_buf[rank_id].lo[d] + 1))];
+//       legate::Point<DIM_input> point;
+//       int data_idx = idx;
+//       for(int d = DIM_input - 1; d > 0; d--){
+//         point[d] = rect_buf[rank_id].lo[d] + (data_idx % (rect_buf[rank_id].hi[d] - rect_buf[rank_id].lo[d] + 1));
+//         data_idx /= (rect_buf[target_rank].hi[d] - rect_buf[target_rank].lo[d] + 1);
+//       }
+//       point[0] = indices[(data_idx % (rect_buf[rank_id].hi[d] - rect_buf[rank_id].lo[d] + 1))];
       
-      for(; target_rank < num_ranks; target_rank++){
-        is_in_rect = 1;
-        for(int d = 0; d < DIM_input; d++){
-          if(rect_buf[target_rank].lo[d] > point[d] || rect_buf[target_rank].hi[d] < point[d]){
-            is_in_rect = 0;
-            break;
-          }
-        }
-        if(is_in_rect){
-          break;
-        }
-      }
-      size_t pos = atomicAdd(&counters[target_rank], 1);
-      size_t offset = send_offsets[target_rank] + pos;
-      send_data[idx] = data[idx];
-      send_indices[offset] = indices[idx];
+//       for(; target_rank < num_ranks; target_rank++){
+//         is_in_rect = 1;
+//         for(int d = 0; d < DIM_input; d++){
+//           if(rect_buf[target_rank].lo[d] > point[d] || rect_buf[target_rank].hi[d] < point[d]){
+//             is_in_rect = 0;
+//             break;
+//           }
+//         }
+//         if(is_in_rect){
+//           break;
+//         }
+//       }
+//       size_t pos = atomicAdd(&counters[target_rank], 1);
+//       size_t offset = send_offsets[target_rank] + pos;
+//       send_data[idx] = data[idx];
+//       send_indices[offset] = indices[idx];
     
-    }
-}
+//     }
+// }
 
-// Unpack received data kernel for 2D (vectors)
-template<typename DataType, typename IndexType>
-__global__ void unpack_recv_data_2d_kernel(const DataType* recv_data, const IndexType* recv_indices,
-                                           size_t local_volume, DataType* output,
-                                           size_t gpu_vector_offset, size_t vector_length) {
-    size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
-    if (idx < vector_count) {
-        IndexType global_vector_idx = recv_indices[idx];
-        legate::Point<DIM_input> point;
-        int data_idx = idx;
-        for(int d = DIM_input - 1; d > 0; d--){
-          point[d] = rect_buf[rank_id].lo[d] + (data_idx % (rect_buf[rank_id].hi[d] - rect_buf[rank_id].lo[d] + 1));
-          data_idx /= (rect_buf[target_rank].hi[d] - rect_buf[target_rank].lo[d] + 1);
-        }
-        point[0] = recv_indices[(data_idx % (rect_buf[rank_id].hi[d] - rect_buf[rank_id].lo[d] + 1))];
+// // Unpack received data kernel for 2D (vectors)
+// template<typename DataType, typename IndexType>
+// __global__ void unpack_recv_data_2d_kernel(const DataType* recv_data, const IndexType* recv_indices,
+//                                            size_t local_volume, DataType* output,
+//                                            size_t gpu_vector_offset, size_t vector_length) {
+//     size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
+//     if (idx < vector_count) {
+//         IndexType global_vector_idx = recv_indices[idx];
+//         legate::Point<DIM_input> point;
+//         int data_idx = idx;
+//         for(int d = DIM_input - 1; d > 0; d--){
+//           point[d] = rect_buf[rank_id].lo[d] + (data_idx % (rect_buf[rank_id].hi[d] - rect_buf[rank_id].lo[d] + 1));
+//           data_idx /= (rect_buf[target_rank].hi[d] - rect_buf[target_rank].lo[d] + 1);
+//         }
+//         point[0] = recv_indices[(data_idx % (rect_buf[rank_id].hi[d] - rect_buf[rank_id].lo[d] + 1))];
       
 
-        size_t local_vector_idx = global_vector_idx - gpu_vector_offset;
-        for (size_t v = 0; v < vector_length; v++) {
-            output[local_vector_idx * vector_length + v] = recv_data[idx * vector_length + v];
-        }
+//         size_t local_vector_idx = global_vector_idx - gpu_vector_offset;
+//         for (size_t v = 0; v < vector_length; v++) {
+//             output[local_vector_idx * vector_length + v] = recv_data[idx * vector_length + v];
+//         }
+//     }
+// }
+
+template<typename DataType, int DIM>
+void shuffle_regular_tiling(
+  DataType* local_data, 
+  thrust::host_vector<legate::Rect<DIM>> global_rects_host,
+  size_t global_vector_count, // First dimension size, global
+  int rank, 
+  int num_ranks,
+  const Domain domain,
+  const DomainPoint index_point,
+  std::vector<int> shuffle_ranks,
+  ncclComm_t* nccl_comm, 
+  cudaStream_t stream
+)
+{
+  // 0. Initilization
+  // First dimension size, local
+  size_t local_vector_count = global_rects_host[rank].hi[0] - global_rects_host[rank].lo[0] + 1;
+  
+  // Kernel parameters
+  const size_t block_size = 256;
+  const size_t grid_size = (local_vector_count + block_size - 1) / block_size;
+
+  // First dimension rank
+  int first_dimension_rank = domain.hi()[0] - domain.lo()[0] + 1;
+  
+    
+  // Global rects device
+  auto global_rects = legate::create_buffer<legate::Rect<DIM>>(num_ranks, Memory::Kind::GPU_FB_MEM);
+  auto shuffle_ranks_device = legate::create_buffer<int>(first_dimension_rank, Memory::Kind::GPU_FB_MEM);
+  
+  cudaMemcpy(global_rects.ptr(0), thrust::raw_pointer_cast(global_rects_host.data()), num_ranks * sizeof(legate::Rect<DIM>), cudaMemcpyHostToDevice);
+  cudaMemcpy(shuffle_ranks_device.ptr(0), shuffle_ranks.data(), first_dimension_rank * sizeof(int), cudaMemcpyHostToDevice);
+  
+  
+  // Bijection object 
+  thrust::device_vector<uint64_t> indices(local_vector_count);
+  thrust::host_vector<uint64_t> h_indices(local_vector_count);
+  thrust::default_random_engine rng(42);
+  random_bijection<uint64_t> bijection(global_vector_count, rng);
+
+  thrust::sequence(indices.begin(), indices.end(), global_rects_host[rank].lo[0]);
+  apply_bijection_kernel<<<grid_size, block_size, 0, stream>>>(
+    thrust::raw_pointer_cast(indices.data()), local_vector_count, bijection);
+
+  // Product of other dimensions
+  int vector_length = 1;
+  for(int i = 1; i < DIM; i++){
+    vector_length *= global_rects_host[rank].hi[i] - global_rects_host[rank].lo[i] + 1;
+  }
+
+  // Buffer:
+  // Send indices array: first dimension only
+  thrust::device_vector<uint64_t> send_indices(local_vector_count);
+  thrust::host_vector<uint64_t> h_send_indices(local_vector_count);
+  // Recv indices array: first dimension only
+  thrust::device_vector<uint64_t> recv_indices(local_vector_count);
+  thrust::host_vector<uint64_t> h_recv_indices(local_vector_count);
+
+  // Send data array
+  thrust::device_vector<DataType> send_data(local_vector_count * vector_length);
+  // Recv data array
+  thrust::device_vector<DataType> recv_data(local_vector_count * vector_length);
+
+  // Histogram array
+  thrust::device_vector<unsigned int> histogram(first_dimension_rank);
+  thrust::host_vector<unsigned int> h_histogram(first_dimension_rank);
+  // Exclusive scan array
+  thrust::device_vector<unsigned int> exclusive_scan_buf(first_dimension_rank);
+  thrust::host_vector<unsigned int> h_exclusive_scan_buf(first_dimension_rank);
+  
+  // 1. Feistel Bijection
+  // Apply to first dimension only
+  apply_bijection_kernel<<<grid_size, block_size, 0, stream>>>(
+    thrust::raw_pointer_cast(indices.data()), local_vector_count, bijection);
+  
+  // 2. Compute send histogram
+  compute_send_histogram<<<grid_size, block_size, 0, stream>>>(
+    thrust::raw_pointer_cast(indices.data()),
+    thrust::raw_pointer_cast(histogram.data()),
+    global_rects.ptr(0),
+    shuffle_ranks_device.ptr(0),
+    local_vector_count,
+    rank,
+    first_dimension_rank);
+
+    cudaMemcpy(thrust::raw_pointer_cast(h_histogram.data()), thrust::raw_pointer_cast(histogram.data()), first_dimension_rank * sizeof(unsigned int), cudaMemcpyDeviceToHost);
+    cudaMemcpy(thrust::raw_pointer_cast(h_indices.data()), thrust::raw_pointer_cast(indices.data()), local_vector_count * sizeof(uint64_t), cudaMemcpyDeviceToHost);
+    printf("rank %d, local_vector_count: %zu\n", rank, local_vector_count);
+    for(int i = 0; i < local_vector_count; i++){
+      auto index = h_indices[i];
+      printf("indices[%d]: %zu\n", i, index);
     }
+    for(int i = 0; i < first_dimension_rank; i++){
+      printf("histogram[%d]: %u\n", i, h_histogram[i]);
+    }
+
+  // 3. Pack send data and send indices
+
+  // 4. Inverse Feistel Bijection
+  //    or All2all request histogram
+  
+  
+  // 5. All2All exchange send data and send indices
+  //    Indices exchange cannot be avoided since pack is out-of-order due to atomicAdd.
+
+  
+  // 6. Unpack received data
+  // 
+
 }
+
+
+
+template<typename DataType, int DIM>
+void shuffle_fancy_indexing(
+){
+  // Todo
+}
+
 
 
 
@@ -336,38 +456,52 @@ void global_shuffle_bidirectional(
 
   // 1. Exchange rects
   auto global_rects = create_buffer<int64_t>(num_ranks * DIM * 2, Memory::Kind::GPU_FB_MEM);
-  legate::Rect<DIM> global_rects_host[num_ranks];
+  thrust::host_vector<legate::Rect<DIM>> global_rects_host(num_ranks);
   auto rect_device = create_buffer<int64_t>(DIM * 2, Memory::Kind::GPU_FB_MEM);
-  cudaMemcpy((legate::Rect<DIM>*)rect_device.ptr(0), &rect, sizeof(rect), cudaMemcpyHostToDevice);
-  
+
   CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(global_rects.ptr(0), 0, 
   num_ranks * DIM * 2 * sizeof(int64_t), stream));
-  CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(rect_device.ptr(0), 0, 
-  DIM * 2 * sizeof(int64_t), stream));
+
+  cudaMemcpy(rect_device.ptr(0), &rect, sizeof(rect), cudaMemcpyHostToDevice);
+  
 
   cudaStreamSynchronize(stream);
   CHECK_NCCL(ncclAllGather((void*)rect_device.ptr(0), 
   (void*)global_rects.ptr(0), 
-  sizeof(rect), 
+  sizeof(int64_t) * 2 * DIM, 
   ncclInt8, 
   *nccl_comm, 
   stream));
   cudaStreamSynchronize(stream);
-  cudaMemcpy((void*)global_rects_host, (void*)global_rects.ptr(0), num_ranks * DIM * 2 * sizeof(int64_t), cudaMemcpyDeviceToHost);
+
+  cudaMemcpy(thrust::raw_pointer_cast(global_rects_host.data()), thrust::raw_pointer_cast(global_rects.ptr(0)), num_ranks * DIM * 2 * sizeof(int64_t), cudaMemcpyDeviceToHost);
+
+  
+  for(int i = 0; i < num_ranks; i++){
+    for(int j = 0; j < DIM; j++){
+      printf("Rank %d, rect: lo %zu -- hi %zu\n", rank, rect.lo[j], rect.hi[j]);
+      printf("Rank %d, global_rects_host[%d][%d]: lo %zu -- hi %zu\n", i, j, global_rects_host[i].lo[j], global_rects_host[i].hi[j]);
+    }
+  }
+
 
   // 2. Verify whether regular tiling
   bool is_regular_tiling = true;
-  int hi = domain.hi()[0];
-  int lo = domain.lo()[0];
+  auto hi = domain.hi();
+  auto lo = domain.lo();
+  int first_dimension_rank = domain.hi()[0] - domain.lo()[0] + 1;
+  std::vector<int> shuffle_ranks(first_dimension_rank);
+  
   for(int i = 0; i < hi[0] - lo[0] + 1; i++){
     DomainPoint index_point_i = index_point;
     index_point_i[0] = lo[0] + i;
-    rank_i = get_rank(domain, index_point_i);
+    int rank_i = get_rank(domain, index_point_i);
+    shuffle_ranks[i] = rank_i;
     Rect<DIM> rect_i = global_rects_host[rank_i];
     for(int j = i + 1; j < hi[0] - lo[0] + 1; j++){
       DomainPoint index_point_j = index_point;
       index_point_j[0] = lo[0] + j;
-      rank_j = get_rank(domain, index_point_j);
+      int rank_j = get_rank(domain, index_point_j);
       Rect<DIM> rect_j = global_rects_host[rank_j];
 
       for(int d = 1; d < DIM; d++){
@@ -383,14 +517,16 @@ void global_shuffle_bidirectional(
   }
 
   if (is_regular_tiling){
+    printf("Regular Tiling\n");
     // 3a. Call Regular Tiling
-    shuffle_regular_tiling(local_data, rect, global_vector_count, rank, num_ranks, nccl_comm, stream);
+    shuffle_regular_tiling(local_data, global_rects_host, global_vector_count, rank, num_ranks, domain, index_point, shuffle_ranks, nccl_comm, stream);
   } else {
     // 3b. Call Fancy Indexing
-    shuffle_fancy_indexing(local_data, rect, global_vector_count, rank, num_ranks, nccl_comm, stream);
+    // shuffle_fancy_indexing(local_data, rect, global_vector_count, rank, num_ranks, nccl_comm, stream);
   }
 
 }
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -407,7 +543,8 @@ struct ShuffleImplBody<VariantKind::CPU, CODE, DIM> {
     const bool is_index_space,
     const size_t local_rank,
     const size_t num_ranks,
-    const size_t num_shuffle_ranks,
+    const Domain domain,
+    const DomainPoint index_point,
     const std::vector<comm::Communicator>& comms)
   {
     // CPU shuffle not yet implemented
@@ -427,7 +564,8 @@ struct ShuffleImplBody<VariantKind::OMP, CODE, DIM> {
                   const bool is_index_space,
                   const size_t local_rank,
                   const size_t num_ranks,
-                  const size_t num_shuffle_ranks,
+                  const Domain domain,
+                  const DomainPoint index_point,
                   const std::vector<comm::Communicator>& comms)
   {
     // OMP shuffle not yet implemented
@@ -449,7 +587,6 @@ struct ShuffleImplBody<VariantKind::GPU, CODE, DIM> {
     const size_t num_ranks,
     const Domain domain,
     const DomainPoint index_point,
-    const size_t num_shuffle_ranks,
     const std::vector<comm::Communicator>& comms)
   {
     auto rect = input_output_array.shape<DIM>();
@@ -459,7 +596,7 @@ struct ShuffleImplBody<VariantKind::GPU, CODE, DIM> {
 
     bool need_distributed_shuffle = (num_ranks > 1) && is_index_space;
 
-    assert(num_ranks == num_shuffle_ranks);
+    // assert(num_ranks == num_shuffle_ranks);
     // For local shuffle (single node or within a node)
     if (!need_distributed_shuffle) {
     
@@ -487,13 +624,12 @@ struct ShuffleImplBody<VariantKind::GPU, CODE, DIM> {
   }
 };
 
-template <VariantKind KIND>
-struct ShuffleImpl {
-  template <Type::Code CODE, int DIM>
+template <VariantKind KIND, int DIM>
+struct ShuffleImplBody_type {
+  template <Type::Code CODE>
   void operator()(ShuffleArgs& args, TaskContext& context, 
     std::vector<comm::Communicator> comms) const
   {
-    using VAL = type_of<CODE>;
     auto rect = args.input_output.shape<DIM>();
 
     Pitches<DIM - 1> pitches;
@@ -503,33 +639,74 @@ struct ShuffleImpl {
     }
 
     ShuffleImplBody<KIND, CODE, DIM>()(
-        context,
-        args.input_output,
-        args.vector_count,
-        args.vector_length,
-        args.is_index_space,
-        args.local_rank,
-        args.num_ranks,
-        args.domain,
-        args.index_point,
-        comms
-    );
+      context,
+      args.input_output,
+      args.vector_count,
+      args.vector_length,
+      args.is_index_space,
+      args.local_rank,
+      args.num_ranks,
+      args.domain,
+      args.index_point,
+      comms
+    ); 
   }
 };
 
-static int get_rank(Domain domain, DomainPoint index_point)
-{
-  int domain_index = 0;
-  auto hi          = domain.hi();
-  auto lo          = domain.lo();
-  for (int i = 0; i < domain.get_dim(); ++i) {
-    if (i > 0) {
-      domain_index *= hi[i] - lo[i] + 1;
-    }
-    domain_index += index_point[i];
+
+
+template <VariantKind KIND>
+struct ShuffleImpl {
+  template <int DIM>
+  void operator()(ShuffleArgs& args, TaskContext& context, 
+    std::vector<comm::Communicator> comms) const
+  {
+    auto input_code = args.input_output.code();
+    
+  switch (input_code) {
+    case legate::Type::Code::INT64:
+    ShuffleImplBody_type<KIND, DIM>{}.template operator()<legate::Type::Code::INT64>(
+      args,
+      context,
+      comms
+    ); 
+      break;
+      default:
+        assert(false && "Only INT64 data type is supported in this build");
+        break;  
   }
-  return domain_index;
-}
+  }
+};
+// template <VariantKind KIND>
+// struct ShuffleImpl {
+//   template <Type::Code CODE, int DIM>
+//   void operator()(ShuffleArgs& args, TaskContext& context, 
+//     std::vector<comm::Communicator> comms) const
+//   {
+//     using VAL = type_of<CODE>;
+//     auto rect = args.input_output.shape<DIM>();
+
+//     Pitches<DIM - 1> pitches;
+//     size_t volume = pitches.flatten(rect);
+//     if (volume == 0) {
+//       return;
+//     }
+
+//     ShuffleImplBody<KIND, CODE, DIM>()(
+//         context,
+//         args.input_output,
+//         args.vector_count,
+//         args.vector_length,
+//         args.is_index_space,
+//         args.local_rank,
+//         args.num_ranks,
+//         args.domain,
+//         args.index_point,
+//         comms
+//     );
+//   }
+// };
+
 
 template <VariantKind KIND>
 static void shuffle_template(TaskContext& context)
@@ -558,8 +735,10 @@ static void shuffle_template(TaskContext& context)
     num_ranks,
   };
   
-  double_dispatch(
-    args.input_output.dim(), args.input_output.code(), ShuffleImpl<KIND>{}, args, context, context.communicators());
+  dim_dispatch(
+    args.input_output.dim(), ShuffleImpl<KIND>{}, args, context, context.communicators());
+  // double_dispatch(
+  //   args.input_output.dim(), args.input_output.code(), ShuffleImpl<KIND>{}, args, context, context.communicators());
 }
 
 /*static*/ void ShuffleTask::gpu_variant(TaskContext context)

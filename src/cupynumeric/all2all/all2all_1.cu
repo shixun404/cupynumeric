@@ -62,7 +62,7 @@ __global__ void compute_send_histogram(const legate::Point<DIM_input>* indices,
                                       legate::Rect<DIM_input>* rect_buf, 
                                       int num_ranks, 
                                       int indices_len) {
-    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
     if(idx < indices_len){
       int target_rank = 0;
       int is_in_rect = 1;
@@ -79,7 +79,6 @@ __global__ void compute_send_histogram(const legate::Point<DIM_input>* indices,
           break;
         }
       }
-      printf("target_rank %d, idx %d, size %ld, point={%ld, %ld}\n", target_rank, idx, sizeof(legate::Point<DIM_input>), point[0], point[1]);
       atomicAdd(&send_histo[target_rank], is_in_rect);
     }
 }
@@ -88,7 +87,7 @@ __global__ void compute_send_histogram(const legate::Point<DIM_input>* indices,
 template<typename DataType, int DIM_input>
 __global__ void pack_send_data_kernel(const DataType* data, legate::Point<DIM_input>* indices, size_t request_count,
                                           DataType* send_data, legate::Rect<DIM_input> input_rect) {
-    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < request_count) {
       legate::Point<DIM_input> point = indices[idx];
       int data_idx = 0;
@@ -98,7 +97,6 @@ __global__ void pack_send_data_kernel(const DataType* data, legate::Point<DIM_in
       }
       data_idx += (point[DIM_input - 1] - input_rect.lo[DIM_input - 1]);
       send_data[idx] = data[data_idx];
-      printf("idx %d, data_idx %d, send_data[%d] %ld\n", idx, data_idx, idx, send_data[idx]);
     }
 }
 
@@ -123,9 +121,8 @@ __global__ void pack_send_data_kernel_single_rank(const DataType* data, const le
 template<typename DataType, int DIM_input>
 __global__ void unpack_recv_data_kernel(DataType* data, unsigned int* request_indices, size_t request_count,
                                           const DataType* recv_data) {
-    int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
     if (idx < request_count) {
-        printf("request_indices[%d]: %u, recv_data[%d]: %ld\n", idx, request_indices[idx], idx, recv_data[idx]);
         data[request_indices[idx]] = recv_data[idx];
     }
 }
@@ -158,7 +155,6 @@ __global__ void pack_request_indices_kernel(const legate::Point<DIM_input>* indi
         size_t offset = send_offsets[target_rank] + pos;
         send_indices[offset] = indices[idx];
         request_indices[offset] = idx;
-        printf("pack_request_indices_kernel: idx %d, target_rank %d, indices[%d] = {%ld, %ld}\n", idx, target_rank, idx, indices[idx][0], indices[idx][1]);
       // }
     }
 }
@@ -214,11 +210,7 @@ cudaStreamSynchronize(stream);
   size_t local_input_count = get_volume<DIM_input>(input_rect);
   size_t local_index_count = get_volume<DIM_output>(index_rect);
   size_t local_output_count = get_volume<DIM_output>(output_rect);
-
-  if (local_index_count == 0){
-    return;
-  }
-
+  
   size_t num_requests = local_index_count;
   // ===== Round 0: Exchange rects =====
   auto global_rects = create_buffer<int64_t>(num_ranks * DIM_input * 2, Memory::Kind::GPU_FB_MEM);
@@ -228,7 +220,8 @@ cudaStreamSynchronize(stream);
     // 初始化Round 0缓冲区
     CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(global_rects.ptr(0), 0, 
     num_ranks * DIM_input * 2 * sizeof(int64_t), stream));
-
+  CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(input_rect_device.ptr(0), 0, 
+    DIM_input * 2 * sizeof(int64_t), stream));
 
   // ===== Round 1: Exchange request size histograms =====
   auto round1_send_histo = create_buffer<unsigned int>(num_ranks, Memory::Kind::GPU_FB_MEM); // How many requests to send to each rank
@@ -282,18 +275,6 @@ cudaStreamSynchronize(stream);
   cudaStreamSynchronize(stream);
   nvtxRangePop();
 
-
-// for(int i = 0; i < num_ranks; i++){
-//   legate::Rect<DIM_input> rect;
-//   cudaMemcpy(&rect, global_rects.ptr(i * DIM_input * 2), sizeof(input_rect), cudaMemcpyDeviceToHost);
-//   for(int j = 0; j < DIM_input; j++){
-//     printf("rank %d, global_rects[%d][%d]: %d, %d\n", rank_id, i, j, rect.lo[j], rect.hi[j]);
-//   }
-// }
-
-for(int j = 0; j < DIM_output; j++){
-  printf("rank %d, index_rect[%d]: %d, %d\n", rank_id, j, index_rect.lo[j], index_rect.hi[j]);
-}
   
   // ===== Round 1: Compute request size histogram =====
   nvtxRangePushA("Compute request size histogram");
@@ -302,12 +283,6 @@ for(int j = 0; j < DIM_output; j++){
                 (legate::Rect<DIM_input>*)(global_rects.ptr(0)), 
                 num_ranks, local_index_count);
   nvtxRangePop();
-  cudaStreamSynchronize(stream);
-  // for(int i = 0; i < num_ranks; i++){
-  //   unsigned int tmp = 0;
-  //   cudaMemcpy(&tmp, round1_send_histo.ptr(i), sizeof(unsigned int), cudaMemcpyDeviceToHost);
-  //   printf("rank %d, round1_send_histo[%d]: %u\n", rank_id, i, tmp);
-  // }
 
   nvtxRangePushA("Exclusive scan");
   cudaStreamSynchronize(stream);
@@ -317,7 +292,6 @@ for(int j = 0; j < DIM_output; j++){
   cudaDeviceSynchronize();
   nvtxRangePop();
 
-  
 
   // ===== Round 1: All2All exchange request size histograms =====
   nvtxRangePushA("All2All exchange request size histograms");
@@ -328,9 +302,6 @@ for(int j = 0; j < DIM_output; j++){
   }
   CHECK_NCCL(ncclGroupEnd());
   nvtxRangePop();
-
-
-
   nvtxRangePushA("Reduce");
   size_t total_indices_to_receive = thrust::reduce(DEFAULT_POLICY.on(stream), round1_recv_histo.ptr(0), round1_recv_histo.ptr(0) + num_ranks);
   cudaStreamSynchronize(stream);

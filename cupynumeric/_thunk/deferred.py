@@ -962,6 +962,7 @@ class DeferredArray(NumPyThunk):
                     )
            
                 # Choose execution path based on hardware configuration
+                print(index_array.base.shape)
                 if runtime.num_gpus != 0:
                 # if True:
                     # Multi-GPU distributed path using All2All

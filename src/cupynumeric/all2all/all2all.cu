@@ -168,7 +168,7 @@ template<int DIM>
 size_t get_volume(auto rect){
   size_t volume = 1;
   for(int i = 0; i < DIM; i++){
-    volume *= rect.hi[i] - rect.lo[i] + 1;
+    volume *= (rect.hi[i] - rect.lo[i] + 1) > 0 ? (rect.hi[i] - rect.lo[i] + 1) : 0;
   }
   return volume;
 }
@@ -215,10 +215,7 @@ cudaStreamSynchronize(stream);
   size_t local_input_count = get_volume<DIM_input>(input_rect);
   size_t local_index_count = get_volume<DIM_output>(index_rect);
   size_t local_output_count = get_volume<DIM_output>(output_rect);
-
-  if (local_index_count == 0){
-    return;
-  }
+  // printf("rank %d, local_index_count: %ld\n", rank_id, local_index_count);
 
   size_t num_requests = local_index_count;
   // ===== Round 0: Exchange rects =====
@@ -253,23 +250,28 @@ cudaStreamSynchronize(stream);
   // // ===== Round 2: Exchange request indices =====
   auto round2_send_indices = create_buffer<int64_t>(num_requests * DIM_input, Memory::Kind::GPU_FB_MEM); // Indices to send (packed by target rank)
   auto round2_request_positions = create_buffer<unsigned int>(num_requests, Memory::Kind::GPU_FB_MEM); // Position of each request in output
-   
-
+  
+  // // ===== Round 3: Exchange actual data =====
+  auto round3_recv_data = create_buffer<DataType>(num_requests, Memory::Kind::GPU_FB_MEM); // Final received data
+//   printf("rank %d, DIM_output: %d\n", rank_id, DIM_output);
+// for(int j = 0; j < DIM_output; j++){
+//   printf("rank %d, index_rect[%d]: %d, %d\n", rank_id, j, index_rect.lo[j], index_rect.hi[j]);
+// }
+  if(num_requests > 0){
+    // printf("rank %d, num_ranks: %d, num_requests: %ld\n", rank_id, num_ranks, num_requests);   
     // 初始化Round 2缓冲区
     CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(round2_send_indices.ptr(0), 0, 
     num_requests * DIM_input * sizeof(int64_t), stream));
   CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(round2_request_positions.ptr(0), 0, 
     num_requests * sizeof(unsigned int), stream));
-  
-  // // ===== Round 3: Exchange actual data =====
-  auto round3_recv_data = create_buffer<DataType>(num_requests, Memory::Kind::GPU_FB_MEM); // Final received data
-
-    // 初始化Round 3缓冲区
-    CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(round3_recv_data.ptr(0), 0, 
-    num_requests * sizeof(DataType), stream));
-
-  const size_t block_size = 256;
-  const size_t grid_size = (local_index_count + block_size - 1) / block_size;
+     // 初始化Round 3缓冲区
+     CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(round3_recv_data.ptr(0), 0, 
+     num_requests * sizeof(DataType), stream));
+ 
+  }
+   
+  size_t block_size = 256;
+  size_t grid_size = (local_index_count + block_size - 1) / block_size;
   
   // ===== Round 0: Exchange rects =====
   cudaStreamSynchronize(stream);
@@ -292,16 +294,16 @@ cudaStreamSynchronize(stream);
 //   }
 // }
 
-// for(int j = 0; j < DIM_output; j++){
-//   printf("rank %d, index_rect[%d]: %d, %d\n", rank_id, j, index_rect.lo[j], index_rect.hi[j]);
-// }
   
   // ===== Round 1: Compute request size histogram =====
   nvtxRangePushA("Compute request size histogram");
-  compute_send_histogram<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, 
-                round1_send_histo.ptr(0), 
-                (legate::Rect<DIM_input>*)(global_rects.ptr(0)), 
-                num_ranks, local_index_count);
+  // Only launch kernel if we have data to process
+  if (local_index_count > 0) {
+    compute_send_histogram<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, 
+                  round1_send_histo.ptr(0), 
+                  (legate::Rect<DIM_input>*)(global_rects.ptr(0)), 
+                  num_ranks, local_index_count);
+  }
   nvtxRangePop();
   cudaStreamSynchronize(stream);
   // for(int i = 0; i < num_ranks; i++){
@@ -338,18 +340,22 @@ cudaStreamSynchronize(stream);
   nvtxRangePop();
   // Pack request indices by target rank
   nvtxRangePushA("Pack request indices");
+  if (local_index_count > 0) {
   pack_request_indices_kernel<DIM_input><<<grid_size, block_size, 0, stream>>>(index_ptr, num_requests,  
     (legate::Point<DIM_input>*)(round2_send_indices.ptr(0)), 
     round1_send_offsets.ptr(0),
     round2_request_positions.ptr(0), 
     packing_counters.ptr(0), 
     (legate::Rect<DIM_input>*)(global_rects.ptr(0)), num_ranks);
+  }
   cudaStreamSynchronize(stream);
   nvtxRangePop();
   nvtxRangePushA("Exclusive scan");
   auto round2_recv_indices = create_buffer<legate::Point<DIM_input>>(total_indices_to_receive, Memory::Kind::GPU_FB_MEM);
+  if(total_indices_to_receive > 0){
   CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(round2_recv_indices.ptr(0), 0, 
     total_indices_to_receive * sizeof(legate::Point<DIM_input>), stream));
+  }
   thrust::exclusive_scan(DEFAULT_POLICY.on(stream), round1_recv_histo.ptr(0), round1_recv_histo.ptr(0) + num_ranks, round1_recv_offsets.ptr(0));
   // for(int i = 0; i < num_ranks; i++){
   //   unsigned int tmp;
@@ -391,12 +397,15 @@ cudaStreamSynchronize(stream);
   auto round3_send_data = create_buffer<DataType>(total_indices_to_receive, Memory::Kind::GPU_FB_MEM);
   // CUPYNUMERIC_CHECK_CUDA(cudaMemsetAsync(round3_send_data.ptr(0), 0, 
   //   total_indices_to_receive * sizeof(DataType), stream));
+  grid_size = (total_indices_to_receive + block_size - 1) / block_size;
+  if (total_indices_to_receive > 0) {
   pack_send_data_kernel<DataType, DIM_input><<<grid_size, block_size, 0, stream>>>(input_ptr, (legate::Point<DIM_input>*)round2_recv_indices.ptr(0),
   total_indices_to_receive, round3_send_data.ptr(0), input_rect);
-
+  }
   cudaStreamSynchronize(stream);
   nvtxRangePop();
   // ===== Round 3: All2All exchange actual data =====
+  // printf("rank %d, round3_send_data: %p\n", rank_id, round3_send_data.ptr(0));
   nvtxRangePushA("All2All exchange actual data");
   CHECK_NCCL(ncclGroupStart());
   for (size_t i = 0; i < num_ranks; ++i) {
@@ -420,8 +429,11 @@ cudaStreamSynchronize(stream);
   nvtxRangePop();
   // ===== Final step: Unpack received data to output =====
   nvtxRangePushA("unpack received data");
+  grid_size = (num_requests + block_size - 1) / block_size;
+  if (num_requests > 0) {
   unpack_recv_data_kernel<DataType, DIM_output><<<grid_size, block_size, 0, stream>>>(output_ptr, round2_request_positions.ptr(0),
     num_requests, round3_recv_data.ptr(0));
+  }
   cudaStreamSynchronize(stream);
   nvtxRangePop();
 }
@@ -542,7 +554,7 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM_input, DIM_output> {
      
      } else {
        // Handle distributed all2all
-      //  printf("num_ranks: %d\n", num_ranks);
+      //  printf("num_ranks: %d, global_all2all\n", num_ranks);
        
          nvtxRangePushA("global_all2all");
       cudaDeviceSynchronize();

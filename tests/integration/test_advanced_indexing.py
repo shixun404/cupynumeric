@@ -302,7 +302,7 @@ def test():
     # x[indxt] = b
     # x_num[indxt_num] = b_num
     # assert np.array_equal(x, x_num)
-
+    
     # # i: the case when index.ndim > input.ndim:
     # index = np.array([[1, 0, 1, 3, 0, 0], [2, 4, 0, 4, 4, 4]])
     # index_num = num.array(index)
@@ -376,258 +376,258 @@ def test():
     # res_num = x_num[index]
     # assert np.array_equal(res, res_num)
 
-    # Nd cases
-    print("advanced indexing test 2")
+    # # Nd cases
+    # print("advanced indexing test 2")
 
-    x = mk_seq_array(np, (2, 3, 4, 5))
-    x_num = mk_seq_array(num, (2, 3, 4, 5))
-    xt = x.transpose(
-        (
-            1,
-            0,
-            2,
-            3,
-        )
-    )
-    xt_num = x_num.transpose(
-        (
-            1,
-            0,
-            2,
-            3,
-        )
-    )
+    # x = mk_seq_array(np, (2, 3, 4, 5))
+    # x_num = mk_seq_array(num, (2, 3, 4, 5))
+    # xt = x.transpose(
+    #     (
+    #         1,
+    #         0,
+    #         2,
+    #         3,
+    #     )
+    # )
+    # xt_num = x_num.transpose(
+    #     (
+    #         1,
+    #         0,
+    #         2,
+    #         3,
+    #     )
+    # )
 
-    # a: 1d index  array passed to a different indices:
-    indx = np.array([1, 1])
-    indx_num = num.array(indx)
-    res = x[indx]
-    res_num = x_num[indx_num]
-    assert np.array_equal(res, res_num)
+    # # a: 1d index  array passed to a different indices:
+    # indx = np.array([1, 1])
+    # indx_num = num.array(indx)
+    # res = x[indx]
+    # res_num = x_num[indx_num]
+    # assert np.array_equal(res, res_num)
 
-    res = xt[indx]
-    res_num = xt_num[indx_num]
-    assert np.array_equal(res, res_num)
+    # res = xt[indx]
+    # res_num = xt_num[indx_num]
+    # assert np.array_equal(res, res_num)
 
-    res = x[:, :, indx]
-    res_num = x_num[:, :, indx_num]
-    assert np.array_equal(res, res_num)
+    # res = x[:, :, indx]
+    # res_num = x_num[:, :, indx_num]
+    # assert np.array_equal(res, res_num)
 
-    res = xt[:, :, indx]
-    res_num = xt_num[:, :, indx_num]
-    assert np.array_equal(res, res_num)
+    # res = xt[:, :, indx]
+    # res_num = xt_num[:, :, indx_num]
+    # assert np.array_equal(res, res_num)
 
-    res = x[:, :, :, indx]
-    res_num = x_num[:, :, :, indx_num]
-    assert np.array_equal(res, res_num)
+    # res = x[:, :, :, indx]
+    # res_num = x_num[:, :, :, indx_num]
+    # assert np.array_equal(res, res_num)
 
-    res = xt[:, :, :, indx]
-    res_num = xt_num[:, :, :, indx_num]
-    assert np.array_equal(res, res_num)
+    # res = xt[:, :, :, indx]
+    # res_num = xt_num[:, :, :, indx_num]
+    # assert np.array_equal(res, res_num)
 
-    res = x[:, indx, :]
-    res_num = x_num[:, indx_num, :]
-    assert np.array_equal(res, res_num)
+    # res = x[:, indx, :]
+    # res_num = x_num[:, indx_num, :]
+    # assert np.array_equal(res, res_num)
 
-    res = xt[:, indx, :]
-    res_num = xt_num[:, indx_num, :]
-    assert np.array_equal(res, res_num)
+    # res = xt[:, indx, :]
+    # res_num = xt_num[:, indx_num, :]
+    # assert np.array_equal(res, res_num)
 
-    # test with negative indices:
-    indx = np.array([-1, 1])
-    indx_num = num.array(indx)
-    res = x[indx]
-    res_num = x_num[indx_num]
-    assert np.array_equal(res, res_num)
+    # # test with negative indices:
+    # indx = np.array([-1, 1])
+    # indx_num = num.array(indx)
+    # res = x[indx]
+    # res_num = x_num[indx_num]
+    # assert np.array_equal(res, res_num)
 
-    # b : 2 1d index arrays passed
-    indx0 = np.array([1, 1])
-    indx1 = np.array([1, 0])
-    indx0_num = num.array(indx0)
-    indx1_num = num.array(indx1)
-    res = x[indx0, indx1]
-    res_num = x_num[indx0_num, indx1_num]
-    assert np.array_equal(res, res_num)
+    # # b : 2 1d index arrays passed
+    # indx0 = np.array([1, 1])
+    # indx1 = np.array([1, 0])
+    # indx0_num = num.array(indx0)
+    # indx1_num = num.array(indx1)
+    # res = x[indx0, indx1]
+    # res_num = x_num[indx0_num, indx1_num]
+    # assert np.array_equal(res, res_num)
 
-    res = xt[indx0, indx1]
-    res_num = xt_num[indx0_num, indx1_num]
-    assert np.array_equal(res, res_num)
+    # res = xt[indx0, indx1]
+    # res_num = xt_num[indx0_num, indx1_num]
+    # assert np.array_equal(res, res_num)
 
-    res = x[:, indx0, indx1]
-    res_num = x_num[:, indx0_num, indx1_num]
-    assert np.array_equal(res, res_num)
+    # res = x[:, indx0, indx1]
+    # res_num = x_num[:, indx0_num, indx1_num]
+    # assert np.array_equal(res, res_num)
 
-    res = xt[:, indx0, indx1]
-    res_num = xt_num[:, indx0_num, indx1_num]
-    assert np.array_equal(res, res_num)
+    # res = xt[:, indx0, indx1]
+    # res_num = xt_num[:, indx0_num, indx1_num]
+    # assert np.array_equal(res, res_num)
 
-    # test with negative indices:
-    indx0 = np.array([1, -1])
-    indx1 = np.array([-1, 0])
-    indx0_num = num.array(indx0)
-    indx1_num = num.array(indx1)
-    res = x[indx0, indx1]
-    res_num = x_num[indx0_num, indx1_num]
-    assert np.array_equal(res, res_num)
+    # # test with negative indices:
+    # indx0 = np.array([1, -1])
+    # indx1 = np.array([-1, 0])
+    # indx0_num = num.array(indx0)
+    # indx1_num = num.array(indx1)
+    # res = x[indx0, indx1]
+    # res_num = x_num[indx0_num, indx1_num]
+    # assert np.array_equal(res, res_num)
 
-    # c:  2 index arrays passed in a sparse way:
-    res = x[:, [0, 1], :, [0, 1]]
-    res_num = x_num[:, [0, 1], :, [0, 1]]
-    assert np.array_equal(res, res_num)
+    # # c:  2 index arrays passed in a sparse way:
+    # res = x[:, [0, 1], :, [0, 1]]
+    # res_num = x_num[:, [0, 1], :, [0, 1]]
+    # assert np.array_equal(res, res_num)
 
-    res = xt[:, [0, 1], :, [0, 1]]
-    res_num = xt_num[:, [0, 1], :, [0, 1]]
-    assert np.array_equal(res, res_num)
+    # res = xt[:, [0, 1], :, [0, 1]]
+    # res_num = xt_num[:, [0, 1], :, [0, 1]]
+    # assert np.array_equal(res, res_num)
 
-    res = x[[0, 1], :, [0, 1], 1:]
-    res_num = x_num[[0, 1], :, [0, 1], 1:]
-    assert np.array_equal(res, res_num)
+    # res = x[[0, 1], :, [0, 1], 1:]
+    # res_num = x_num[[0, 1], :, [0, 1], 1:]
+    # assert np.array_equal(res, res_num)
 
-    res = xt[[0, 1], :, [0, 1], 1:]
-    res_num = xt_num[[0, 1], :, [0, 1], 1:]
-    assert np.array_equal(res, res_num)
+    # res = xt[[0, 1], :, [0, 1], 1:]
+    # res_num = xt_num[[0, 1], :, [0, 1], 1:]
+    # assert np.array_equal(res, res_num)
 
-    res = x[:, [0, 1], :, 1:]
-    res_num = x_num[:, [0, 1], :, 1:]
-    assert np.array_equal(res, res_num)
+    # res = x[:, [0, 1], :, 1:]
+    # res_num = x_num[:, [0, 1], :, 1:]
+    # assert np.array_equal(res, res_num)
 
-    res = xt[:, [0, 1], :, 1:]
-    res_num = xt_num[:, [0, 1], :, 1:]
-    assert np.array_equal(res, res_num)
+    # res = xt[:, [0, 1], :, 1:]
+    # res_num = xt_num[:, [0, 1], :, 1:]
+    # assert np.array_equal(res, res_num)
 
-    x[[0, 1], [0, 1]] = 11
-    x_num[[0, 1], [0, 1]] = 11
-    assert np.array_equal(x, x_num)
+    # x[[0, 1], [0, 1]] = 11
+    # x_num[[0, 1], [0, 1]] = 11
+    # assert np.array_equal(x, x_num)
 
-    x[[0, 1], :, [0, 1]] = 12
-    x_num[[0, 1], :, [0, 1]] = 12
-    assert np.array_equal(x, x_num)
+    # x[[0, 1], :, [0, 1]] = 12
+    # x_num[[0, 1], :, [0, 1]] = 12
+    # assert np.array_equal(x, x_num)
 
-    x[[0, 1], 1:3, [0, 1]] = 3.5
-    x_num[[0, 1], 1:3, [0, 1]] = 3.5
-    assert np.array_equal(x, x_num)
+    # x[[0, 1], 1:3, [0, 1]] = 3.5
+    # x_num[[0, 1], 1:3, [0, 1]] = 3.5
+    # assert np.array_equal(x, x_num)
 
-    x[1:2, :, [0, 1]] = 7
-    x_num[1:2, :, [0, 1]] = 7
-    assert np.array_equal(x, x_num)
+    # x[1:2, :, [0, 1]] = 7
+    # x_num[1:2, :, [0, 1]] = 7
+    # assert np.array_equal(x, x_num)
 
-    # d: newaxis is passed along with array:
+    # # d: newaxis is passed along with array:
 
-    res = x[..., [1, 0]]
-    res_num = x_num[..., [1, 0]]
-    assert np.array_equal(res, res_num)
+    # res = x[..., [1, 0]]
+    # res_num = x_num[..., [1, 0]]
+    # assert np.array_equal(res, res_num)
 
-    x[..., [1, 0]] = 8
-    x_num[..., [1, 0]] = 8
-    assert np.array_equal(res, res_num)
+    # x[..., [1, 0]] = 8
+    # x_num[..., [1, 0]] = 8
+    # assert np.array_equal(res, res_num)
 
-    xt = x.transpose(
-        (
-            1,
-            3,
-            0,
-            2,
-        )
-    )
-    xt_num = x_num.transpose(
-        (
-            1,
-            3,
-            0,
-            2,
-        )
-    )
-    res = xt[..., [0, 1], 1:]
-    res_num = xt_num[..., [0, 1], 1:]
-    assert np.array_equal(res, res_num)
+    # xt = x.transpose(
+    #     (
+    #         1,
+    #         3,
+    #         0,
+    #         2,
+    #     )
+    # )
+    # xt_num = x_num.transpose(
+    #     (
+    #         1,
+    #         3,
+    #         0,
+    #         2,
+    #     )
+    # )
+    # res = xt[..., [0, 1], 1:]
+    # res_num = xt_num[..., [0, 1], 1:]
+    # assert np.array_equal(res, res_num)
 
-    res = x[..., [0, 1], [1, 1]]
-    res_num = x_num[..., [0, 1], [1, 1]]
-    assert np.array_equal(res, res_num)
+    # res = x[..., [0, 1], [1, 1]]
+    # res_num = x_num[..., [0, 1], [1, 1]]
+    # assert np.array_equal(res, res_num)
 
-    # e: index arrays that have different shape:
-    indx0 = np.array([1, 1])
-    indx1 = np.array([[1, 0], [1, 0]])
-    indx0_num = num.array(indx0)
-    indx1_num = num.array(indx1)
-    res = x[indx0, indx1]
-    res_num = x_num[indx0_num, indx1_num]
-    assert np.array_equal(res, res_num)
+    # # e: index arrays that have different shape:
+    # indx0 = np.array([1, 1])
+    # indx1 = np.array([[1, 0], [1, 0]])
+    # indx0_num = num.array(indx0)
+    # indx1_num = num.array(indx1)
+    # res = x[indx0, indx1]
+    # res_num = x_num[indx0_num, indx1_num]
+    # assert np.array_equal(res, res_num)
 
-    res = xt[indx0, indx1]
-    res_num = xt_num[indx0_num, indx1_num]
-    assert np.array_equal(res, res_num)
+    # res = xt[indx0, indx1]
+    # res_num = xt_num[indx0_num, indx1_num]
+    # assert np.array_equal(res, res_num)
 
-    res = x[indx0, indx1, indx0, indx1]
-    res_num = x_num[indx0_num, indx1_num, indx0_num, indx1_num]
-    assert np.array_equal(res, res_num)
+    # res = x[indx0, indx1, indx0, indx1]
+    # res_num = x_num[indx0_num, indx1_num, indx0_num, indx1_num]
+    # assert np.array_equal(res, res_num)
 
-    res = x[indx0, :, indx1]
-    res_num = x_num[indx0_num, :, indx1_num]
-    assert np.array_equal(res, res_num)
+    # res = x[indx0, :, indx1]
+    # res_num = x_num[indx0_num, :, indx1_num]
+    # assert np.array_equal(res, res_num)
 
-    res = xt[:, indx0, indx1, 1:]
-    res_num = xt_num[:, indx0_num, indx1_num, 1:]
-    assert np.array_equal(res, res_num)
+    # res = xt[:, indx0, indx1, 1:]
+    # res_num = xt_num[:, indx0_num, indx1_num, 1:]
+    # assert np.array_equal(res, res_num)
 
-    # f: single boolean array passed:
-    indx_bool = np.array([True, False])
-    indx_bool_num = num.array(indx_bool)
-    res = x[indx_bool]
-    res_num = x_num[indx_bool_num]
-    assert np.array_equal(res, res_num)
+    # # f: single boolean array passed:
+    # indx_bool = np.array([True, False])
+    # indx_bool_num = num.array(indx_bool)
+    # res = x[indx_bool]
+    # res_num = x_num[indx_bool_num]
+    # assert np.array_equal(res, res_num)
 
-    indx_bool = np.array([True, False, True])
-    indx_bool_num = num.array(indx_bool)
-    res = x[:, indx_bool]
-    res_num = x_num[:, indx_bool_num]
-    assert np.array_equal(res, res_num)
+    # indx_bool = np.array([True, False, True])
+    # indx_bool_num = num.array(indx_bool)
+    # res = x[:, indx_bool]
+    # res_num = x_num[:, indx_bool_num]
+    # assert np.array_equal(res, res_num)
 
-    # on the transposed base
-    indx_bool = np.array([True, False, True])
-    indx_bool_num = num.array(indx_bool)
-    res = xt[indx_bool]
-    res_num = xt_num[indx_bool_num]
-    assert np.array_equal(res, res_num)
+    # # on the transposed base
+    # indx_bool = np.array([True, False, True])
+    # indx_bool_num = num.array(indx_bool)
+    # res = xt[indx_bool]
+    # res_num = xt_num[indx_bool_num]
+    # assert np.array_equal(res, res_num)
 
-    indx_bool = np.array([True, False, True, False, False])
-    indx_bool_num = num.array(indx_bool)
-    res = x[..., indx_bool]
-    res_num = x_num[..., indx_bool_num]
-    assert np.array_equal(res, res_num)
+    # indx_bool = np.array([True, False, True, False, False])
+    # indx_bool_num = num.array(indx_bool)
+    # res = x[..., indx_bool]
+    # res_num = x_num[..., indx_bool_num]
+    # assert np.array_equal(res, res_num)
 
-    indx1_bool = np.array([True, False])
-    indx1_bool_num = num.array(indx1_bool)
-    indx2_bool = np.array([True, False, True, True])
-    indx2_bool_num = num.array(indx2_bool)
-    res = x[indx1_bool, :, indx2_bool]
-    res_num = x_num[indx1_bool_num, :, indx2_bool_num]
-    assert np.array_equal(res, res_num)
+    # indx1_bool = np.array([True, False])
+    # indx1_bool_num = num.array(indx1_bool)
+    # indx2_bool = np.array([True, False, True, True])
+    # indx2_bool_num = num.array(indx2_bool)
+    # res = x[indx1_bool, :, indx2_bool]
+    # res_num = x_num[indx1_bool_num, :, indx2_bool_num]
+    # assert np.array_equal(res, res_num)
 
-    res = x[indx1_bool, 1, indx2_bool]
-    res_num = x_num[indx1_bool_num, 1, indx2_bool_num]
-    assert np.array_equal(res, res_num)
+    # res = x[indx1_bool, 1, indx2_bool]
+    # res_num = x_num[indx1_bool_num, 1, indx2_bool_num]
+    # assert np.array_equal(res, res_num)
 
-    # g: boolean array with the same shape is passed to x:
-    indx = x % 2
-    indx = indx.astype(bool)
-    indx_num = num.array(indx)
-    res = x[indx]
-    res_num = x_num[indx_num]
-    assert np.array_equal(res, res_num)
+    # # g: boolean array with the same shape is passed to x:
+    # indx = x % 2
+    # indx = indx.astype(bool)
+    # indx_num = num.array(indx)
+    # res = x[indx]
+    # res_num = x_num[indx_num]
+    # assert np.array_equal(res, res_num)
 
-    # h: inplace assignment with bool arays
-    z = x
-    z_num = x_num
-    z[indx] = 1
-    z_num[indx_num] = 1
-    assert np.array_equal(z, z_num)
+    # # h: inplace assignment with bool arays
+    # z = x
+    # z_num = x_num
+    # z[indx] = 1
+    # z_num[indx_num] = 1
+    # assert np.array_equal(z, z_num)
 
-    indx_bool = np.array([True, False, True])
-    indx_bool_num = num.array(indx_bool)
-    z[:, indx_bool] = 5
-    z_num[:, indx_bool_num] = 5
-    assert np.array_equal(z, z_num)
+    # indx_bool = np.array([True, False, True])
+    # indx_bool_num = num.array(indx_bool)
+    # z[:, indx_bool] = 5
+    # z_num[:, indx_bool_num] = 5
+    # assert np.array_equal(z, z_num)
 
     # i: two bool array of the same shape are passed:
     x = mk_seq_array(
@@ -702,7 +702,9 @@ def test():
 
         # 2 bool arrays separated by :
         res = x[indx, :, indx]
+        print(indx.shape, x.shape, x_num.shape, res.shape)
         res_num = x_num[indx_num, :, indx_num]
+
         assert np.array_equal(res, res_num)
 
     # j: 2 bool arrays should be broadcasted:

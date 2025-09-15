@@ -230,24 +230,9 @@ __global__ void compute_send_histogram(const uint64_t* indices,
     if (idx < local_volume) {
       int target_rank = 0;
       int is_in_rect = 1;
-      legate::Point<DIM_input> point;
-      int data_idx = idx;
-      for(int d = DIM_input - 1; d > 0; d--){
-        point[d] = rect_buf[rank_id].lo[d] + (data_idx % (rect_buf[rank_id].hi[d] - rect_buf[rank_id].lo[d] + 1));
-        data_idx /= (rect_buf[target_rank].hi[d] - rect_buf[target_rank].lo[d] + 1);
-      }
-      point[0] = indices[(data_idx % (rect_buf[rank_id].hi[0] - rect_buf[rank_id].lo[0] + 1))];
-      
-
+      size_t point = indices[idx];
       for(; target_rank < num_ranks; target_rank++){
-        is_in_rect = 1;
-        for(int d = 0; d < DIM_input; d++){
-          if(rect_buf[target_rank].lo[d] > point[d] || rect_buf[target_rank].hi[d] < point[d]){
-            is_in_rect = 0;
-            break;
-          }
-        }
-        if(is_in_rect){
+        if(rect_buf[target_rank].lo[0] <= point && rect_buf[target_rank].hi[0] >= point){
           atomicAdd(&send_histo[target_rank], 1);
           break;
         }
@@ -255,68 +240,48 @@ __global__ void compute_send_histogram(const uint64_t* indices,
     }
 }
 
-// // Pack send data kernel for 2D (vectors)
-// template<typename DataType, int DIM_input>
-// __global__ void pack_send_data_2d_kernel(const DataType* data, const IndexType* indices, legate::Rect<DIM_input>* rect_buf, size_t local_volume,
-//                                           DataType* send_data, IndexType* send_indices,
-//                                           unsigned int* send_offsets, unsigned int* counters,
-//                                           size_t num_ranks, int rank_id) {
-//     size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
-//     if (idx < local_volume) {
-//       int target_rank = 0;
-//       int is_in_rect = 1;
+// Pack send data kernel for 2D (vectors)
+template<typename DataType, int DIM_input>
+__global__ void pack_send_data_2d_kernel(const DataType* data, const uint64_t* indices, legate::Rect<DIM_input>* rect_buf, size_t local_volume, size_t vector_length,
+                                          DataType* send_data, uint64_t* send_indices,
+                                          unsigned int* send_offsets, unsigned int* counters,
+                                          size_t num_ranks, int rank_id) {
+    size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (idx < local_volume) {
+      int target_rank = 0;
+      size_t point = indices[idx];
       
-//       legate::Point<DIM_input> point;
-//       int data_idx = idx;
-//       for(int d = DIM_input - 1; d > 0; d--){
-//         point[d] = rect_buf[rank_id].lo[d] + (data_idx % (rect_buf[rank_id].hi[d] - rect_buf[rank_id].lo[d] + 1));
-//         data_idx /= (rect_buf[target_rank].hi[d] - rect_buf[target_rank].lo[d] + 1);
-//       }
-//       point[0] = indices[(data_idx % (rect_buf[rank_id].hi[d] - rect_buf[rank_id].lo[d] + 1))];
+      for(; target_rank < num_ranks; target_rank++){
+          if(rect_buf[target_rank].lo[0] <= point && rect_buf[target_rank].hi[0] >= point)
+            break;
+      }
+      size_t pos = atomicAdd(&counters[target_rank], 1);
       
-//       for(; target_rank < num_ranks; target_rank++){
-//         is_in_rect = 1;
-//         for(int d = 0; d < DIM_input; d++){
-//           if(rect_buf[target_rank].lo[d] > point[d] || rect_buf[target_rank].hi[d] < point[d]){
-//             is_in_rect = 0;
-//             break;
-//           }
-//         }
-//         if(is_in_rect){
-//           break;
-//         }
-//       }
-//       size_t pos = atomicAdd(&counters[target_rank], 1);
-//       size_t offset = send_offsets[target_rank] + pos;
-//       send_data[idx] = data[idx];
-//       send_indices[offset] = indices[idx];
-    
-//     }
-// }
+      
+      size_t offset_idx = send_offsets[target_rank] + pos;
+      size_t offset_data = offset_idx * vector_length;
+      for(size_t v = 0; v < vector_length; v++){
+        send_data[offset_data + v] = data[idx * vector_length + v];
+      }
+      send_indices[offset_idx] = indices[idx];
+    }
+}
 
-// // Unpack received data kernel for 2D (vectors)
-// template<typename DataType, typename IndexType>
-// __global__ void unpack_recv_data_2d_kernel(const DataType* recv_data, const IndexType* recv_indices,
-//                                            size_t local_volume, DataType* output,
-//                                            size_t gpu_vector_offset, size_t vector_length) {
-//     size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
-//     if (idx < vector_count) {
-//         IndexType global_vector_idx = recv_indices[idx];
-//         legate::Point<DIM_input> point;
-//         int data_idx = idx;
-//         for(int d = DIM_input - 1; d > 0; d--){
-//           point[d] = rect_buf[rank_id].lo[d] + (data_idx % (rect_buf[rank_id].hi[d] - rect_buf[rank_id].lo[d] + 1));
-//           data_idx /= (rect_buf[target_rank].hi[d] - rect_buf[target_rank].lo[d] + 1);
-//         }
-//         point[0] = recv_indices[(data_idx % (rect_buf[rank_id].hi[d] - rect_buf[rank_id].lo[d] + 1))];
-      
+// Unpack received data kernel for 2D (vectors)
+template<typename DataType>
+__global__ void unpack_recv_data_2d_kernel(const DataType* recv_data, const uint64_t* recv_indices,
+                                           size_t local_volume, DataType* output,
+                                           size_t gpu_vector_offset, size_t vector_length) {
+    size_t idx = blockIdx.x * blockDim.x + threadIdx.x;
+    if (idx < local_volume) {
+      uint64_t global_vector_idx = recv_indices[idx];
+        size_t local_vector_idx = global_vector_idx - gpu_vector_offset;
+        for (size_t v = 0; v < vector_length; v++) {
+            output[local_vector_idx * vector_length + v] = recv_data[idx * vector_length + v];
+        }
+    }
+}
 
-//         size_t local_vector_idx = global_vector_idx - gpu_vector_offset;
-//         for (size_t v = 0; v < vector_length; v++) {
-//             output[local_vector_idx * vector_length + v] = recv_data[idx * vector_length + v];
-//         }
-//     }
-// }
 
 template<typename DataType, int DIM>
 void shuffle_regular_tiling(
@@ -355,13 +320,15 @@ void shuffle_regular_tiling(
   // Bijection object 
   thrust::device_vector<uint64_t> indices(local_vector_count);
   thrust::host_vector<uint64_t> h_indices(local_vector_count);
+  thrust::device_vector<uint64_t> recv_indices(local_vector_count);
+  thrust::host_vector<uint64_t> h_recv_indices(local_vector_count);
+
   thrust::default_random_engine rng(42);
   random_bijection<uint64_t> bijection(global_vector_count, rng);
 
   thrust::sequence(indices.begin(), indices.end(), global_rects_host[rank].lo[0]);
-  apply_bijection_kernel<<<grid_size, block_size, 0, stream>>>(
-    thrust::raw_pointer_cast(indices.data()), local_vector_count, bijection);
-
+  thrust::sequence(recv_indices.begin(), recv_indices.end(), global_rects_host[rank].lo[0]);
+  
   // Product of other dimensions
   int vector_length = 1;
   for(int i = 1; i < DIM; i++){
@@ -373,8 +340,7 @@ void shuffle_regular_tiling(
   thrust::device_vector<uint64_t> send_indices(local_vector_count);
   thrust::host_vector<uint64_t> h_send_indices(local_vector_count);
   // Recv indices array: first dimension only
-  thrust::device_vector<uint64_t> recv_indices(local_vector_count);
-  thrust::host_vector<uint64_t> h_recv_indices(local_vector_count);
+
 
   // Send data array
   thrust::device_vector<DataType> send_data(local_vector_count * vector_length);
@@ -382,50 +348,163 @@ void shuffle_regular_tiling(
   thrust::device_vector<DataType> recv_data(local_vector_count * vector_length);
 
   // Histogram array
-  thrust::device_vector<unsigned int> histogram(first_dimension_rank);
-  thrust::host_vector<unsigned int> h_histogram(first_dimension_rank);
-  // Exclusive scan array
-  thrust::device_vector<unsigned int> exclusive_scan_buf(first_dimension_rank);
-  thrust::host_vector<unsigned int> h_exclusive_scan_buf(first_dimension_rank);
+  thrust::device_vector<unsigned int> send_histo(first_dimension_rank);
+  thrust::host_vector<unsigned int> h_send_histo(first_dimension_rank);
+
+  thrust::device_vector<unsigned int> recv_histo(first_dimension_rank);
+  thrust::host_vector<unsigned int> h_recv_histo(first_dimension_rank);
+
+  // // Exclusive scan array
+  // thrust::device_vector<unsigned int> exclusive_scan_buf(first_dimension_rank);
+  // thrust::host_vector<unsigned int> h_exclusive_scan_buf(first_dimension_rank);
+  // Send offsets array
+  thrust::device_vector<unsigned int> send_offsets(first_dimension_rank);
+  thrust::host_vector<unsigned int> h_send_offsets(first_dimension_rank);
+  // Recv offsets array
+  thrust::device_vector<unsigned int> recv_offsets(first_dimension_rank);
+  thrust::host_vector<unsigned int> h_recv_offsets(first_dimension_rank);
+  // Counters array
+  thrust::device_vector<unsigned int> counters(first_dimension_rank);
+  thrust::host_vector<unsigned int> h_counters(first_dimension_rank);
   
   // 1. Feistel Bijection
   // Apply to first dimension only
   apply_bijection_kernel<<<grid_size, block_size, 0, stream>>>(
     thrust::raw_pointer_cast(indices.data()), local_vector_count, bijection);
   
+    cudaStreamSynchronize(stream);
+    // for(int i = 0; i < local_vector_count; i++){
+    //   uint64_t tmp = indices[i];
+    //   printf("Rank %d, indices[%d]: %zu\n", rank, i, tmp);
+    // }
+    // printf("\n");
+
   // 2. Compute send histogram
   compute_send_histogram<<<grid_size, block_size, 0, stream>>>(
     thrust::raw_pointer_cast(indices.data()),
-    thrust::raw_pointer_cast(histogram.data()),
+    thrust::raw_pointer_cast(send_histo.data()),
+    global_rects.ptr(0),
+    shuffle_ranks_device.ptr(0),
+    local_vector_count,
+    rank,
+    first_dimension_rank);
+    
+  cudaStreamSynchronize(stream);
+  thrust::copy_n(send_histo.begin(), first_dimension_rank, h_send_histo.begin());
+
+    thrust::exclusive_scan(send_histo.begin(), send_histo.end(), send_offsets.begin());
+    thrust::copy_n(send_offsets.begin(), first_dimension_rank, h_send_offsets.begin());
+
+  // Inverse Feistel Bijection
+  //    or All2all request histogram
+  
+  thrust::default_random_engine rng_1(42);
+  random_bijection<uint64_t> bijection_1(global_vector_count, rng_1);
+  cudaStreamSynchronize(stream);
+  apply_inverse_bijection_kernel<<<grid_size, block_size, 0, stream>>>(
+  thrust::raw_pointer_cast(recv_indices.data()), local_vector_count, bijection_1);
+  cudaStreamSynchronize(stream);
+  // for(int i = 0; i < local_vector_count; i++){
+  //   uint64_t tmp = recv_indices[i];
+  //   printf("Rank %d, recv_indices[%d]: %zu\n", rank, i, tmp);
+  // }
+  // printf("\n");
+
+  
+  
+  thrust::fill(recv_histo.begin(), recv_histo.end(), 0);
+  cudaStreamSynchronize(stream);
+
+  compute_send_histogram<<<grid_size, block_size, 0, stream>>>(
+    thrust::raw_pointer_cast(recv_indices.data()),
+    thrust::raw_pointer_cast(recv_histo.data()),
     global_rects.ptr(0),
     shuffle_ranks_device.ptr(0),
     local_vector_count,
     rank,
     first_dimension_rank);
 
-    cudaMemcpy(thrust::raw_pointer_cast(h_histogram.data()), thrust::raw_pointer_cast(histogram.data()), first_dimension_rank * sizeof(unsigned int), cudaMemcpyDeviceToHost);
-    cudaMemcpy(thrust::raw_pointer_cast(h_indices.data()), thrust::raw_pointer_cast(indices.data()), local_vector_count * sizeof(uint64_t), cudaMemcpyDeviceToHost);
-    printf("rank %d, local_vector_count: %zu\n", rank, local_vector_count);
-    for(int i = 0; i < local_vector_count; i++){
-      auto index = h_indices[i];
-      printf("indices[%d]: %zu\n", i, index);
-    }
-    for(int i = 0; i < first_dimension_rank; i++){
-      printf("histogram[%d]: %u\n", i, h_histogram[i]);
-    }
+  cudaStreamSynchronize(stream);
+  thrust::copy_n(recv_histo.begin(), first_dimension_rank, h_recv_histo.begin());
+
+  thrust::exclusive_scan(recv_histo.begin(), recv_histo.end(), recv_offsets.begin());
+  thrust::copy_n(recv_offsets.begin(), first_dimension_rank, h_recv_offsets.begin());
+
+
 
   // 3. Pack send data and send indices
+// Pack send data kernel for 2D (vectors)
+// pack_send_data_2d_kernel(const DataType* data, const IndexType* indices, legate::Rect<DIM_input>* rect_buf, size_t local_volume, size_t vector_length,
+//                                           DataType* send_data, IndexType* send_indices,
+//                                           unsigned int* send_offsets, unsigned int* counters,
+//                                           size_t num_ranks, int rank_id) {
 
-  // 4. Inverse Feistel Bijection
-  //    or All2all request histogram
-  
+  pack_send_data_2d_kernel<<<grid_size, block_size, 0, stream>>>(
+  local_data,
+  thrust::raw_pointer_cast(indices.data()),
+  global_rects.ptr(0),
+  local_vector_count,
+  vector_length,
+  thrust::raw_pointer_cast(send_data.data()), thrust::raw_pointer_cast(send_indices.data()),
+  thrust::raw_pointer_cast(send_offsets.data()), thrust::raw_pointer_cast(counters.data()),
+  num_ranks, rank);
+
+  cudaStreamSynchronize(stream);
+                                       
   
   // 5. All2All exchange send data and send indices
   //    Indices exchange cannot be avoided since pack is out-of-order due to atomicAdd.
-
+  // printf("Rank %d, Step 5, File: %s:%d\n", rank, __FILE__, __LINE__);
+  // printf("Rank %d, h_send_histo: ", rank);
+  // for(int i = 0; i < first_dimension_rank; i++){
+  //   printf("%u, ", h_send_histo[i]);
+  // }
+  // printf("\n");
+  // // printf("Rank %d, h_send_offsets: ", rank);
+  // // for(int i = 0; i < first_dimension_rank; i++){
+  // //   printf("%u, ", h_send_offsets[i]);
+  // // }
+  // // printf("\n");
+  // printf("Rank %d, h_recv_histo: ", rank);
+  // for(int i = 0; i < first_dimension_rank; i++){
+  //   printf("%u, ", h_recv_histo[i]);
+  // }
+  // printf("\n");
+  // // printf("Rank %d, h_recv_offsets: ", rank);
+  // // for(int i = 0; i < first_dimension_rank; i++){
+  // //   printf("%u, ", h_recv_offsets[i]);
+  // // }
+  // // printf("\n");
   
+  CHECK_NCCL(ncclGroupStart());
+  for (size_t i = 0; i < first_dimension_rank; ++i) {
+      if (h_send_histo[i] > 0) {
+          CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(send_data.data()) + h_send_offsets[i] * vector_length,
+                  h_send_histo[i] * vector_length * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
+          CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(send_indices.data()) + h_send_offsets[i],
+                  h_send_histo[i], ncclUint64, i, *nccl_comm, stream));
+
+      }
+      
+      if (h_recv_histo[i] > 0) {
+          CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(recv_data.data()) + h_recv_offsets[i] * vector_length,
+                  h_recv_histo[i] * vector_length * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
+          CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(recv_indices.data()) + h_recv_offsets[i],
+                    h_recv_histo[i], ncclUint64, i, *nccl_comm, stream));
+
+      }
+  }
+  CHECK_NCCL(ncclGroupEnd());
+  cudaStreamSynchronize(stream);
   // 6. Unpack received data
   // 
+
+  
+      unpack_recv_data_2d_kernel<<<grid_size, block_size, 0, stream>>>(
+    thrust::raw_pointer_cast(recv_data.data()), thrust::raw_pointer_cast(recv_indices.data()),
+    local_vector_count, local_data, global_rects_host[rank].lo[0], vector_length);
+
+
 
 }
 
@@ -477,12 +556,12 @@ void global_shuffle_bidirectional(
   cudaMemcpy(thrust::raw_pointer_cast(global_rects_host.data()), thrust::raw_pointer_cast(global_rects.ptr(0)), num_ranks * DIM * 2 * sizeof(int64_t), cudaMemcpyDeviceToHost);
 
   
-  for(int i = 0; i < num_ranks; i++){
-    for(int j = 0; j < DIM; j++){
-      printf("Rank %d, rect: lo %zu -- hi %zu\n", rank, rect.lo[j], rect.hi[j]);
-      printf("Rank %d, global_rects_host[%d][%d]: lo %zu -- hi %zu\n", i, j, global_rects_host[i].lo[j], global_rects_host[i].hi[j]);
-    }
-  }
+  // for(int i = 0; i < num_ranks; i++){
+  //   for(int j = 0; j < DIM; j++){
+  //     printf("Rank %d, rect: lo %zu -- hi %zu\n", rank, rect.lo[j], rect.hi[j]);
+  //     printf("Rank %d, global_rects_host[%d][%d]: lo %zu -- hi %zu\n", rank, i, j, global_rects_host[i].lo[j], global_rects_host[i].hi[j]);
+  //   }
+  // }
 
 
   // 2. Verify whether regular tiling

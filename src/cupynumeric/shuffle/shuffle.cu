@@ -294,7 +294,8 @@ void shuffle_regular_tiling(
   const DomainPoint index_point,
   std::vector<int> shuffle_ranks,
   ncclComm_t* nccl_comm, 
-  cudaStream_t stream
+  cudaStream_t stream,
+  uint32_t epoch
 )
 {
   // 0. Initilization
@@ -323,7 +324,9 @@ void shuffle_regular_tiling(
   thrust::device_vector<uint64_t> recv_indices(local_vector_count);
   thrust::host_vector<uint64_t> h_recv_indices(local_vector_count);
 
-  thrust::default_random_engine rng(42);
+  // Use epoch passed from Python for proper random number generation
+  // printf("Rank %d, global_vector_count %d, epoch: %u\n", rank, global_vector_count, epoch);
+  thrust::default_random_engine rng(epoch);
   random_bijection<uint64_t> bijection(global_vector_count, rng);
 
   thrust::sequence(indices.begin(), indices.end(), global_rects_host[rank].lo[0]);
@@ -334,7 +337,7 @@ void shuffle_regular_tiling(
   for(int i = 1; i < DIM; i++){
     vector_length *= global_rects_host[rank].hi[i] - global_rects_host[rank].lo[i] + 1;
   }
-  // printf("local_vector_count: %d, vector_length: %d, first_dimension_rank: %d\n", local_vector_count, vector_length, first_dimension_rank);
+  // printf("num_ranks: %d, local_vector_count: %d, vector_length: %d, first_dimension_rank: %d\n", num_ranks, local_vector_count, vector_length, first_dimension_rank);
   // Buffer:
   // Send indices array: first dimension only
   thrust::device_vector<uint64_t> send_indices(local_vector_count);
@@ -369,9 +372,10 @@ void shuffle_regular_tiling(
   
   // 1. Feistel Bijection
   // Apply to first dimension only
+  if(grid_size > 0){
   apply_bijection_kernel<<<grid_size, block_size, 0, stream>>>(
     thrust::raw_pointer_cast(indices.data()), local_vector_count, bijection);
-  
+  }
     cudaStreamSynchronize(stream);
     // for(int i = 0; i < local_vector_count; i++){
     //   uint64_t tmp = indices[i];
@@ -380,6 +384,8 @@ void shuffle_regular_tiling(
     // printf("\n");
 
   // 2. Compute send histogram
+  
+  if(grid_size > 0){
   compute_send_histogram<<<grid_size, block_size, 0, stream>>>(
     thrust::raw_pointer_cast(indices.data()),
     thrust::raw_pointer_cast(send_histo.data()),
@@ -388,7 +394,7 @@ void shuffle_regular_tiling(
     local_vector_count,
     rank,
     first_dimension_rank);
-    
+  }
   cudaStreamSynchronize(stream);
   thrust::copy_n(send_histo.begin(), first_dimension_rank, h_send_histo.begin());
 
@@ -398,11 +404,15 @@ void shuffle_regular_tiling(
   // Inverse Feistel Bijection
   //    or All2all request histogram
   
-  thrust::default_random_engine rng_1(42);
+  // Use the same epoch for inverse bijection to maintain consistency
+  thrust::default_random_engine rng_1(epoch);
+  
   random_bijection<uint64_t> bijection_1(global_vector_count, rng_1);
   cudaStreamSynchronize(stream);
+  if(grid_size > 0){
   apply_inverse_bijection_kernel<<<grid_size, block_size, 0, stream>>>(
   thrust::raw_pointer_cast(recv_indices.data()), local_vector_count, bijection_1);
+  }
   cudaStreamSynchronize(stream);
   // for(int i = 0; i < local_vector_count; i++){
   //   uint64_t tmp = recv_indices[i];
@@ -414,7 +424,7 @@ void shuffle_regular_tiling(
   
   thrust::fill(recv_histo.begin(), recv_histo.end(), 0);
   cudaStreamSynchronize(stream);
-
+  if(grid_size > 0){
   compute_send_histogram<<<grid_size, block_size, 0, stream>>>(
     thrust::raw_pointer_cast(recv_indices.data()),
     thrust::raw_pointer_cast(recv_histo.data()),
@@ -423,7 +433,7 @@ void shuffle_regular_tiling(
     local_vector_count,
     rank,
     first_dimension_rank);
-
+  }
   cudaStreamSynchronize(stream);
   thrust::copy_n(recv_histo.begin(), first_dimension_rank, h_recv_histo.begin());
 
@@ -439,6 +449,7 @@ void shuffle_regular_tiling(
 //                                           unsigned int* send_offsets, unsigned int* counters,
 //                                           size_t num_ranks, int rank_id) {
 
+  if(grid_size > 0){
   pack_send_data_2d_kernel<<<grid_size, block_size, 0, stream>>>(
   local_data,
   thrust::raw_pointer_cast(indices.data()),
@@ -448,7 +459,7 @@ void shuffle_regular_tiling(
   thrust::raw_pointer_cast(send_data.data()), thrust::raw_pointer_cast(send_indices.data()),
   thrust::raw_pointer_cast(send_offsets.data()), thrust::raw_pointer_cast(counters.data()),
   num_ranks, rank);
-
+  }
   cudaStreamSynchronize(stream);
                                        
   
@@ -502,11 +513,11 @@ void shuffle_regular_tiling(
   // 6. Unpack received data
   // 
 
-  
+  if(grid_size > 0){
       unpack_recv_data_2d_kernel<<<grid_size, block_size, 0, stream>>>(
     thrust::raw_pointer_cast(recv_data.data()), thrust::raw_pointer_cast(recv_indices.data()),
     local_vector_count, local_data, global_rects_host[rank].lo[0], vector_length);
-
+  }
 
 
 }
@@ -533,7 +544,8 @@ void global_shuffle_bidirectional(
   const Domain domain,
   const DomainPoint index_point,
   ncclComm_t* nccl_comm, 
-  cudaStream_t stream
+  cudaStream_t stream,
+  uint32_t epoch
 ) {
 
   // 1. Exchange rects
@@ -546,7 +558,7 @@ void global_shuffle_bidirectional(
 
   cudaMemcpy(rect_device.ptr(0), &rect, sizeof(rect), cudaMemcpyHostToDevice);
   
-
+  
   cudaStreamSynchronize(stream);
   CHECK_NCCL(ncclAllGather((void*)rect_device.ptr(0), 
   (void*)global_rects.ptr(0), 
@@ -557,15 +569,6 @@ void global_shuffle_bidirectional(
   cudaStreamSynchronize(stream);
 
   cudaMemcpy(thrust::raw_pointer_cast(global_rects_host.data()), thrust::raw_pointer_cast(global_rects.ptr(0)), num_ranks * DIM * 2 * sizeof(int64_t), cudaMemcpyDeviceToHost);
-
-  
-  // for(int i = 0; i < num_ranks; i++){
-  //   for(int j = 0; j < DIM; j++){
-  //     printf("Rank %d, rect: lo %zu -- hi %zu\n", rank, rect.lo[j], rect.hi[j]);
-  //     printf("Rank %d, global_rects_host[%d][%d]: lo %zu -- hi %zu\n", rank, i, j, global_rects_host[i].lo[j], global_rects_host[i].hi[j]);
-  //   }
-  // }
-
 
   // 2. Verify whether regular tiling
   bool is_regular_tiling = true;
@@ -598,14 +601,7 @@ void global_shuffle_bidirectional(
     }
   }
   // printf("is_regular_tiling: %d\n", is_regular_tiling);
-  if (is_regular_tiling){
-    // printf("Regular Tiling\n");
-    // 3a. Call Regular Tiling
-    shuffle_regular_tiling(local_data, global_rects_host, global_vector_count, rank, num_ranks, domain, index_point, shuffle_ranks, nccl_comm, stream);
-  } else {
-    // 3b. Call Fancy Indexing
-    // shuffle_fancy_indexing(local_data, rect, global_vector_count, rank, num_ranks, nccl_comm, stream);
-  }
+  shuffle_regular_tiling(local_data, global_rects_host, global_vector_count, rank, num_ranks, domain, index_point, shuffle_ranks, nccl_comm, stream, epoch);
 
 }
 
@@ -627,7 +623,8 @@ struct ShuffleImplBody<VariantKind::CPU, CODE, DIM> {
     const size_t num_ranks,
     const Domain domain,
     const DomainPoint index_point,
-    const std::vector<comm::Communicator>& comms)
+    const std::vector<comm::Communicator>& comms,
+    uint32_t epoch)
   {
     // CPU shuffle not yet implemented
     assert(false && "CPU shuffle not yet implemented");
@@ -648,7 +645,8 @@ struct ShuffleImplBody<VariantKind::OMP, CODE, DIM> {
                   const size_t num_ranks,
                   const Domain domain,
                   const DomainPoint index_point,
-                  const std::vector<comm::Communicator>& comms)
+                  const std::vector<comm::Communicator>& comms,
+                  uint32_t epoch)
   {
     // OMP shuffle not yet implemented
     assert(false && "OMP shuffle not yet implemented");
@@ -669,7 +667,8 @@ struct ShuffleImplBody<VariantKind::GPU, CODE, DIM> {
     const size_t num_ranks,
     const Domain domain,
     const DomainPoint index_point,
-    const std::vector<comm::Communicator>& comms)
+    const std::vector<comm::Communicator>& comms,
+    uint32_t epoch)
   {
     auto rect = input_output_array.shape<DIM>();
     auto input_output = input_output_array.read_write_accessor<VAL, DIM>(rect);
@@ -699,7 +698,8 @@ struct ShuffleImplBody<VariantKind::GPU, CODE, DIM> {
           domain,
           index_point,
           comms[0].get<ncclComm_t*>(),
-          stream
+          stream,
+          epoch
       );
     }
     CUPYNUMERIC_CHECK_CUDA_STREAM(stream);
@@ -710,15 +710,15 @@ template <VariantKind KIND, int DIM>
 struct ShuffleImplBody_type {
   template <Type::Code CODE>
   void operator()(ShuffleArgs& args, TaskContext& context, 
-    std::vector<comm::Communicator> comms) const
+    std::vector<comm::Communicator> comms, uint32_t epoch) const
   {
     auto rect = args.input_output.shape<DIM>();
 
     Pitches<DIM - 1> pitches;
     size_t volume = pitches.flatten(rect);
-    if (volume == 0) {
-      return;
-    }
+    // if (volume == 0) {
+    //   return;
+    // }
 
     ShuffleImplBody<KIND, CODE, DIM>()(
       context,
@@ -730,7 +730,8 @@ struct ShuffleImplBody_type {
       args.num_ranks,
       args.domain,
       args.index_point,
-      comms
+      comms,
+      epoch
     ); 
   }
 };
@@ -741,7 +742,7 @@ template <VariantKind KIND>
 struct ShuffleImpl {
   template <int DIM>
   void operator()(ShuffleArgs& args, TaskContext& context, 
-    std::vector<comm::Communicator> comms) const
+    std::vector<comm::Communicator> comms, uint32_t epoch) const
   {
     auto input_code = args.input_output.code();
     
@@ -750,7 +751,8 @@ struct ShuffleImpl {
     ShuffleImplBody_type<KIND, DIM>{}.template operator()<legate::Type::Code::INT64>(
       args,
       context,
-      comms
+      comms,
+      epoch
     ); 
       break;
       default:
@@ -796,6 +798,7 @@ static void shuffle_template(TaskContext& context)
   // Extract arguments from TaskContext
   auto input_output = context.input(0);
   auto shape_span   = context.scalar(0).values<int64_t>();
+  uint32_t epoch    = context.scalar(1).value<uint32_t>();  // Get epoch from Python
   size_t d1 = shape_span[0];
   size_t d2 = 1;
   for (size_t i = 1; i < shape_span.size(); ++i) d2 *= shape_span[i];
@@ -818,7 +821,7 @@ static void shuffle_template(TaskContext& context)
   };
   
   dim_dispatch(
-    args.input_output.dim(), ShuffleImpl<KIND>{}, args, context, context.communicators());
+    args.input_output.dim(), ShuffleImpl<KIND>{}, args, context, context.communicators(), epoch);
   // double_dispatch(
   //   args.input_output.dim(), args.input_output.code(), ShuffleImpl<KIND>{}, args, context, context.communicators());
 }

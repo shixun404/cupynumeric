@@ -99,6 +99,10 @@ def _shuffle_task(input: "DeferredArray", method: str) -> None:
     # Add scalar arguments
     task.add_scalar_arg(input.base.shape, (ty.int64,))   # total volume
     
+    # Add epoch for random number generation - this ensures Python seed() works
+    epoch = runtime.get_next_random_epoch()
+    task.add_scalar_arg(epoch, ty.uint32)
+    
     task.execute()
 
 

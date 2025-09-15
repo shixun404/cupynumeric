@@ -1,14 +1,12 @@
 import cupynumeric as np
 import numpy
-d1 = 3
-d2 = 4
-d3 = 5
+d1 = 4
+d2 = 2
+d3 = 1
 input = numpy.arange(d1 * d2 * d3)
-input = input.reshape(d1, d2, d3)
-a = np.array(input)
-
-print(a)
-
-a.shuffle()
-
-print(a)
+input = input.reshape(d1, d2)
+# input = input.reshape(d1, d2, d3)
+for i in range(5):
+    a = np.array(input)
+    a.shuffle()
+    print(a)

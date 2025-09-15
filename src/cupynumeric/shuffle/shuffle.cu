@@ -334,7 +334,7 @@ void shuffle_regular_tiling(
   for(int i = 1; i < DIM; i++){
     vector_length *= global_rects_host[rank].hi[i] - global_rects_host[rank].lo[i] + 1;
   }
-
+  // printf("local_vector_count: %d, vector_length: %d, first_dimension_rank: %d\n", local_vector_count, vector_length, first_dimension_rank);
   // Buffer:
   // Send indices array: first dimension only
   thrust::device_vector<uint64_t> send_indices(local_vector_count);
@@ -452,8 +452,8 @@ void shuffle_regular_tiling(
   cudaStreamSynchronize(stream);
                                        
   
-  // 5. All2All exchange send data and send indices
-  //    Indices exchange cannot be avoided since pack is out-of-order due to atomicAdd.
+  // // 5. All2All exchange send data and send indices
+  // //    Indices exchange cannot be avoided since pack is out-of-order due to atomicAdd.
   // printf("Rank %d, Step 5, File: %s:%d\n", rank, __FILE__, __LINE__);
   // printf("Rank %d, h_send_histo: ", rank);
   // for(int i = 0; i < first_dimension_rank; i++){
@@ -478,19 +478,22 @@ void shuffle_regular_tiling(
   
   CHECK_NCCL(ncclGroupStart());
   for (size_t i = 0; i < first_dimension_rank; ++i) {
+      DomainPoint index_point_i = index_point;
+      index_point_i[0] = domain.lo()[0] + i;
+      int rank_i = get_rank(domain, index_point_i);
       if (h_send_histo[i] > 0) {
           CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(send_data.data()) + h_send_offsets[i] * vector_length,
-                  h_send_histo[i] * vector_length * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
+                  h_send_histo[i] * vector_length * sizeof(DataType), ncclInt8, rank_i, *nccl_comm, stream));
           CHECK_NCCL(ncclSend(thrust::raw_pointer_cast(send_indices.data()) + h_send_offsets[i],
-                  h_send_histo[i], ncclUint64, i, *nccl_comm, stream));
+                  h_send_histo[i], ncclUint64, rank_i, *nccl_comm, stream));
 
       }
       
       if (h_recv_histo[i] > 0) {
           CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(recv_data.data()) + h_recv_offsets[i] * vector_length,
-                  h_recv_histo[i] * vector_length * sizeof(DataType), ncclInt8, i, *nccl_comm, stream));
+                  h_recv_histo[i] * vector_length * sizeof(DataType), ncclInt8, rank_i, *nccl_comm, stream));
           CHECK_NCCL(ncclRecv(thrust::raw_pointer_cast(recv_indices.data()) + h_recv_offsets[i],
-                    h_recv_histo[i], ncclUint64, i, *nccl_comm, stream));
+                    h_recv_histo[i], ncclUint64, rank_i, *nccl_comm, stream));
 
       }
   }
@@ -594,9 +597,9 @@ void global_shuffle_bidirectional(
       }
     }
   }
-
+  // printf("is_regular_tiling: %d\n", is_regular_tiling);
   if (is_regular_tiling){
-    printf("Regular Tiling\n");
+    // printf("Regular Tiling\n");
     // 3a. Call Regular Tiling
     shuffle_regular_tiling(local_data, global_rects_host, global_vector_count, rank, num_ranks, domain, index_point, shuffle_ranks, nccl_comm, stream);
   } else {

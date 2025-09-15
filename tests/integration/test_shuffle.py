@@ -80,6 +80,7 @@ def test_shuffle_3d():
     """Test shuffle on 3D arrays."""
     shapes = [(3, 2, 4), (4, 3, 2), (5, 4, 3)]
     
+    
     for shape in shapes:
         N1, N2, N3 = shape
         

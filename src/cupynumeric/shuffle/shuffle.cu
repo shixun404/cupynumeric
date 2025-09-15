@@ -300,7 +300,7 @@ void shuffle_regular_tiling(
 {
   // 0. Initilization
   // First dimension size, local
-  size_t local_vector_count = global_rects_host[rank].hi[0] - global_rects_host[rank].lo[0] + 1;
+  size_t local_vector_count = (global_rects_host[rank].hi[0] - global_rects_host[rank].lo[0] + 1) > 0 ? (global_rects_host[rank].hi[0] - global_rects_host[rank].lo[0] + 1) : 0;
   
   // Kernel parameters
   const size_t block_size = 256;
@@ -325,7 +325,6 @@ void shuffle_regular_tiling(
   thrust::host_vector<uint64_t> h_recv_indices(local_vector_count);
 
   // Use epoch passed from Python for proper random number generation
-  // printf("Rank %d, global_vector_count %d, epoch: %u\n", rank, global_vector_count, epoch);
   thrust::default_random_engine rng(epoch);
   random_bijection<uint64_t> bijection(global_vector_count, rng);
 
@@ -337,7 +336,7 @@ void shuffle_regular_tiling(
   for(int i = 1; i < DIM; i++){
     vector_length *= global_rects_host[rank].hi[i] - global_rects_host[rank].lo[i] + 1;
   }
-  // printf("num_ranks: %d, local_vector_count: %d, vector_length: %d, first_dimension_rank: %d\n", num_ranks, local_vector_count, vector_length, first_dimension_rank);
+  // printf("num_ranks: %d, rank_id %d, local_vector_count: %d, vector_length: %d, first_dimension_rank: %d\n", num_ranks, rank, local_vector_count, vector_length, first_dimension_rank);
   // Buffer:
   // Send indices array: first dimension only
   thrust::device_vector<uint64_t> send_indices(local_vector_count);
@@ -523,11 +522,67 @@ void shuffle_regular_tiling(
 }
 
 
-
 template<typename DataType, int DIM>
-void shuffle_fancy_indexing(
-){
-  // Todo
+void shuffle_regular_tiling_single_rank(
+  DataType* local_data, 
+  legate::Rect<DIM> rect,
+  size_t global_vector_count, // First dimension size, global
+  int rank, 
+  int num_ranks,
+  const Domain domain,
+  const DomainPoint index_point,
+  cudaStream_t stream,
+  uint32_t epoch
+)
+{
+  // 0. Initilization
+  // First dimension size, local
+  size_t local_vector_count = rect.hi[0] - rect.lo[0] + 1;
+  
+  // Kernel parameters
+  const size_t block_size = 256;
+  const size_t grid_size = (local_vector_count + block_size - 1) / block_size;
+
+  // First dimension rank
+  int first_dimension_rank = domain.hi()[0] - domain.lo()[0] + 1;
+  
+  
+  // Bijection object 
+  thrust::device_vector<uint64_t> indices(local_vector_count);
+  // Use epoch passed from Python for proper random number generation
+  // printf("Rank %d, global_vector_count %d, epoch: %u\n", rank, global_vector_count, epoch);
+  thrust::default_random_engine rng(epoch);
+  random_bijection<uint64_t> bijection(global_vector_count, rng);
+  thrust::sequence(indices.begin(), indices.end(), rect.lo[0]);
+  // Product of other dimensions
+  int vector_length = 1;
+  for(int i = 1; i < DIM; i++){
+    vector_length *= rect.hi[i] - rect.lo[i] + 1;
+  }
+  
+  // Buffer:
+  // Send indices array: first dimension only
+  thrust::device_vector<uint64_t> send_indices(local_vector_count);
+
+
+  // Send data array
+  thrust::device_vector<DataType> send_data(local_vector_count * vector_length);
+  // Recv data array
+  thrust::device_vector<DataType> recv_data(local_vector_count * vector_length);
+  
+  // 1. Feistel Bijection
+  // Apply to first dimension only
+  if(grid_size > 0){
+  apply_bijection_kernel<<<grid_size, block_size, 0, stream>>>(
+    thrust::raw_pointer_cast(indices.data()), local_vector_count, bijection);
+  }
+    cudaStreamSynchronize(stream);
+  if(grid_size > 0){
+      unpack_recv_data_2d_kernel<<<grid_size, block_size, 0, stream>>>(
+        local_data, thrust::raw_pointer_cast(indices.data()),
+    local_vector_count, thrust::raw_pointer_cast(recv_data.data()), rect.lo[0], vector_length);
+     cudaMemcpy(local_data, thrust::raw_pointer_cast(recv_data.data()), local_vector_count * vector_length * sizeof(DataType), cudaMemcpyDefault);
+  }
 }
 
 
@@ -557,9 +612,13 @@ void global_shuffle_bidirectional(
   num_ranks * DIM * 2 * sizeof(int64_t), stream));
 
   cudaMemcpy(rect_device.ptr(0), &rect, sizeof(rect), cudaMemcpyHostToDevice);
-  
-  
   cudaStreamSynchronize(stream);
+  
+  // for(int i = 0; i < DIM; i++){
+  //   printf("Rank %d, DIM %d, rect[%d]: %d, %d\n", rank, DIM, i, rect.lo[i], rect.hi[i]);
+  // }
+  
+  // printf("Rank %d, ncclAllGather\n", rank);
   CHECK_NCCL(ncclAllGather((void*)rect_device.ptr(0), 
   (void*)global_rects.ptr(0), 
   sizeof(int64_t) * 2 * DIM, 
@@ -567,7 +626,7 @@ void global_shuffle_bidirectional(
   *nccl_comm, 
   stream));
   cudaStreamSynchronize(stream);
-
+  // printf("Rank %d, ncclAllGather done\n", rank);
   cudaMemcpy(thrust::raw_pointer_cast(global_rects_host.data()), thrust::raw_pointer_cast(global_rects.ptr(0)), num_ranks * DIM * 2 * sizeof(int64_t), cudaMemcpyDeviceToHost);
 
   // 2. Verify whether regular tiling
@@ -582,27 +641,9 @@ void global_shuffle_bidirectional(
     index_point_i[0] = lo[0] + i;
     int rank_i = get_rank(domain, index_point_i);
     shuffle_ranks[i] = rank_i;
-    Rect<DIM> rect_i = global_rects_host[rank_i];
-    for(int j = i + 1; j < hi[0] - lo[0] + 1; j++){
-      DomainPoint index_point_j = index_point;
-      index_point_j[0] = lo[0] + j;
-      int rank_j = get_rank(domain, index_point_j);
-      Rect<DIM> rect_j = global_rects_host[rank_j];
-
-      for(int d = 1; d < DIM; d++){
-        if(rect_i.lo[d] != rect_j.lo[d] || rect_i.hi[d] != rect_j.hi[d]){
-          is_regular_tiling = false;
-          break;
-        }
-      }
-      if(!is_regular_tiling){
-        break;
-      }
-    }
   }
   // printf("is_regular_tiling: %d\n", is_regular_tiling);
   shuffle_regular_tiling(local_data, global_rects_host, global_vector_count, rank, num_ranks, domain, index_point, shuffle_ranks, nccl_comm, stream, epoch);
-
 }
 
 
@@ -681,16 +722,24 @@ struct ShuffleImplBody<VariantKind::GPU, CODE, DIM> {
     // For local shuffle (single node or within a node)
     if (!need_distributed_shuffle) {
     
-          // TODO: Implement key-sort local shuffle
-          assert(false && "Key-sort local shuffle not yet implemented");
+          shuffle_regular_tiling_single_rank<VAL, DIM>(
+            input_output.ptr(rect.lo),
+            rect,
+            vector_count,
+            rank,
+            num_ranks,
+            domain,
+            index_point,
+            stream,
+            epoch
+          );
+          // assert(false && "Key-sort local shuffle not yet implemented");
     
     } else {
       // Handle distributed shuffle
-      
-      VAL* data_ptr = input_output.ptr(rect.lo);
 
       global_shuffle_bidirectional<VAL, DIM>(
-          data_ptr,
+          input_output.ptr(rect.lo),
           rect,
           vector_count,
           rank,

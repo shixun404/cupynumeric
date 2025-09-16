@@ -958,11 +958,26 @@ class DeferredArray(NumPyThunk):
                         index_array.base.shape, self.base.type, inputs=[self]
                     )
 
-                legate_runtime.issue_gather(
-                    result.base,  # type: ignore[attr-defined]
-                    rhs.base,
-                    index_array.base,
-                )
+                if runtime.num_gpus != 0:
+                    task = legate_runtime.create_auto_task(
+                        self.library, CuPyNumericOpCode.ALL2ALL
+                    )
+                    task.add_input(rhs.base)
+                    task.add_input(index_array.base)
+                    task.add_output(result.base)
+                    
+                    # Add scalar arguments
+                    task.add_scalar_arg(rhs.base.shape, (ty.int64,))
+                    task.add_scalar_arg(index_array.base.shape, (ty.int64,))
+                    task.add_scalar_arg(result.base.shape, (ty.int64,))
+                    
+                    task.add_nccl_communicator()
+                    task.execute()
+                else:
+                    # Single GPU or single CPU path using gather
+                    legate_runtime.issue_gather(
+                        result.base, rhs.base, index_array.base  # type: ignore
+                    )
 
             else:
                 return index_array

@@ -348,6 +348,12 @@ if(Legion_USE_CUDA)
   )
 endif()
 
+if(Legion_USE_CUDA)
+  target_sources(cupynumeric PRIVATE
+    src/cupynumeric/all2all/all2all.cu
+  )
+endif()
+
 # Add `src/cupynumeric/random/random.mk` sources
 if(Legion_USE_CUDA)
   target_sources(cupynumeric PRIVATE
@@ -361,12 +367,12 @@ endif()
 option(cupynumeric_USE_CUSOLVERMP "Build with CUSOLVERMP" ${Legion_USE_CUDA})
 
 # add sources for cusolverMp
-if(cupynumeric_USE_CUSOLVERMP)
-  target_sources(cupynumeric PRIVATE
-    src/cupynumeric/matrix/mp_potrf.cu
-    src/cupynumeric/matrix/mp_solve.cu
-  )
-endif()
+# if(cupynumeric_USE_CUSOLVERMP)
+#   target_sources(cupynumeric PRIVATE
+#     src/cupynumeric/matrix/mp_potrf.cu
+#     src/cupynumeric/matrix/mp_solve.cu
+#   )
+# endif()
 
 target_sources(cupynumeric PRIVATE
   # This must always be the last file!

@@ -1525,3 +1525,9 @@ class NumPyThunk(ABC):
         ar2_min: int = 0,
         ar2_max: int = 0,
     ) -> NumPyThunk: ...
+
+    @abstractmethod
+    def shuffle(
+        self,
+        method: str = "feistel_bidirectional",
+    ) -> None: ...

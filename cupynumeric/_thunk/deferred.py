@@ -79,6 +79,7 @@ from ..linalg._svd import svd_deferred
 from ..runtime import runtime
 from ..settings import settings
 from ._sort import sort_deferred
+from ._shuffle import shuffle_deferred
 from .thunk import NumPyThunk
 
 if TYPE_CHECKING:
@@ -4104,6 +4105,27 @@ class DeferredArray(NumPyThunk):
 
         # fallback to sort for now
         sort_deferred(self, rhs, argpartition, axis, False)
+
+    def shuffle(
+        self,
+        method: str = "feistel_bidirectional",
+    ) -> None:
+        """
+        Modify a sequence in-place by shuffling its contents.
+        
+        This function only shuffles the array along the first axis of a 
+        multi-dimensional array. The order of sub-arrays is changed but 
+        their contents remains the same.
+        
+        Parameters
+        ----------
+        method : {"feistel_bidirectional"}
+            The shuffle algorithm to use:
+              
+            - "feistel_bidirectional": Advanced Feistel forward/backward
+              Best for: Maximum performance on large distributed arrays
+        """
+        shuffle_deferred(self, method)
 
     def create_window(self, op_code: WindowOpCode, M: int, *args: Any) -> None:
         task = legate_runtime.create_auto_task(

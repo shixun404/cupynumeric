@@ -1,0 +1,103 @@
+# Copyright 2024 NVIDIA Corporation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, cast, Literal
+
+import numpy as np
+
+from legate.core import get_legate_runtime, types as ty
+
+from ..runtime import runtime
+from .._utils.array import to_core_type
+from ..random._random import uniform
+from ..config import CuPyNumericOpCode
+
+if TYPE_CHECKING:
+    from .._thunk.deferred import DeferredArray
+
+# Type alias for shuffle methods
+ShuffleMethod = Literal["feistel_bidirectional"]
+
+
+def shuffle_deferred(
+    array: "DeferredArray", 
+    method: ShuffleMethod = "feistel_bidirectional"
+) -> None:
+    """
+    Shuffle the array along the first axis using various distributed algorithms.
+    
+    For multi-dimensional arrays, only the order along the first axis changes.
+    The contents of sub-arrays remain unchanged.
+    
+    Parameters
+    ----------
+    array : DeferredArray
+        The array to shuffle along the first axis
+    method : {"feistel_bidirectional"}
+        The shuffle algorithm to use:
+          
+        - "feistel_bidirectional": Advanced Feistel forward/backward
+          Best for: Maximum performance on large distributed arrays
+    """
+    
+    if array.size == 0:
+        return
+    
+    # Get the size of the first axis for generating permutation
+    first_axis_size = array.shape[0]
+    
+    if first_axis_size <= 1:
+        return  # Nothing to shuffle if first axis has 0 or 1 elements
+
+    # Call our new CUDA shuffle task
+    _shuffle_task(array, method)
+
+
+def _shuffle_task(input: "DeferredArray", method: str) -> None:
+    """
+    Call the CUDA shuffle task implementation.
+    """
+    legate_runtime = get_legate_runtime()
+    task = legate_runtime.create_auto_task(
+        input.library, CuPyNumericOpCode.SHUFFLE
+    )
+
+    # Add input/output (in-place shuffle)
+    task.add_input(input.base)
+    task.add_output(input.base)
+    
+
+    # Add communicators if needed for distributed shuffle
+    if runtime.num_gpus > 1:
+        task.add_nccl_communicator()
+    elif runtime.num_gpus == 0 and runtime.num_procs > 1:
+        task.add_cpu_communicator()
+
+    
+    # Add scalar arguments
+    task.add_scalar_arg(input.base.shape, (ty.int64,))   # total volume
+    
+    # Add epoch for random number generation - this ensures Python seed() works
+    epoch = runtime.get_next_random_epoch()
+    task.add_scalar_arg(epoch, ty.uint32)
+    
+    task.execute()
+
+
+# All shuffle method implementations are now handled by the CUDA task above
+
+
+# All methods now implemented in the CUDA task

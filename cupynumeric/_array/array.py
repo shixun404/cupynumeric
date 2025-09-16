@@ -3560,6 +3560,31 @@ class ndarray:
             rhs=self._thunk, argsort=True, axis=axis, kind=kind, order=order
         )
         return result
+    
+    def shuffle(self, method: str = "feistel_bidirectional") -> None:
+        """a.shuffle(method="key_sort")
+
+        Modify a sequence in-place by shuffling its contents.
+        
+        This function only shuffles the array along the first axis of a 
+        multi-dimensional array. The order of sub-arrays is changed but 
+        their contents remains the same.
+
+        Parameters
+        ----------
+        method : {"feistel_bidirectional"}, optional
+            The shuffle algorithm to use. Default is "key_sort".
+              
+            - "feistel_bidirectional": Advanced Feistel forward/backward
+              Best for: Maximum performance on large distributed arrays
+
+        Availability
+        --------
+        Multiple GPUs, Multiple CPUs
+
+        """
+        check_writeable(self)
+        self._thunk.shuffle(method)
 
     def squeeze(self, axis: Any = None) -> ndarray:
         """a.squeeze(axis=None)

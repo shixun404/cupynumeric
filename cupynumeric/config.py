@@ -213,6 +213,7 @@ class _CupynumericSharedLib:
     CUPYNUMERIC_SELECT: int
     CUPYNUMERIC_SOLVE: int
     CUPYNUMERIC_SORT: int
+    CUPYNUMERIC_SHUFFLE: int
     CUPYNUMERIC_SVD: int
     CUPYNUMERIC_SYEV: int
     CUPYNUMERIC_SYRK: int
@@ -414,6 +415,7 @@ class CuPyNumericOpCode(IntEnum):
     SELECT = _cupynumeric.CUPYNUMERIC_SELECT
     SOLVE = _cupynumeric.CUPYNUMERIC_SOLVE
     SORT = _cupynumeric.CUPYNUMERIC_SORT
+    SHUFFLE = _cupynumeric.CUPYNUMERIC_SHUFFLE
     SVD = _cupynumeric.CUPYNUMERIC_SVD
     SYRK = _cupynumeric.CUPYNUMERIC_SYRK
     SYEV = _cupynumeric.CUPYNUMERIC_SYEV

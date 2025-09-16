@@ -530,7 +530,7 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM_input, DIM_output> {
     auto index = index_array.read_accessor<INDEX_VAL, DIM_output>(index_rect);
     auto output = output_array.read_write_accessor<VAL, DIM_output>(output_rect);
  
-     auto stream = get_cached_stream();
+     auto stream = context.get_task_stream();
  
      bool need_distributed_all2all = (num_ranks > 1) && is_index_space;
      const VAL* input_ptr = input.ptr(input_rect.lo);

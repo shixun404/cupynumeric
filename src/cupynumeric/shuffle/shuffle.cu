@@ -787,59 +787,21 @@
  };
  
  
- 
+
  template <VariantKind KIND>
  struct ShuffleImpl {
-   template <int DIM>
+   template <Type::Code CODE, int DIM>
    void operator()(ShuffleArgs& args, TaskContext& context, 
      std::vector<comm::Communicator> comms, uint32_t epoch) const
    {
-     auto input_code = args.input_output.code();
-     
-   switch (input_code) {
-     case legate::Type::Code::INT64:
-     ShuffleImplBody_type<KIND, DIM>{}.template operator()<legate::Type::Code::INT64>(
-       args,
-       context,
-       comms,
-       epoch
-     ); 
-       break;
-       default:
-         assert(false && "Only INT64 data type is supported in this build");
-         break;  
-   }
+     ShuffleImplBody_type<KIND, DIM>{}.template operator()<CODE>(
+             args,
+             context,
+             comms,
+             epoch
+           ); 
    }
  };
- // template <VariantKind KIND>
- // struct ShuffleImpl {
- //   template <Type::Code CODE, int DIM>
- //   void operator()(ShuffleArgs& args, TaskContext& context, 
- //     std::vector<comm::Communicator> comms) const
- //   {
- //     using VAL = type_of<CODE>;
- //     auto rect = args.input_output.shape<DIM>();
- 
- //     Pitches<DIM - 1> pitches;
- //     size_t volume = pitches.flatten(rect);
- //     if (volume == 0) {
- //       return;
- //     }
- 
- //     ShuffleImplBody<KIND, CODE, DIM>()(
- //         context,
- //         args.input_output,
- //         args.vector_count,
- //         args.vector_length,
- //         args.is_index_space,
- //         args.local_rank,
- //         args.num_ranks,
- //         args.domain,
- //         args.index_point,
- //         comms
- //     );
- //   }
- // };
  
  
  template <VariantKind KIND>
@@ -870,10 +832,10 @@
      num_ranks,
    };
    
-   dim_dispatch(
-     args.input_output.dim(), ShuffleImpl<KIND>{}, args, context, context.communicators(), epoch);
-   // double_dispatch(
-   //   args.input_output.dim(), args.input_output.code(), ShuffleImpl<KIND>{}, args, context, context.communicators());
+  //  dim_dispatch(
+  //    args.input_output.dim(), ShuffleImpl<KIND>{}, args, context, context.communicators(), epoch);
+   double_dispatch(
+     args.input_output.dim(), args.input_output.code(), ShuffleImpl<KIND>{}, args, context, context.communicators(), epoch);
  }
  
  /*static*/ void ShuffleTask::gpu_variant(TaskContext context)

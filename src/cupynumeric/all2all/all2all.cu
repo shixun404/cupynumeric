@@ -622,53 +622,53 @@ struct All2AllImplBody<VariantKind::GPU, CODE, DIM_input, DIM_output> {
    }
  };
 
-//  template <VariantKind KIND>
-//  struct All2AllImpl {
-//    template <int DIM_input, int DIM_output>
-//    void operator()(All2AllArgs& args, TaskContext& context, 
-//      std::vector<comm::Communicator> comms) const
-//    {
-//     type_dispatch(
-//       args.input.code(), All2AllImpl_type<KIND, DIM_input, DIM_output>{}, args, context, context.communicators());
-//    }
-//  };
-
-template <VariantKind KIND>
-struct All2AllImpl {
-  template <int DIM_input, int DIM_output>
-  void operator()(All2AllArgs& args, TaskContext& context, 
-    std::vector<comm::Communicator> comms) const
-  {
-   // Custom type dispatch to only compile int64 type for faster compilation
-   auto input_code = args.input.code();
-   auto output_code = args.output.code();
-   auto index_code = args.index_array.code();
-  //  printf("input_code: %d, output_code: %d, index_code: %d\n", input_code, output_code, index_code);
-  //  exit(0);
-   switch (input_code) {
-    //  case legate::Type::Code::FLOAT32:
-    //    printf("FLOAT32\n");
-    //    All2AllImpl_type<KIND, DIM_input, DIM_output>{}.template operator()<legate::Type::Code::FLOAT32>(args, context, context.communicators());
-    //    break;
-     case legate::Type::Code::FLOAT64:
-      //  printf("FLOAT64\n");
-       All2AllImpl_type<KIND, DIM_input, DIM_output>{}.template operator()<legate::Type::Code::FLOAT64>(args, context, context.communicators());
-       break;
-     case legate::Type::Code::INT64:
-      //  printf("INT64\n");
-       All2AllImpl_type<KIND, DIM_input, DIM_output>{}.template operator()<legate::Type::Code::INT64>(args, context, context.communicators());
-       break;
-    //  case legate::Type::Code::INT32:
-    //    printf("INT32\n");
-    //    All2AllImpl_type<KIND, DIM_input, DIM_output>{}.template operator()<legate::Type::Code::INT32>(args, context, context.communicators());
-    //    break;
-     default:
-       printf("Unsupported data type code: %d. Only INT64&FLOAT64 is supported for fast compilation.\n", (int)input_code);
-       assert(false && "Only INT64 data type is supported in this build");
-       break;
+ template <VariantKind KIND>
+ struct All2AllImpl {
+   template <int DIM_input, int DIM_output>
+   void operator()(All2AllArgs& args, TaskContext& context, 
+     std::vector<comm::Communicator> comms) const
+   {
+    type_dispatch(
+      args.input.code(), All2AllImpl_type<KIND, DIM_input, DIM_output>{}, args, context, context.communicators());
    }
-  }
-};
+ };
+
+// template <VariantKind KIND>
+// struct All2AllImpl {
+//   template <int DIM_input, int DIM_output>
+//   void operator()(All2AllArgs& args, TaskContext& context, 
+//     std::vector<comm::Communicator> comms) const
+//   {
+//    // Custom type dispatch to only compile int64 type for faster compilation
+//    auto input_code = args.input.code();
+//    auto output_code = args.output.code();
+//    auto index_code = args.index_array.code();
+//   //  printf("input_code: %d, output_code: %d, index_code: %d\n", input_code, output_code, index_code);
+//   //  exit(0);
+//    switch (input_code) {
+//     //  case legate::Type::Code::FLOAT32:
+//     //    printf("FLOAT32\n");
+//     //    All2AllImpl_type<KIND, DIM_input, DIM_output>{}.template operator()<legate::Type::Code::FLOAT32>(args, context, context.communicators());
+//     //    break;
+//      case legate::Type::Code::FLOAT64:
+//       //  printf("FLOAT64\n");
+//        All2AllImpl_type<KIND, DIM_input, DIM_output>{}.template operator()<legate::Type::Code::FLOAT64>(args, context, context.communicators());
+//        break;
+//      case legate::Type::Code::INT64:
+//       //  printf("INT64\n");
+//        All2AllImpl_type<KIND, DIM_input, DIM_output>{}.template operator()<legate::Type::Code::INT64>(args, context, context.communicators());
+//        break;
+//     //  case legate::Type::Code::INT32:
+//     //    printf("INT32\n");
+//     //    All2AllImpl_type<KIND, DIM_input, DIM_output>{}.template operator()<legate::Type::Code::INT32>(args, context, context.communicators());
+//     //    break;
+//      default:
+//        printf("Unsupported data type code: %d. Only INT64&FLOAT64 is supported for fast compilation.\n", (int)input_code);
+//        assert(false && "Only INT64 data type is supported in this build");
+//        break;
+//    }
+//   }
+// };
  
  static int get_rank(Domain domain, DomainPoint index_point)
  {
